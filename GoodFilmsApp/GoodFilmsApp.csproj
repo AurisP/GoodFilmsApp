@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.2.1.35\lib\net461\Dapper.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Data.Sqlite, Version=8.0.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Sqlite.Core.8.0.3\lib\netstandard2.0\Microsoft.Data.Sqlite.dll</HintPath>
     </Reference>
@@ -105,8 +102,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ModelLibrary1\ModelLibrary.csproj">
-      <Project>{24f935b8-a0f7-4def-9c75-c877015dbbaa}</Project>
+    <ProjectReference Include="..\ControllerLibrary\ControllerLibrary.csproj">
+      <Project>{29b321f4-9809-413f-8188-ea8340cec840}</Project>
+      <Name>ControllerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
+      <Project>{ebd7a118-dfa8-4ae0-a69d-3fb58bef958d}</Project>
       <Name>ModelLibrary</Name>
     </ProjectReference>
   </ItemGroup>

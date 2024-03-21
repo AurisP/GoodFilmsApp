@@ -8,7 +8,7 @@ namespace ModelLibrary.Models
 {
     public class DirectorFilmModel
     {
-        public DirectorModel Director { get; set; } = null!;
-        public FilmModel Film { get; set; } = null!;
+        public DirectorModel Director { get; set; }
+        public FilmModel Film { get; set; }
     }
 }

@@ -11,15 +11,7 @@ namespace ModelLibrary
 {
     public class SqliteDataAccess
     {
-        public static List<FilmModel> LoadFilm()
-        {
 
-        }
-
-        public static string LoadConnectionString(string id = "Default")
-        {
-            return ConfigurationManager.connectionString
-        }
     }
 
 
