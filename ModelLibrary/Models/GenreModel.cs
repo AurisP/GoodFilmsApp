@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControllerLibrary
+namespace ModelLibrary.Models
 {
-    public class Class1
+    public class GenreModel
     {
+        public string Genre { get; set; }
     }
 }

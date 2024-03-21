@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ModelLibrary.Models
+{
+    public class GenreFilmModel
+    {
+        public FilmModel Film { get; set; } = null!;
+        public GenreModel Genre { get; set; } = null!;
+    }
+}
