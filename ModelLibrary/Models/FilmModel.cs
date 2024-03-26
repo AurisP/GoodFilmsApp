@@ -23,13 +23,9 @@ namespace ModelLibrary.Models
 
         public string PosterUrl { get; set; }
 
-        public StudioModel Studio { get; set; }
-
-        public DirectorModel Director { get; set; }
 
         public int UserRating { get; set; }
 
-        public GenreModel Genre { get; set; }
 
         public int Watched { get; set; }
 
