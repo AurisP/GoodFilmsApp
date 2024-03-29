@@ -2,7 +2,7 @@
 
 namespace ControllerLibrary
 {
-    internal class CFilter
+    public class CFilter
     {
         string strSearch;
         string strGenre;

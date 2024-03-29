@@ -3,7 +3,7 @@
 namespace ControllerLibrary
 {
     using FilmModel = ModelLibrary.Models.FilmModel;
-    internal interface IController
+    public interface IController
     {
         int addFilter(CFilter filter);
         int clearFilter(CFilter filter);
