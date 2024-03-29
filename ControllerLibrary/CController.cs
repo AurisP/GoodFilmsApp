@@ -41,17 +41,17 @@ namespace ControllerLibrary
 
         public int requestFilms(int page, int count)
         {
-            filmsRxCb.call(globalId, () => CDataAccess.loadFilm(page, count));
+            filmsRxCb.call(globalId, () => CDataAccess.requestFilms(page, count));
             return globalId++;
         }
 
-        public int rmComment(FilmModel mode, int id)
+        public int rmComment(FilmModel model, int id)
         {
             errorRxCb.call(globalId, () => "This functionality is unimplemented");
             return globalId++;
         }
 
-        public int setFilmScheduled(FilmModel mode, DateTime date)
+        public int setFilmScheduled(FilmModel model, DateTime date)
         {
             errorRxCb.call(globalId, () => "This functionality is unimplemented");
             return globalId++;

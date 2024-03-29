@@ -17,7 +17,7 @@ namespace ModelLibrary
 
     public class CDataAccess
     {
-        public static List<FilmModel> loadFilm(int start, int amount)
+        public static List<FilmModel> requestFilms(int start, int amount)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -33,7 +33,7 @@ namespace ModelLibrary
             }
         }
 
-        public List<GenreModel> RequestGenres(string name)
+        public List<GenreModel> requestGenres(string name)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -52,7 +52,7 @@ namespace ModelLibrary
             }
         }
 
-        public List<DirectorModel> RequestDirectors(string forename, string surname)
+        public List<DirectorModel> requestDirectors(string forename, string surname)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -94,39 +94,44 @@ namespace ModelLibrary
             }
         }
 
-
-        public int requestSchedules()
+        public List<ScheduledFilmModel> requestSchedules()
         {
+            // Establish a connection to the SQLite database
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                string query = @"SELECT sf.*, f.* 
-                             FROM scheduled_films sf
-                             INNER JOIN films f ON sf.film_id = f.id";
+                // Construct the SQL query to retrieve scheduled films and their corresponding films
+                string query = @"SELECT scheduled_film.*, film.* FROM scheduled_film
+                                INNER JOIN film ON scheduled_film.film_id = film.id";
 
+                // Create a dictionary to store scheduled films temporarily
                 var scheduledFilms = new Dictionary<int, ScheduledFilmModel>();
 
-                cnn.Query<ScheduledFilmModel, FilmModel, ScheduledFilmModel>(query, (scheduledFilm, film) =>
+                // Execute the SQL query using Dapper's Query method, and map the results to ScheduledFilmModel and FilmModel objects
+                cnn.Query<ScheduledFilmModel, FilmModel, ScheduledFilmModel>(
+                    query,
+                    (scheduledFilm, film) =>
                     {
-                        ScheduledFilmModel scheduledFilmEntry;
+                        // Mapping function: It receives a scheduled film and its corresponding film for each row returned by the query
 
                         // Check if the scheduled film is already in the dictionary
-                        if (!scheduledFilms.TryGetValue(scheduledFilm.Id, out scheduledFilmEntry))
+                        if (!scheduledFilms.TryGetValue(scheduledFilm.Id, out ScheduledFilmModel scheduledFilmEntry))
                         {
-                            // If not, create a new entry in the dictionary
+                            // If the scheduled film doesn't exist in the dictionary, create a new entry
                             scheduledFilmEntry = scheduledFilm;
-                            scheduledFilmEntry.Film = film;
+                            scheduledFilmEntry.Film = film; // Associate the corresponding film with the scheduled film
                             scheduledFilms.Add(scheduledFilm.Id, scheduledFilmEntry);
                         }
 
-                        return scheduledFilmEntry;
+                        return scheduledFilmEntry; // Return the scheduled film entry
                     },
-                    splitOn: "id");
+                    splitOn: "id"); // Split the results based on the 'id' column
 
+                // Convert the values of the dictionary (scheduled films) to a list and return it
                 return scheduledFilms.Values.ToList();
             }
         }
 
-        public int requestFilms()
+        public int removeComment(int id)
         {
             throw new NotImplementedException();
         }
