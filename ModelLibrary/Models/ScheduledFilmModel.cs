@@ -8,7 +8,10 @@ namespace ModelLibrary.Models
 {
     public class ScheduledFilmModel
     {
+        public int Id { get; set; }
+
         public FilmModel Film { get; set; }
+
         public string WatchDate {  get; set; }
 
     }

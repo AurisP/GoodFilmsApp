@@ -8,7 +8,10 @@ namespace ModelLibrary.Models
 {
     public class GenreFilmModel
     {
+        public int Id { get; set; }
+
         public FilmModel Film { get; set; } 
+
         public GenreModel Genre { get; set; } 
     }
 }

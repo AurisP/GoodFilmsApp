@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ModelLibrary.Models
 {
-    public class DirectorFilmModel
+    public class CDirectorFilmModel
     {
-        public int Id { get; set; }
         public DirectorModel Director { get; set; }
         public FilmModel Film { get; set; }
     }

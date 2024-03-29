@@ -41,7 +41,7 @@ namespace ControllerLibrary
 
         public int requestFilms(int page, int count)
         {
-            filmsRxCb.call(globalId, () => SqliteDataAccess.LoadFilm());
+            filmsRxCb.call(globalId, () => CDataAccess.loadFilm(page, count));
             return globalId++;
         }
 

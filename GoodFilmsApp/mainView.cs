@@ -23,7 +23,7 @@ namespace GoodFilmsApp
 
         public void LoadFilmList()
         {
-            film = SqliteDataAccess.LoadFilm();
+            film = CDataAccess.loadFilm(1, 4);
             testBox.DataSource = film;
             testBox.DisplayMember = "title";
         }

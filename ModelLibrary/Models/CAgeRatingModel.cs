@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace ModelLibrary.Models
 {
-    public class StudioFilmModel
+    public class CAgeRatingModel
     {
-        public int Id { get; set; }
-
-        public StudioModel Studio { get; set; }
-
-        public FilmModel Film { get; set; }
+        public string Rating { get; set; }
     }
 }

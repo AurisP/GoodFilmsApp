@@ -9,6 +9,8 @@ namespace ModelLibrary.Models
 {
     public class FilmModel
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -23,9 +25,7 @@ namespace ModelLibrary.Models
 
         public string PosterUrl { get; set; }
 
-
         public int UserRating { get; set; }
-
 
         public int Watched { get; set; }
 
