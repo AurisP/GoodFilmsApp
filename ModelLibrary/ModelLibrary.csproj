@@ -86,7 +86,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqliteDataAccess.cs" />
+    <Compile Include="IDataAccess.cs" />
+    <Compile Include="CDataAccess.cs" />
     <Compile Include="Models\AgeRatingModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DirectorFilmModel.cs" />

@@ -8,6 +8,7 @@ namespace ModelLibrary.Models
 {
     public class AgeRatingModel
     {
+        public int Id { get; set; }
         public string Rating { get; set; }
     }
 }
