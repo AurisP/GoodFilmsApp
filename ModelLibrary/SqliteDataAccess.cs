@@ -15,7 +15,7 @@ namespace ModelLibrary
 {
     public class SqliteDataAccess
     {
-        public static List<FilmModel> LoadFilm()
+        public static List<FilmModel> LoadFilms()
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
