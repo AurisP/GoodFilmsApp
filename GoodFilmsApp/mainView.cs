@@ -75,8 +75,11 @@ namespace GoodFilmsApp
             // calculate i, j
             int i = (((PictureBox)sender).Location.X - 20) / 120;
             int j = (((PictureBox)sender).Location.Y - 20) / 170;
-            int idx = j * noOfFilmsPerRow + i;
-            Console.WriteLine("idx: " + idx);
+            int filmNumber = j * noOfFilmsPerRow + i;
+            Console.WriteLine("filmNumber: " + filmNumber);
+
+            var filmWindow = new filmView(films[filmNumber]);
+            filmWindow.Show();
         }
 
         private void gbSearchResults_Enter(object sender, EventArgs e)
