@@ -28,16 +28,17 @@ namespace GoodFilmsApp
 
         public void LoadFilmList()
         {
-            films = SqliteDataAccess.LoadFilms();
+            films = CDataAccess.requestFilms(0 ,0);
             testBox.DataSource = films;
             testBox.DisplayMember = "title";
         }
 
         private void mainView_Load(object sender, EventArgs e)
         {
-            films = SqliteDataAccess.LoadFilms();
             int noOfSearchResults = 10;
             int filmNumber = 0;
+            films = CDataAccess.requestFilms(1, noOfSearchResults);
+
             FilmModel film = null;
 
             if (pictureBoxes.Count > 0) {  pictureBoxes.Clear(); }
