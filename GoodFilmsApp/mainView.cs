@@ -49,47 +49,37 @@ namespace GoodFilmsApp
             int noOfSearchResults = 10;
             int filmNumber = 0;
             films = CDataAccess.requestFilms(1, noOfSearchResults);
-
-            FilmModel film = null;
-
-            if (pictureBoxes.Count > 0) {  pictureBoxes.Clear(); }
-
+            if (pictureBoxes.Count > 0) pictureBoxes.Clear();
             int noOfRows = (int)(noOfSearchResults + noOfFilmsPerRow - 1) / noOfFilmsPerRow;
-
             for (int i = 0; i < noOfRows + 1; i++)
             {
                 for (int j = 0; j < noOfFilmsPerRow; j++)
                 {
-                    if (filmNumber < noOfSearchResults)
-                    {
-                        film = films[filmNumber];
-                        PictureBox pbPoster = new PictureBox();
-                        Console.WriteLine("url: ");
-                        Console.WriteLine(film.Poster_Url);
-                        //pbPoster.Image = Image.FromFile(film.Poster_Url);
-                        pbPoster.ImageLocation = "../../"+film.Poster_Url;
-                        pbPoster.Location = new Point(20 + (j * 120), 20 + (i * 170));
-                        pbPoster.Size = new Size(100, 150);
-                        pbPoster.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pbPoster.MouseClick += new MouseEventHandler(posterClickHandler);
-                        
-                        pictureBoxes.Add(pbPoster);
-                        gbSearchResults.Controls.Add(pbPoster);
+                    if (filmNumber >= noOfSearchResults) continue;
+                    int filmNumberCopy = filmNumber;
 
-                        filmNumber++;
-                    }
+                    FilmModel film = films[filmNumber];
+                    PictureBox pbPoster = new PictureBox();
+                    Console.WriteLine("url: ");
+                    Console.WriteLine(film.Poster_Url);
+                    //pbPoster.Image = Image.FromFile(film.Poster_Url);
+                    pbPoster.ImageLocation = "../../"+film.Poster_Url;
+                    pbPoster.Location = new Point(20 + (j * 120), 20 + (i * 170));
+                    pbPoster.Size = new Size(100, 150);
+                    pbPoster.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pbPoster.MouseClick += new MouseEventHandler((_, __) => posterClickHandler(filmNumberCopy));
+                        
+                    pictureBoxes.Add(pbPoster);
+                    gbSearchResults.Controls.Add(pbPoster);
+
+                    filmNumber++;
                 }
             }
         }
 
-        private void posterClickHandler(object sender, EventArgs e)
+        private void posterClickHandler(int filmNumber)
         {
-            // calculate i, j
-            int i = (((PictureBox)sender).Location.X - 20) / 120;
-            int j = (((PictureBox)sender).Location.Y - 20) / 170;
-            int filmNumber = j * noOfFilmsPerRow + i;
             Console.WriteLine("filmNumber: " + filmNumber);
-
             var filmWindow = new filmView(films[filmNumber]);
             filmWindow.Show();
         }
