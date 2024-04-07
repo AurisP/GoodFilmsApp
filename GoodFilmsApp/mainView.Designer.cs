@@ -156,6 +156,12 @@
             this.Year.Size = new System.Drawing.Size(141, 17);
             this.Year.TabIndex = 4;
             // 
+            this.Year.FormattingEnabled = true;
+            this.Year.Location = new System.Drawing.Point(15, 122);
+            this.Year.Name = "Year";
+            this.Year.Size = new System.Drawing.Size(141, 17);
+            this.Year.TabIndex = 4;
+            // 
             // Studio
             // 
             this.Studio.FormattingEnabled = true;
