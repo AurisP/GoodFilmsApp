@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerLibrary", "Contro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{EBD7A118-DFA8-4AE0-A69D-3FB58BEF958D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewHandler", "ViewHandler\ViewHandler.csproj", "{5CC5BEEF-65BB-4654-9F16-B4D686FD1401}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EBD7A118-DFA8-4AE0-A69D-3FB58BEF958D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBD7A118-DFA8-4AE0-A69D-3FB58BEF958D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBD7A118-DFA8-4AE0-A69D-3FB58BEF958D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CC5BEEF-65BB-4654-9F16-B4D686FD1401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CC5BEEF-65BB-4654-9F16-B4D686FD1401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CC5BEEF-65BB-4654-9F16-B4D686FD1401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CC5BEEF-65BB-4654-9F16-B4D686FD1401}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
