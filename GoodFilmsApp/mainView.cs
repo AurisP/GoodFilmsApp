@@ -27,5 +27,15 @@ namespace GoodFilmsApp
             testBox.DataSource = film;
             testBox.DisplayMember = "title";
         }
+
+        //##
+        private void btnQuery_Click_1(object sender, EventArgs e)
+        {
+            QuerySubWindow querySubWindow = new QuerySubWindow();
+
+            querySubWindow.StartPosition = FormStartPosition.CenterParent;
+            querySubWindow.ShowDialog(this);
+        }
+        //##
     }
 }

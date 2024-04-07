@@ -15,5 +15,6 @@ namespace ModelLibrary
         int requestFilms();
         int setFilmWatched(int id);
         int setFilmScheduled(int date);
+
     }
 }

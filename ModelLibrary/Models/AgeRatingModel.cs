@@ -10,5 +10,9 @@ namespace ModelLibrary.Models
     {
         public int Id { get; set; }
         public string Rating { get; set; }
+
+        //###
+        public bool Chosen { get; set; }
+        //###
     }
 }

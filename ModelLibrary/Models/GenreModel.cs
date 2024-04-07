@@ -11,5 +11,9 @@ namespace ModelLibrary.Models
         public int Id { get; set; }
 
         public string Genre { get; set; }
+
+        //##
+        public bool Chosen { get; set; }
+        //###
     }
 }
