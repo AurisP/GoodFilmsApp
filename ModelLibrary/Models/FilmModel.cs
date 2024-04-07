@@ -23,7 +23,7 @@ namespace ModelLibrary.Models
 
         public string TrailerUrl { get; set; }
 
-        public string PosterUrl { get; set; }
+        public string Poster_Url { get; set; }
 
         public int UserRating { get; set; }
 
