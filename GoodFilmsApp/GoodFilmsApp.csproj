@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.1.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -90,12 +93,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+
+    <Compile Include="DataGridWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataGridWindow.designer.cs">
+      <DependentUpon>DataGridWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers.cs" />
+
     <Compile Include="filmView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="filmView.Designer.cs">
       <DependentUpon>filmView.cs</DependentUpon>
     </Compile>
+
     <Compile Include="mainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,8 +117,19 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+
+    <Compile Include="QuerySubWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuerySubWindow.designer.cs">
+      <DependentUpon>QuerySubWindow.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="DataGridWindow.resx">
+      <DependentUpon>DataGridWindow.cs</DependentUpon>
+	</EmbeddedResource>
     <EmbeddedResource Include="filmView.resx">
       <DependentUpon>filmView.cs</DependentUpon>
+
     </EmbeddedResource>
     <EmbeddedResource Include="mainView.resx">
       <DependentUpon>mainView.cs</DependentUpon>
@@ -119,6 +143,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="QuerySubWindow.resx">
+      <DependentUpon>QuerySubWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="FilmDB.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -41,6 +41,9 @@
             this.Genre = new System.Windows.Forms.ListBox();
             this.Studio = new System.Windows.Forms.ListBox();
             this.Duration = new System.Windows.Forms.ListBox();
+
+            this.btnQuery = new System.Windows.Forms.Button();
+
             this.gbFilters.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,6 +116,7 @@
             this.gbFilters.Text = "Filters";
             // 
             // Language
+
             // 
             this.Language.FormattingEnabled = true;
             this.Language.Location = new System.Drawing.Point(15, 145);
@@ -135,7 +139,56 @@
             this.Director.Name = "Director";
             this.Director.Size = new System.Drawing.Size(141, 17);
             this.Director.TabIndex = 3;
+
             // 
+            this.Language.FormattingEnabled = true;
+            this.Language.Location = new System.Drawing.Point(15, 145);
+            this.Language.Name = "Language";
+            this.Language.Size = new System.Drawing.Size(141, 17);
+            this.Language.TabIndex = 5;
+
+            // 
+            // Year
+            // 
+            this.Year.FormattingEnabled = true;
+            this.Year.Location = new System.Drawing.Point(15, 122);
+            this.Year.Name = "Year";
+            this.Year.Size = new System.Drawing.Size(141, 17);
+            this.Year.TabIndex = 4;
+            // 
+            this.Year.FormattingEnabled = true;
+            this.Year.Location = new System.Drawing.Point(15, 122);
+            this.Year.Name = "Year";
+            this.Year.Size = new System.Drawing.Size(141, 17);
+            this.Year.TabIndex = 4;
+            // 
+            // Studio
+            // 
+            this.Studio.FormattingEnabled = true;
+            this.Studio.Location = new System.Drawing.Point(15, 52);
+            this.Studio.Name = "Studio";
+            this.Studio.Size = new System.Drawing.Size(141, 17);
+            this.Studio.TabIndex = 1;
+            // 
+
+            // Duration
+            // 
+            this.Duration.FormattingEnabled = true;
+            this.Duration.Location = new System.Drawing.Point(15, 29);
+            this.Duration.Name = "Duration";
+            this.Duration.Size = new System.Drawing.Size(141, 17);
+            this.Duration.TabIndex = 0;
+            // 
+            // btnQuery
+            // 
+            this.btnQuery.Location = new System.Drawing.Point(678, 210);
+            this.btnQuery.Name = "btnQuery";
+            this.btnQuery.Size = new System.Drawing.Size(118, 31);
+            this.btnQuery.TabIndex = 17;
+            this.btnQuery.Text = "Filter";
+            this.btnQuery.UseVisualStyleBackColor = true;
+            this.btnQuery.Click += new System.EventHandler(this.btnQuery_Click_1);
+
             // Genre
             // 
             this.Genre.FormattingEnabled = true;
@@ -159,12 +212,18 @@
             this.Duration.Name = "Duration";
             this.Duration.Size = new System.Drawing.Size(141, 17);
             this.Duration.TabIndex = 0;
+
             // 
             // mainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+
+            this.ClientSize = new System.Drawing.Size(873, 739);
+            this.Controls.Add(this.btnQuery);
+
             this.ClientSize = new System.Drawing.Size(897, 880);
+
             this.Controls.Add(this.gbFilters);
             this.Controls.Add(this.gbScheduledFilms);
             this.Controls.Add(this.gpRecommendedFilms);
@@ -197,6 +256,7 @@
         private System.Windows.Forms.ListBox Genre;
         private System.Windows.Forms.ListBox Studio;
         private System.Windows.Forms.ListBox Duration;
+        private System.Windows.Forms.Button btnQuery;
     }
 }
 

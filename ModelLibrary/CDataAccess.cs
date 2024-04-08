@@ -131,6 +131,46 @@ namespace ModelLibrary
             }
         }
 
+        //###########
+        public static List<AgeRatingModel> LoadAgeRatings()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<AgeRatingModel>("select * from age_rating", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static List<StudioModel> LoadStudios()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<StudioModel>("select * from studio", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static List<DirectorModel> LoadDirectors()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<DirectorModel>("select * from director", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+        public static List<GenreModel> LoadGenres()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<GenreModel>("select * from genre", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+
+        //##########
+
+
         public int removeComment(int id)
         {
             throw new NotImplementedException();
@@ -152,6 +192,8 @@ namespace ModelLibrary
         }
 
     }
+
+
 
 
 }

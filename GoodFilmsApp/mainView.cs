@@ -33,6 +33,17 @@ namespace GoodFilmsApp
             testBox.DisplayMember = "title";
         }
 
+
+        //##
+        private void btnQuery_Click_1(object sender, EventArgs e)
+        {
+            QuerySubWindow querySubWindow = new QuerySubWindow();
+
+            querySubWindow.StartPosition = FormStartPosition.CenterParent;
+            querySubWindow.ShowDialog(this);
+        }
+
+
         private void mainView_Load(object sender, EventArgs e)
         {
             int noOfSearchResults = 10;
@@ -87,5 +98,6 @@ namespace GoodFilmsApp
         {
 
         }
+
     }
 }

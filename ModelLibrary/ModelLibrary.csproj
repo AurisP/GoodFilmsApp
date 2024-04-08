@@ -99,6 +99,7 @@
     <Compile Include="Models\StudioFilmModel.cs" />
     <Compile Include="Models\StudioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
