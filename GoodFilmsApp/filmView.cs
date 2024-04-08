@@ -30,14 +30,17 @@ namespace GoodFilmsApp
         {
             lblFilmName.Text = film.Title;
             pbPoster.ImageLocation = "../../" + film.Poster_Url;
-            pbStar1.Image = imgStar.Images[(film.UserRating >= 1) ? 1 : 0];
-            pbStar2.Image = imgStar.Images[(film.UserRating >= 2) ? 1 : 0];
-            pbStar3.Image = imgStar.Images[(film.UserRating >= 3) ? 1 : 0];
-            pbStar4.Image = imgStar.Images[(film.UserRating >= 4) ? 1 : 0];
-            pbStar5.Image = imgStar.Images[(film.UserRating >= 5) ? 1 : 0];
+            pbStar1.Image = imgStar.Images[(film.User_Rating >= 1) ? 1 : 0];
+            pbStar2.Image = imgStar.Images[(film.User_Rating >= 2) ? 1 : 0];
+            pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
+            pbStar4.Image = imgStar.Images[(film.User_Rating >= 4) ? 1 : 0];
+            pbStar5.Image = imgStar.Images[(film.User_Rating >= 5) ? 1 : 0];
             txtMovieInfo.Text = film.Description;
-            // txtUserComments.Text = film.Comments[0].CommentText;
-            pbStar1.MouseClick += new MouseEventHandler(starClickHandler);
+            // Convert the duration in seconds to a TimeSpan object
+            TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
+            // Display the duration in hours, minutes, and seconds
+            txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
+
 
         }
 

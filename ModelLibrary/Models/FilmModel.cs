@@ -15,17 +15,17 @@ namespace ModelLibrary.Models
 
         public string Description { get; set; }
 
-        public int DurationSec { get; set; }
+        public int Duration_Sec { get; set; }
 
-        public int ReleaseYear { get; set; }
+        public int Release_Year { get; set; }
 
-        public AgeRatingModel AgeRating { get; set; }
+        public AgeRatingModel Age_Rating { get; set; }
 
-        public string TrailerUrl { get; set; }
+        public string Trailer_Url { get; set; }
 
         public string Poster_Url { get; set; }
 
-        public int UserRating { get; set; }
+        public int User_Rating { get; set; }
 
         public int Watched { get; set; }
 
