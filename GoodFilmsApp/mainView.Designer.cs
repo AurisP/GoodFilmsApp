@@ -1,4 +1,6 @@
-﻿namespace GoodFilmsApp
+﻿using System;
+
+namespace GoodFilmsApp
 {
     partial class mainView
     {
@@ -32,7 +34,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.gbSearchResults = new System.Windows.Forms.GroupBox();
-            this.gpRecommendedFilms = new System.Windows.Forms.GroupBox();
+            this.gbRecommendedFilms = new System.Windows.Forms.GroupBox();
             this.gbScheduledFilms = new System.Windows.Forms.GroupBox();
             this.gbFilters = new System.Windows.Forms.GroupBox();
             this.Language = new System.Windows.Forms.ListBox();
@@ -71,6 +73,7 @@
             this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // gbSearchResults
             // 
@@ -80,16 +83,15 @@
             this.gbSearchResults.TabIndex = 4;
             this.gbSearchResults.TabStop = false;
             this.gbSearchResults.Text = "Search Results";
-            this.gbSearchResults.Enter += new System.EventHandler(this.gbSearchResults_Enter);
             // 
-            // gpRecommendedFilms
+            // gbRecommendedFilms
             // 
-            this.gpRecommendedFilms.Location = new System.Drawing.Point(23, 454);
-            this.gpRecommendedFilms.Name = "gpRecommendedFilms";
-            this.gpRecommendedFilms.Size = new System.Drawing.Size(620, 190);
-            this.gpRecommendedFilms.TabIndex = 13;
-            this.gpRecommendedFilms.TabStop = false;
-            this.gpRecommendedFilms.Text = "Recommended Films";
+            this.gbRecommendedFilms.Location = new System.Drawing.Point(23, 454);
+            this.gbRecommendedFilms.Name = "gbRecommendedFilms";
+            this.gbRecommendedFilms.Size = new System.Drawing.Size(620, 190);
+            this.gbRecommendedFilms.TabIndex = 13;
+            this.gbRecommendedFilms.TabStop = false;
+            this.gbRecommendedFilms.Text = "Recommended Films";
             // 
             // gbScheduledFilms
             // 
@@ -226,7 +228,7 @@
 
             this.Controls.Add(this.gbFilters);
             this.Controls.Add(this.gbScheduledFilms);
-            this.Controls.Add(this.gpRecommendedFilms);
+            this.Controls.Add(this.gbRecommendedFilms);
             this.Controls.Add(this.gbSearchResults);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
@@ -247,7 +249,7 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.GroupBox gbSearchResults;
-        private System.Windows.Forms.GroupBox gpRecommendedFilms;
+        private System.Windows.Forms.GroupBox gbRecommendedFilms;
         private System.Windows.Forms.GroupBox gbScheduledFilms;
         private System.Windows.Forms.GroupBox gbFilters;
         private System.Windows.Forms.ListBox Language;

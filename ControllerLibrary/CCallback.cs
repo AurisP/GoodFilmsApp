@@ -16,15 +16,21 @@ namespace ControllerLibrary
         public CCallback(Action<int, TArgument> callback)
         {
             this.callback = callback;
-            this.worker = new BackgroundWorker();
+            this.worker = new BackgroundWorker(); // TODO: Can't run multiple jobs at once?
             this.worker.DoWork += (sender, args) => ((Action)args.Argument)();
         }
         public void call(int id, Func<TArgument> argument)
         {
-            worker.RunWorkerAsync(new Action(() => {
+            BackgroundWorker w = new BackgroundWorker();
+            w.DoWork += (sender, args) => ((Action)args.Argument)();
+            w.RunWorkerAsync(new Action(() => {
                 Thread.Sleep(10); // TODO: may need adjusting
                 callback(id, argument());
             }));
+            /*worker.RunWorkerAsync(new Action(() => {
+                Thread.Sleep(10); // TODO: may need adjusting
+                callback(id, argument());
+            }));*/
         }
     }
 }

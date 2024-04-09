@@ -11,7 +11,7 @@ namespace ViewHandler
     {
         void request(int id);
         void setOnChangeCb(Action<List<FilmModel>> cb);
-        void filmRx(int id, List<FilmModel> films);
+        void filmsRx(int id, List<FilmModel> films);
         List<int> getVisibleIDs();
     }
 }

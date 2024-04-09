@@ -1,4 +1,6 @@
 ﻿using ModelLibrary.Models;
+using System.Collections.Generic;
+using System;
 
 namespace ViewHandler
 {
@@ -6,10 +8,10 @@ namespace ViewHandler
     {
         private List<FilmModel> films;
         private HashSet<int> expectedIds;
-        private Action<List<FilmModel>>? cb;
-        CViewHandler()
+        private Action<List<FilmModel>> cb;
+        public CViewHandler()
         {
-            cb = null;
+            cb = (_) => {};
             films = new List<FilmModel>();
             expectedIds = new HashSet<int>();
         }
@@ -21,7 +23,7 @@ namespace ViewHandler
         {
             this.cb = cb;
         }
-        public void filmRx(int id, List<FilmModel> films)
+        public void filmsRx(int id, List<FilmModel> films)
         {
             if (!expectedIds.Contains(id)) return;
             this.films.AddRange(films);

@@ -114,6 +114,8 @@
     <Compile Include="mainView.Designer.cs">
       <DependentUpon>mainView.cs</DependentUpon>
     </Compile>
+    <Compile Include="PosterBoxSettings.cs" />
+    <Compile Include="PosterHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
 
@@ -170,6 +172,10 @@
     <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
       <Project>{ebd7a118-dfa8-4ae0-a69d-3fb58bef958d}</Project>
       <Name>ModelLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewHandler\ViewHandler.csproj">
+      <Project>{f6cfce5a-0bbb-49a8-b4d0-4751992a92a2}</Project>
+      <Name>ViewHandler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
