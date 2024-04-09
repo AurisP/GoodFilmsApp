@@ -42,6 +42,7 @@
             this.txtMovieInfo = new System.Windows.Forms.TextBox();
             this.txtUserComments = new System.Windows.Forms.TextBox();
             this.lblUserComments = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbPoster)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbStar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbStar2)).BeginInit();
@@ -151,6 +152,11 @@
             this.lblUserComments.TabIndex = 10;
             this.lblUserComments.Text = "User comments";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // filmView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -195,5 +201,6 @@
         private System.Windows.Forms.TextBox txtMovieInfo;
         private System.Windows.Forms.TextBox txtUserComments;
         private System.Windows.Forms.Label lblUserComments;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
