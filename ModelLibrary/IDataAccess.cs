@@ -12,7 +12,7 @@ namespace ModelLibrary
         int requestGenres();
         int requestDirectors();
         int requestSchedules();
-        int requestFilms();
+        List<FilmModel> requestFilms(int start, int amount, QueryModel query);
         int setFilmWatched(int id);
         int setFilmScheduled(int date);
 

@@ -38,14 +38,33 @@ namespace GoodFilmsApp
             postersSearch = new PosterHandler(100, new PosterBoxSettings(), ref gbSearchResults);
             postersRecommend = new PosterHandler(100, new PosterBoxSettings(), ref gbRecommendedFilms);
             postersScheduled = new PosterHandler(100, new PosterBoxSettings(), ref gbScheduledFilms);
+            btnSearch_Click(null, null);
+            updateRecommend();
+            updateSearch();
+        }
+        private void updateSearch()
+        {
+            controller.clearFilters();
+            if (txtSearch.Text != "")
+            {
+                CFilter filter = new CFilter();
+                filter.strSearch = txtSearch.Text;
+                controller.addFilter(filter);
+            }
+            postersSearch.request(controller.requestFilms(0, 100));
+        }
+        private void updateRecommend()
+        {
+            controller.clearFilters();
+            CFilter filter = new CFilter();
+            filter.boolRandom = true;
+            controller.addFilter(filter);
+            postersRecommend.request(controller.requestFilms(0, 100));
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            postersSearch.request(controller.requestFilms(0, 40));
-            //postersRecommend.request(controller.requestFilms(0, 10));
-            //postersScheduled.request(controller.requestFilms(0, 10));
+            updateSearch();
         }
-
 
         //##
         private void btnQuery_Click_1(object sender, EventArgs e)
@@ -55,7 +74,6 @@ namespace GoodFilmsApp
             querySubWindow.StartPosition = FormStartPosition.CenterParent;
             querySubWindow.ShowDialog(this);
         }
-
 
         private void mainView_Load(object sender, EventArgs e)
         {

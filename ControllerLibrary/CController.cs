@@ -9,7 +9,8 @@ namespace ControllerLibrary
 {
     public class CController : IController
     {
-
+        private CFilter filter;
+        private IDataAccess access;
         private CCallback<List<FilmModel>> filmsRxCb;
         private CCallback<List<DirectorModel>> directorsRxCb;
         private CCallback<List<GenreModel>> genresRxCb;
@@ -25,6 +26,7 @@ namespace ControllerLibrary
             Action<int, List<ScheduledFilmModel>> scheduledFilmsRxCb,
             Action<int, string> errorRxCb)
         {
+            this.access = new CDataAccess();
             this.filmsRxCb = new CCallback<List<FilmModel>>(filmsRxCb);
             this.directorsRxCb = new CCallback<List<DirectorModel>>(directorsRxCb);
             this.genresRxCb = new CCallback<List<GenreModel>>(genresRxCb);
@@ -32,6 +34,15 @@ namespace ControllerLibrary
             this.scheduledFilmsRxCb = new CCallback<List<ScheduledFilmModel>>(scheduledFilmsRxCb);
             this.errorRxCb = new CCallback<string>(errorRxCb);
             globalId = 0;
+        }
+        void IController.addFilter(CFilter filter)
+        {
+            this.filter = filter;
+        }
+
+        void IController.clearFilters()
+        {
+            this.filter = null;
         }
         public int addComment(FilmModel mode, string name, string comment)
         {
@@ -41,7 +52,13 @@ namespace ControllerLibrary
 
         public int requestFilms(int page, int count)
         {
-            filmsRxCb.call(globalId, () => CDataAccess.requestFilms(page, count));
+            QueryModel q = new QueryModel();
+            if (this.filter != null)
+            {
+                q.Query = filter.strSearch;
+                q.Random = filter.boolRandom;
+            }
+            filmsRxCb.call(globalId, () => access.requestFilms(page, count, q));
             return globalId++;
         }
 
@@ -64,18 +81,6 @@ namespace ControllerLibrary
         }
 
         public int setUserRating(FilmModel mode, int stars)
-        {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
-            return globalId++;
-        }
-
-        int IController.addFilter(CFilter filter)
-        {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
-            return globalId++;
-        }
-
-        int IController.clearFilter(CFilter filter)
         {
             errorRxCb.call(globalId, () => "This functionality is unimplemented");
             return globalId++;

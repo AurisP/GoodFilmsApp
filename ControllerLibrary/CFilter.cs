@@ -4,16 +4,16 @@ namespace ControllerLibrary
 {
     public class CFilter
     {
-        string strSearch;
-        string strGenre;
-        string strAgeRating;
-        int? intMinLenSec;
-        int? intMaxLenSec;
-        string strStudio;
-        string strDirector;
-        bool? boolRandom;
+        public string strSearch;
+        public string strGenre;
+        public string strAgeRating;
+        public int? intMinLenSec;
+        public int? intMaxLenSec;
+        public string strStudio;
+        public string strDirector;
+        public bool boolRandom;
 
-        CFilter()
+        public CFilter()
         {
             strSearch = null;
             strGenre = null;
@@ -22,7 +22,7 @@ namespace ControllerLibrary
             intMaxLenSec = null;
             strStudio = null;
             strDirector = null;
-            boolRandom = null;
+            boolRandom = false;
         }
     }
 }

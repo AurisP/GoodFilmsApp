@@ -11,11 +11,12 @@ using System.Data.SQLite;
 using Dapper;
 using System.ComponentModel.Design;
 using System.Collections;
+using static Dapper.SqlBuilder;
 
 namespace ModelLibrary
 {
 
-    public class CDataAccess
+    public class CDataAccess : IDataAccess
     {
         public static List<FilmModel> requestFilms(int start, int amount)
         {
@@ -155,6 +156,13 @@ namespace ModelLibrary
 
         //##########
 
+        private IDbConnection cnn;
+
+        public CDataAccess()
+        {
+            this.cnn = new SQLiteConnection(LoadConnectionString());
+            this.cnn.Open();
+        }
 
         public int removeComment(int id)
         {
@@ -176,6 +184,41 @@ namespace ModelLibrary
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
+        public int requestGenres()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int requestDirectors()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IDataAccess.requestSchedules()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<FilmModel> IDataAccess.requestFilms(int start, int amount, QueryModel query)
+        {
+            int offset = (start - 1) * amount;
+            SqlBuilder builder = new SqlBuilder();
+            if (query.Query != null)
+            {
+                builder = builder.Where("title LIKE @Query", new { Query = "%" + query.Query + "%" });
+            }
+            Template template;
+            if (query.Random)
+            {
+                template = builder.AddTemplate("SELECT * FROM film /**where**/ ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else
+            {
+                template = builder.AddTemplate("SELECT * FROM film /**where**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
     }
 
 
