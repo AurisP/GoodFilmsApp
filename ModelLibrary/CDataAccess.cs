@@ -25,7 +25,7 @@ namespace ModelLibrary
                 int offset = (start - 1) * amount;
 
                 // Construct the SQL query with parameterized query and ORDER BY clause
-                string query = "SELECT * FROM film ORDER BY title LIMIT @Amount OFFSET @Offset";
+                string query = "SELECT * FROM films ORDER BY title LIMIT @Amount OFFSET @Offset";
 
                 // Execute the query with parameters using Dapper's Query method
                 var output = cnn.Query<FilmModel>(query, new { Amount = amount, Offset = offset });
@@ -38,7 +38,7 @@ namespace ModelLibrary
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 // Construct the SQL query with parameterized query and WHERE clause based on the provided name
-                string query = "SELECT * FROM genre";
+                string query = "SELECT * FROM genres";
 
                 // If a non-empty name is provided, add a WHERE clause to filter by genre name
                 if (!string.IsNullOrEmpty(name))
@@ -52,47 +52,32 @@ namespace ModelLibrary
             }
         }
 
-        public List<DirectorModel> requestDirectors(string forename, string surname)
+        public List<DirectorModel> requestDirectors(string name)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                // Construct the SQL query with parameterized query and WHERE clause based on the provided forename and surname
-                string query = "SELECT * FROM director WHERE";
+                // Construct the SQL query with parameterized query and WHERE clause based on the provided name
+                string query = "SELECT * FROM directors";
 
-                // If both forename and surname are provided
-                if (!string.IsNullOrEmpty(forename) && !string.IsNullOrEmpty(surname))
+                // If a non-empty name is provided
+                if (!string.IsNullOrEmpty(name))
                 {
-                    query += " forename = @Forename AND surname = @Surname";
+                    query += " WHERE name LIKE @Name";
+                    // Add wildcard characters to search for any part of the name
+                    string searchTerm = $"%{name}%";
                     // Execute the query with parameters using Dapper's Query method
-                    var output = cnn.Query<DirectorModel>(query, new { Forename = forename, Surname = surname });
+                    var output = cnn.Query<DirectorModel>(query, new { Name = searchTerm });
                     return output.ToList();
                 }
-                // If only forename is provided
-                else if (!string.IsNullOrEmpty(forename))
-                {
-                    query += " forename = @Forename";
-                    // Execute the query with parameters using Dapper's Query method
-                    var output = cnn.Query<DirectorModel>(query, new { Forename = forename });
-                    return output.ToList();
-                }
-                // If only surname is provided
-                else if (!string.IsNullOrEmpty(surname))
-                {
-                    query += " surname = @Surname";
-                    // Execute the query with parameters using Dapper's Query method
-                    var output = cnn.Query<DirectorModel>(query, new { Surname = surname });
-                    return output.ToList();
-                }
-                // If neither forename nor surname is provided
+                // If name is not provided or empty, retrieve all directors
                 else
                 {
-                    // Retrieve all directors if no search criteria provided
-                    query = "SELECT * FROM directors";
                     var output = cnn.Query<DirectorModel>(query);
                     return output.ToList();
                 }
             }
         }
+
 
         public List<ScheduledFilmModel> requestSchedules()
         {
@@ -100,8 +85,8 @@ namespace ModelLibrary
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 // Construct the SQL query to retrieve scheduled films and their corresponding films
-                string query = @"SELECT scheduled_film.*, film.* FROM scheduled_film
-                                INNER JOIN film ON scheduled_film.film_id = film.id";
+                string query = @"SELECT soon_to_watch_films.*, film.* FROM soon_to_watch_films
+                                INNER JOIN films ON soon_to_watch_films.film_id = film.id";
 
                 // Create a dictionary to store scheduled films temporarily
                 var scheduledFilms = new Dictionary<int, ScheduledFilmModel>();
@@ -136,7 +121,7 @@ namespace ModelLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<AgeRatingModel>("select * from age_rating", new DynamicParameters());
+                var output = cnn.Query<AgeRatingModel>("select * from age_ratings", new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -145,7 +130,7 @@ namespace ModelLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<StudioModel>("select * from studio", new DynamicParameters());
+                var output = cnn.Query<StudioModel>("select * from studios", new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -154,7 +139,7 @@ namespace ModelLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<DirectorModel>("select * from director", new DynamicParameters());
+                var output = cnn.Query<DirectorModel>("select * from directors", new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -162,7 +147,7 @@ namespace ModelLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<GenreModel>("select * from genre", new DynamicParameters());
+                var output = cnn.Query<GenreModel>("select * from genres", new DynamicParameters());
                 return output.ToList();
             }
         }
