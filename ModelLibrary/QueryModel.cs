@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ModelLibrary
 {
-    public class QueryModel
+    public class QueryModel // TODO: Shouldn't this be under models folder?
     {
         public QueryModel()
         {
@@ -21,7 +21,6 @@ namespace ModelLibrary
         public List<DirectorModel> Directors { get; set; }
         public List<AgeRatingModel> AgeRatings { get; set; }
         public int ReleaseYear { get; set; }
-
         public bool Random { get; set; }
     }
 }

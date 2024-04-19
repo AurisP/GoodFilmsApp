@@ -13,5 +13,6 @@ namespace ControllerLibrary
         int addComment(FilmModel mode, string name, string comment);
         int rmComment(FilmModel mode, int id);
         int requestFilms(int page, int count);
+        int requestMeta();
     }
 }

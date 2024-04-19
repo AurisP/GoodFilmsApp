@@ -100,6 +100,7 @@
     <Compile Include="Models\GenreModel.cs" />
     <Compile Include="Models\LanguageFilmModel.cs" />
     <Compile Include="Models\LanguageModel.cs" />
+    <Compile Include="Models\MetadataModel.cs" />
     <Compile Include="Models\ScheduledFilmModel.cs" />
     <Compile Include="Models\StudioFilmModel.cs" />
     <Compile Include="Models\StudioModel.cs" />

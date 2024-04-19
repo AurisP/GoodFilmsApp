@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace ModelLibrary
 {
-    public interface IDataAccess
+    public interface IDataAccess // Funtions shall be synchronous and possibly throw exceptions
     {
-        int requestGenres();
-        int requestDirectors();
-        int requestSchedules();
+        MetadataModel requestMetadata();
         List<FilmModel> requestFilms(int start, int amount, QueryModel query);
         int setFilmWatched(int id);
-        int setFilmScheduled(int date);
+        int setFilmScheduled(int id, int date_unix_ts);
 
     }
 }
