@@ -18,6 +18,8 @@ namespace GoodFilmsApp
     public partial class mainView : Form
     {
         IController controller;
+        int metadataId;
+        CFilmsMetadataCache metadataCache;
         PosterHandler postersSearch;
         PosterHandler postersRecommend;
         PosterHandler postersScheduled;
@@ -30,32 +32,58 @@ namespace GoodFilmsApp
                     postersRecommend.filmsRx(id, films);
                     postersScheduled.filmsRx(id, films);
                 },
-                (id, _) => { },
-                (id, _) => { },
-                (id, _) => { },
+                (id, cache) => {
+                    if (id != metadataId)
+                    {
+                        Console.WriteLine("Controller Error: Incorrect ID ", id, " in metadata rx, expected ", metadataId);
+                        return;
+                    }
+                    metadataCache = cache;
+                },
                 (id, _) => { },
                 (id, err) => Console.WriteLine("Controller Error: " + err));
+            metadataId = controller.requestMeta();
+            metadataCache = null;
             postersSearch = new PosterHandler(100, new PosterBoxSettings(), ref gbSearchResults);
             postersRecommend = new PosterHandler(100, new PosterBoxSettings(), ref gbRecommendedFilms);
             postersScheduled = new PosterHandler(100, new PosterBoxSettings(), ref gbScheduledFilms);
+            btnSearch_Click(null, null);
+            updateRecommend();
+            updateSearch();
+        }
+        private void updateSearch()
+        {
+            controller.clearFilters();
+            if (txtSearch.Text != "")
+            {
+                CFilter filter = new CFilter();
+                filter.strSearch = txtSearch.Text;
+                controller.addFilter(filter);
+            }
+            postersSearch.request(controller.requestFilms(0, 100));
+        }
+        private void updateRecommend()
+        {
+            controller.clearFilters();
+            CFilter filter = new CFilter();
+            filter.boolRandom = true;
+            controller.addFilter(filter);
+            postersRecommend.request(controller.requestFilms(0, 100));
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            postersSearch.request(controller.requestFilms(0, 40));
-            //postersRecommend.request(controller.requestFilms(0, 10));
-            //postersScheduled.request(controller.requestFilms(0, 10));
+            updateSearch();
         }
-
 
         //##
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
-            QuerySubWindow querySubWindow = new QuerySubWindow();
+            if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?
+            QuerySubWindow querySubWindow = new QuerySubWindow(ref metadataCache);
 
             querySubWindow.StartPosition = FormStartPosition.CenterParent;
             querySubWindow.ShowDialog(this);
         }
-
 
         private void mainView_Load(object sender, EventArgs e)
         {

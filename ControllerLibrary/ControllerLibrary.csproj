@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CCallback.cs" />
+    <Compile Include="CFilmsMetadataCache.cs" />
     <Compile Include="CFilter.cs" />
     <Compile Include="CController.cs" />
     <Compile Include="IController.cs" />

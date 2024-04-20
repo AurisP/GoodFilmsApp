@@ -67,7 +67,7 @@ namespace GoodFilmsApp
             {
                 List<StudioModel> studios = dgwMain.DataSource as List<StudioModel>;
 
-                Helpers.QueryModel.Studios = studios.Where(x => x.Chosen == true).ToList();
+                Helpers.QueryModel.Studios = studios.Where(x => x.Chosen == true).ToList(); // TODO: @Jörgen, Remove 'Chosen' field from models and create a separate class with a the field. 'Models' generally exist for interfacing with databases.
             }
             else if (_genreModel != null)
             {
