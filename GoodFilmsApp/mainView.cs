@@ -41,6 +41,7 @@ namespace GoodFilmsApp
                     metadataCache = cache;
                 },
                 (id, _) => { },
+                (id, _) => { },
                 (id, err) => Console.WriteLine("Controller Error: " + err));
             metadataId = controller.requestMeta();
             metadataCache = null;

@@ -47,10 +47,10 @@ namespace GoodFilmsApp
 
         }
 
-        private void updateComment()
+        private void addComment()
         {
             if ((txtUserComments).Tag != null)
-                controller.addComment(film, txtUserComments.Text);
+                controller.addComment(film, txtUserComments.Text); //TODO implement correctly
         }
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace GoodFilmsApp
 
         private void filmView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            updateComment();
+            addComment();
         }
 
         private void starClickHandler(object sender, EventArgs e)

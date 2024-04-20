@@ -74,7 +74,7 @@ namespace ModelLibrary
             throw new NotImplementedException();
         }
 
-        string IDataAccess.updateComment(int film_id, string comment, string commentDate)
+        string IDataAccess.updateComment(int film_id, string comment, string commentDate) //TODO: add also update with insert
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
