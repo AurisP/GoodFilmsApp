@@ -13,6 +13,8 @@ namespace ModelLibrary
         List<FilmModel> requestFilms(int start, int amount, QueryModel query);
         int setFilmWatched(int id);
         int setFilmScheduled(int id, int date_unix_ts);
+        string updateComment(int film_id, string comment, string commentDate);
+        List<CommentModel> requestComments(int film_id);
 
     }
 }

@@ -55,17 +55,19 @@
             // 
             this.lblFilmName.AutoSize = true;
             this.lblFilmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFilmName.Location = new System.Drawing.Point(20, 30);
+            this.lblFilmName.Location = new System.Drawing.Point(27, 37);
+            this.lblFilmName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFilmName.Name = "lblFilmName";
-            this.lblFilmName.Size = new System.Drawing.Size(153, 31);
+            this.lblFilmName.Size = new System.Drawing.Size(191, 39);
             this.lblFilmName.TabIndex = 0;
             this.lblFilmName.Text = "Film Name";
             // 
             // pbPoster
             // 
-            this.pbPoster.Location = new System.Drawing.Point(20, 80);
+            this.pbPoster.Location = new System.Drawing.Point(27, 98);
+            this.pbPoster.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbPoster.Name = "pbPoster";
-            this.pbPoster.Size = new System.Drawing.Size(300, 450);
+            this.pbPoster.Size = new System.Drawing.Size(400, 554);
             this.pbPoster.TabIndex = 1;
             this.pbPoster.TabStop = false;
             // 
@@ -78,90 +80,101 @@
             // 
             // pbStar1
             // 
-            this.pbStar1.Location = new System.Drawing.Point(340, 94);
+            this.pbStar1.Location = new System.Drawing.Point(453, 116);
+            this.pbStar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbStar1.Name = "pbStar1";
-            this.pbStar1.Size = new System.Drawing.Size(50, 50);
+            this.pbStar1.Size = new System.Drawing.Size(67, 62);
             this.pbStar1.TabIndex = 2;
             this.pbStar1.TabStop = false;
             // 
             // pbStar2
             // 
-            this.pbStar2.Location = new System.Drawing.Point(340, 150);
+            this.pbStar2.Location = new System.Drawing.Point(453, 185);
+            this.pbStar2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbStar2.Name = "pbStar2";
-            this.pbStar2.Size = new System.Drawing.Size(50, 50);
+            this.pbStar2.Size = new System.Drawing.Size(67, 62);
             this.pbStar2.TabIndex = 3;
             this.pbStar2.TabStop = false;
             // 
             // pbStar3
             // 
-            this.pbStar3.Location = new System.Drawing.Point(340, 206);
+            this.pbStar3.Location = new System.Drawing.Point(453, 254);
+            this.pbStar3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbStar3.Name = "pbStar3";
-            this.pbStar3.Size = new System.Drawing.Size(50, 50);
+            this.pbStar3.Size = new System.Drawing.Size(67, 62);
             this.pbStar3.TabIndex = 4;
             this.pbStar3.TabStop = false;
             // 
             // pbStar4
             // 
-            this.pbStar4.Location = new System.Drawing.Point(340, 262);
+            this.pbStar4.Location = new System.Drawing.Point(453, 322);
+            this.pbStar4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbStar4.Name = "pbStar4";
-            this.pbStar4.Size = new System.Drawing.Size(50, 50);
+            this.pbStar4.Size = new System.Drawing.Size(67, 62);
             this.pbStar4.TabIndex = 5;
             this.pbStar4.TabStop = false;
             // 
             // pbStar5
             // 
-            this.pbStar5.Location = new System.Drawing.Point(340, 318);
+            this.pbStar5.Location = new System.Drawing.Point(453, 391);
+            this.pbStar5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbStar5.Name = "pbStar5";
-            this.pbStar5.Size = new System.Drawing.Size(50, 50);
+            this.pbStar5.Size = new System.Drawing.Size(67, 62);
             this.pbStar5.TabIndex = 6;
             this.pbStar5.TabStop = false;
             // 
             // lblUserRating
             // 
             this.lblUserRating.AutoSize = true;
-            this.lblUserRating.Location = new System.Drawing.Point(337, 78);
+            this.lblUserRating.Location = new System.Drawing.Point(449, 96);
+            this.lblUserRating.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUserRating.Name = "lblUserRating";
-            this.lblUserRating.Size = new System.Drawing.Size(58, 13);
+            this.lblUserRating.Size = new System.Drawing.Size(72, 16);
             this.lblUserRating.TabIndex = 7;
             this.lblUserRating.Text = "User rating";
             // 
             // txtMovieInfo
             // 
-            this.txtMovieInfo.Enabled = false;
-            this.txtMovieInfo.Location = new System.Drawing.Point(410, 80);
+            this.txtMovieInfo.Location = new System.Drawing.Point(547, 98);
+            this.txtMovieInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtMovieInfo.Multiline = true;
             this.txtMovieInfo.Name = "txtMovieInfo";
-            this.txtMovieInfo.Size = new System.Drawing.Size(300, 230);
+            this.txtMovieInfo.ReadOnly = true;
+            this.txtMovieInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtMovieInfo.Size = new System.Drawing.Size(399, 282);
             this.txtMovieInfo.TabIndex = 8;
+            this.txtMovieInfo.UseWaitCursor = true;
             // 
             // txtUserComments
             // 
-            this.txtUserComments.Enabled = false;
-            this.txtUserComments.Location = new System.Drawing.Point(410, 330);
+            this.txtUserComments.Location = new System.Drawing.Point(547, 406);
+            this.txtUserComments.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtUserComments.Multiline = true;
             this.txtUserComments.Name = "txtUserComments";
-            this.txtUserComments.Size = new System.Drawing.Size(300, 200);
+            this.txtUserComments.Size = new System.Drawing.Size(399, 245);
             this.txtUserComments.TabIndex = 9;
             // 
             // lblUserComments
             // 
             this.lblUserComments.AutoSize = true;
-            this.lblUserComments.Location = new System.Drawing.Point(407, 313);
+            this.lblUserComments.Location = new System.Drawing.Point(543, 385);
+            this.lblUserComments.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUserComments.Name = "lblUserComments";
-            this.lblUserComments.Size = new System.Drawing.Size(80, 13);
+            this.lblUserComments.Size = new System.Drawing.Size(101, 16);
             this.lblUserComments.TabIndex = 10;
             this.lblUserComments.Text = "User comments";
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // filmView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(731, 548);
+            this.ClientSize = new System.Drawing.Size(975, 674);
             this.Controls.Add(this.lblUserComments);
             this.Controls.Add(this.txtUserComments);
             this.Controls.Add(this.txtMovieInfo);
@@ -173,6 +186,7 @@
             this.Controls.Add(this.pbStar1);
             this.Controls.Add(this.pbPoster);
             this.Controls.Add(this.lblFilmName);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "filmView";
             this.Text = "Movie name";
             this.Load += new System.EventHandler(this.filmView_Load);

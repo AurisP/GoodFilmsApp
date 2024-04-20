@@ -14,18 +14,21 @@ namespace ControllerLibrary
         private CCallback<List<FilmModel>> filmsRxCb;
         private CCallback<CFilmsMetadataCache> metadataRxCb;
         private CCallback<List<ScheduledFilmModel>> scheduledFilmsRxCb;
+        private CCallback<List<CommentModel>> commentRxCb;
         private CCallback<string> errorRxCb;
         private int globalId;
         public CController(
             Action<int, List<FilmModel>> filmsRxCb,
             Action<int, CFilmsMetadataCache> metadataRxCb,
             Action<int, List<ScheduledFilmModel>> scheduledFilmsRxCb,
+            Action<int, List<CommentModel>> commentRxCb,
             Action<int, string> errorRxCb)
         {
             this.access = new CDataAccess();
             this.filmsRxCb = new CCallback<List<FilmModel>>(filmsRxCb);
             this.metadataRxCb = new CCallback<CFilmsMetadataCache>(metadataRxCb);
             this.scheduledFilmsRxCb = new CCallback<List<ScheduledFilmModel>>(scheduledFilmsRxCb);
+            this.commentRxCb = new CCallback<List<CommentModel>>(commentRxCb);
             this.errorRxCb = new CCallback<string>(errorRxCb);
             globalId = 0;
         }
@@ -37,9 +40,12 @@ namespace ControllerLibrary
         {
             this.filter = null;
         }
-        int IController.addComment(FilmModel mode, string name, string comment)
+        int IController.addComment(FilmModel model, string comment)
         {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
+            int film_id = model.Id;
+            string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            errorRxCb.call(globalId, () => access.updateComment(film_id, comment, commentDate));
             return globalId++;
         }
         int IController.requestFilms(int page, int count)
@@ -51,6 +57,13 @@ namespace ControllerLibrary
                 q.Random = filter.boolRandom;
             }
             filmsRxCb.call(globalId, () => access.requestFilms(page, count, q));
+            return globalId++;
+        }
+
+        int IController.requestComments(FilmModel model)
+        {
+            int film_id = model.Id;
+            commentRxCb.call(globalId, () => access.requestComments(film_id));
             return globalId++;
         }
         int IController.rmComment(FilmModel model, int id)

@@ -1,4 +1,5 @@
-﻿using ModelLibrary.Models;
+﻿using ControllerLibrary;
+using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
+        IController controller;
         FilmModel film;
 
         public filmView()
@@ -41,7 +43,24 @@ namespace GoodFilmsApp
             // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
+            //txtUserComments.Text = controller.requestComments(film);
 
+        }
+
+        private void updateComment()
+        {
+            if ((txtUserComments).Tag != null)
+                controller.addComment(film, txtUserComments.Text);
+        }
+
+        private void txtUserComments_TextChanged(object sender, EventArgs e)
+        {
+            ((txtUserComments).Tag) = true;
+        }
+
+        private void filmView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            updateComment();
         }
 
         private void starClickHandler(object sender, EventArgs e)
