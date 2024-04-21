@@ -30,7 +30,6 @@ namespace GoodFilmsApp
         /// </summary>
         private void InitializeComponent()
         {
-            this.testBox = new System.Windows.Forms.ListBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.gbSearchResults = new System.Windows.Forms.GroupBox();
@@ -39,30 +38,20 @@ namespace GoodFilmsApp
             this.btnQuery = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // testBox
-            // 
-            this.testBox.FormattingEnabled = true;
-            this.testBox.ItemHeight = 16;
-            this.testBox.Location = new System.Drawing.Point(924, 814);
-            this.testBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.testBox.Name = "testBox";
-            this.testBox.Size = new System.Drawing.Size(231, 228);
-            this.testBox.TabIndex = 0;
-            // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(31, 32);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSearch.Location = new System.Drawing.Point(35, 40);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(605, 22);
+            this.txtSearch.Size = new System.Drawing.Size(680, 26);
             this.txtSearch.TabIndex = 1;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(675, 28);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSearch.Location = new System.Drawing.Point(758, 36);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(152, 28);
+            this.btnSearch.Size = new System.Drawing.Size(171, 35);
             this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -70,43 +59,43 @@ namespace GoodFilmsApp
             // 
             // gbSearchResults
             // 
-            this.gbSearchResults.Location = new System.Drawing.Point(31, 91);
-            this.gbSearchResults.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbSearchResults.Location = new System.Drawing.Point(35, 114);
+            this.gbSearchResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbSearchResults.Name = "gbSearchResults";
-            this.gbSearchResults.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gbSearchResults.Size = new System.Drawing.Size(827, 443);
+            this.gbSearchResults.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbSearchResults.Size = new System.Drawing.Size(1277, 300);
             this.gbSearchResults.TabIndex = 4;
             this.gbSearchResults.TabStop = false;
             this.gbSearchResults.Text = "Search Results";
             // 
             // gbRecommendedFilms
             // 
-            this.gbRecommendedFilms.Location = new System.Drawing.Point(31, 559);
-            this.gbRecommendedFilms.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbRecommendedFilms.Location = new System.Drawing.Point(35, 424);
+            this.gbRecommendedFilms.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbRecommendedFilms.Name = "gbRecommendedFilms";
-            this.gbRecommendedFilms.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gbRecommendedFilms.Size = new System.Drawing.Size(827, 234);
+            this.gbRecommendedFilms.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbRecommendedFilms.Size = new System.Drawing.Size(1277, 300);
             this.gbRecommendedFilms.TabIndex = 13;
             this.gbRecommendedFilms.TabStop = false;
             this.gbRecommendedFilms.Text = "Recommended Films";
             // 
             // gbScheduledFilms
             // 
-            this.gbScheduledFilms.Location = new System.Drawing.Point(31, 814);
-            this.gbScheduledFilms.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbScheduledFilms.Location = new System.Drawing.Point(35, 734);
+            this.gbScheduledFilms.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbScheduledFilms.Name = "gbScheduledFilms";
-            this.gbScheduledFilms.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gbScheduledFilms.Size = new System.Drawing.Size(827, 234);
+            this.gbScheduledFilms.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbScheduledFilms.Size = new System.Drawing.Size(1277, 290);
             this.gbScheduledFilms.TabIndex = 14;
             this.gbScheduledFilms.TabStop = false;
             this.gbScheduledFilms.Text = "Scheduled Films";
             // 
             // btnQuery
             // 
-            this.btnQuery.Location = new System.Drawing.Point(904, 258);
-            this.btnQuery.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnQuery.Location = new System.Drawing.Point(962, 36);
+            this.btnQuery.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnQuery.Name = "btnQuery";
-            this.btnQuery.Size = new System.Drawing.Size(157, 38);
+            this.btnQuery.Size = new System.Drawing.Size(140, 35);
             this.btnQuery.TabIndex = 17;
             this.btnQuery.Text = "Filter";
             this.btnQuery.UseVisualStyleBackColor = true;
@@ -114,16 +103,15 @@ namespace GoodFilmsApp
             // 
             // mainView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1196, 1055);
+            this.ClientSize = new System.Drawing.Size(1346, 1061);
             this.Controls.Add(this.btnQuery);
             this.Controls.Add(this.gbScheduledFilms);
             this.Controls.Add(this.gbRecommendedFilms);
             this.Controls.Add(this.gbSearchResults);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.testBox);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "mainView";
             this.Text = "GoodFilms App";
@@ -134,8 +122,6 @@ namespace GoodFilmsApp
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox testBox;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.GroupBox gbSearchResults;
