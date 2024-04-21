@@ -12,12 +12,12 @@ namespace GoodFilmsApp
     public partial class QuerySubWindow : Form
     {
         // Lists to store data fetched from the database
-        private CFilmsMetadataCache data;
+        private ConstRef<CFilmsMetadataCache> data;
         private List<int> _hoursMax = new List<int>() { 1, 2, 3, 4, 5 };
         private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
-        public QuerySubWindow(ref CFilmsMetadataCache data)
+        public QuerySubWindow(ConstRef<CFilmsMetadataCache> data)
         {
             InitializeComponent();  // Initialize form components
             Helpers.QueryModel = new QueryModel(); // Instantiate QueryModel
@@ -84,11 +84,11 @@ namespace GoodFilmsApp
                 {
 
                     var studiosTemp = Helpers.QueryModel.Studios;
-                    studiosTemp.AddRange(data.studios);
+                    studiosTemp.AddRange(data.Value.studios);
                     dataGridWindow = new DataGridWindow(studiosTemp.Distinct().ToList());
                 }
-                else
-                    dataGridWindow = new DataGridWindow(data.studios);
+                else // TODO: Formatting, this looks cursed
+                    dataGridWindow = new DataGridWindow(data.Value.studios);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -107,12 +107,12 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.Genres.Count != 0)
                 {
                     var genresTemp = Helpers.QueryModel.Genres;
-                    genresTemp.AddRange(data.genres);
+                    genresTemp.AddRange(data.Value.genres);
                     dataGridWindow = new DataGridWindow(genresTemp.Distinct().ToList());
 
                 }
                 else
-                    dataGridWindow = new DataGridWindow(data.genres);
+                    dataGridWindow = new DataGridWindow(data.Value.genres);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -131,12 +131,12 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.Directors.Count != 0)
                 {
                     var directorsTemp = Helpers.QueryModel.Directors;
-                    directorsTemp.AddRange(data.directors);
+                    directorsTemp.AddRange(data.Value.directors);
                     dataGridWindow = new DataGridWindow(directorsTemp.Distinct().ToList());
 
                 }
                 else
-                    dataGridWindow = new DataGridWindow(data.directors);
+                    dataGridWindow = new DataGridWindow(data.Value.directors);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -155,12 +155,12 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.AgeRatings.Count != 0)
                 {
                     var ageRatingTemp = Helpers.QueryModel.AgeRatings;
-                    ageRatingTemp.AddRange(data.ageRatings);
+                    ageRatingTemp.AddRange(data.Value.ageRatings);
                     dataGridWindow = new DataGridWindow(ageRatingTemp.Distinct().ToList());
 
                 }
                 else
-                    dataGridWindow = new DataGridWindow(data.ageRatings);
+                    dataGridWindow = new DataGridWindow(data.Value.ageRatings);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
