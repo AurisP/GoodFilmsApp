@@ -52,7 +52,7 @@ namespace GoodFilmsApp
         {
             if ((txtUserComments).Tag != null)
             {
-               controller.addComment(film, txtUserComments.Text));
+               controller.addComment(film, txtUserComments.Text);
             }
             
         //TODO implement correctly
