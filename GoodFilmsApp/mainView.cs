@@ -79,7 +79,7 @@ namespace GoodFilmsApp
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
             if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?
-            QuerySubWindow querySubWindow = new QuerySubWindow(ref metadataCache);
+            QuerySubWindow querySubWindow = new QuerySubWindow(new ConstRef<CFilmsMetadataCache>(() => metadataCache));
 
             querySubWindow.StartPosition = FormStartPosition.CenterParent;
             querySubWindow.ShowDialog(this);
