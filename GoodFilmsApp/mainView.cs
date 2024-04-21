@@ -17,7 +17,6 @@ namespace GoodFilmsApp
 {
     public partial class mainView : Form
     {
-        bool detailOpen;
         IController controller;
         int metadataId;
         CFilmsMetadataCache metadataCache;
@@ -48,7 +47,6 @@ namespace GoodFilmsApp
             postersSearch = new PosterHandler(7, new PosterBoxSettings(), ref gbSearchResults);
             postersRecommend = new PosterHandler(7, new PosterBoxSettings(), ref gbRecommendedFilms);
             postersScheduled = new PosterHandler(7, new PosterBoxSettings(), ref gbScheduledFilms);
-            detailOpen = false;
             btnSearch_Click(null, null);
             updateRecommend();
             updateSearch();
