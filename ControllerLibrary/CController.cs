@@ -9,8 +9,8 @@ namespace ControllerLibrary
 {
     public class CController : IController
     {
-        private CFilter filter;
         private IDataAccess access;
+        private CFilter filter;
         private CCallback<List<FilmModel>> filmsRxCb;
         private CCallback<CFilmsMetadataCache> metadataRxCb;
         private CCallback<List<ScheduledFilmModel>> scheduledFilmsRxCb;
