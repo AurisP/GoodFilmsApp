@@ -16,6 +16,7 @@ namespace GoodFilmsApp
     {
         IController controller;
         FilmModel film;
+        private Action onCloseCb;
 
         public filmView()
         {
@@ -50,8 +51,12 @@ namespace GoodFilmsApp
         private void addComment()
         {
             if ((txtUserComments).Tag != null)
-                controller.addComment(film, txtUserComments.Text); //TODO implement correctly
-        }
+            {
+               controller.addComment(film, txtUserComments.Text));
+            }
+            
+        //TODO implement correctly
+    }
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
         {
