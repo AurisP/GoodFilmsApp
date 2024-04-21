@@ -88,6 +88,5 @@ namespace GoodFilmsApp
         private void mainView_Load(object sender, EventArgs e)
         {
         }
-
     }
 }
