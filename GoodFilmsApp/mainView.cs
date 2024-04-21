@@ -44,9 +44,9 @@ namespace GoodFilmsApp
                 (id, err) => Console.WriteLine("Controller Error: " + err));
             metadataId = controller.requestMeta();
             metadataCache = null;
-            postersSearch = new PosterHandler(100, new PosterBoxSettings(), ref gbSearchResults);
-            postersRecommend = new PosterHandler(100, new PosterBoxSettings(), ref gbRecommendedFilms);
-            postersScheduled = new PosterHandler(100, new PosterBoxSettings(), ref gbScheduledFilms);
+            postersSearch = new PosterHandler(7, new PosterBoxSettings(), ref gbSearchResults);
+            postersRecommend = new PosterHandler(7, new PosterBoxSettings(), ref gbRecommendedFilms);
+            postersScheduled = new PosterHandler(7, new PosterBoxSettings(), ref gbScheduledFilms);
             btnSearch_Click(null, null);
             updateRecommend();
             updateSearch();
@@ -60,7 +60,7 @@ namespace GoodFilmsApp
                 filter.strSearch = txtSearch.Text;
                 controller.addFilter(filter);
             }
-            postersSearch.request(controller.requestFilms(0, 100));
+            postersSearch.request(controller.requestFilms(0, 7));
         }
         private void updateRecommend()
         {
@@ -68,7 +68,7 @@ namespace GoodFilmsApp
             CFilter filter = new CFilter();
             filter.boolRandom = true;
             controller.addFilter(filter);
-            postersRecommend.request(controller.requestFilms(0, 100));
+            postersRecommend.request(controller.requestFilms(0, 7));
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -88,6 +88,5 @@ namespace GoodFilmsApp
         private void mainView_Load(object sender, EventArgs e)
         {
         }
-
     }
 }

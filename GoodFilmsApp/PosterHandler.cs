@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using ViewHandler;
+using ModelLibrary.Models;
 
 namespace GoodFilmsApp
 {
     internal class PosterHandler : CViewHandler
     {
+        static bool detailOpen = false;
+        List<FilmModel> films;
         List<PictureBox> pb = new List<PictureBox>();
         List<MouseEventHandler> events = new List<MouseEventHandler>();
 
@@ -16,16 +19,19 @@ namespace GoodFilmsApp
             setOnChangeCb((films) => {
                 int j = 0;
                 int i = 0;
-                for (; i < pb.Count && i < films.Count; i++)
+                this.films = films;
+                for (; j < pb.Count && i < films.Count; i++)
                 {
-                    if (films[i].Poster_Url == "" || films[i].Poster_Url == null) continue;
-                    pb[j].ImageLocation = "../../" + films[i].Poster_Url;
+                    if (this.films[i].Poster_Url == "" || this.films[i].Poster_Url == null) continue;
+                    pb[j].ImageLocation = "../../" + this.films[i].Poster_Url;
                     pb[j].MouseClick -= events[j];
                     int iCopy = i;
                     MouseEventHandler ev;
                     ev = new MouseEventHandler((_, __) =>
                     {
-                        var filmWindow = new filmView(films[iCopy]);
+                        if (detailOpen) return;
+                        detailOpen = true;
+                        var filmWindow = new filmView(this.films[iCopy], () => { detailOpen = false; });
                         filmWindow.Show();
                     });
                     pb[j].MouseClick += ev;
