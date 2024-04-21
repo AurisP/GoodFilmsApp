@@ -8,6 +8,7 @@ namespace GoodFilmsApp
 {
     internal class PosterHandler : CViewHandler
     {
+        static bool detailOpen = false;
         List<PictureBox> pb = new List<PictureBox>();
         List<MouseEventHandler> events = new List<MouseEventHandler>();
 
@@ -25,7 +26,9 @@ namespace GoodFilmsApp
                     MouseEventHandler ev;
                     ev = new MouseEventHandler((_, __) =>
                     {
-                        var filmWindow = new filmView(films[iCopy]);
+                        if (detailOpen) return;
+                        detailOpen = true;
+                        var filmWindow = new filmView(films[iCopy], () => { detailOpen = false; });
                         filmWindow.Show();
                     });
                     pb[j].MouseClick += ev;

@@ -13,10 +13,13 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
-        FilmModel film;
+        private FilmModel film;
+        private Action onCloseCb;
 
-        public filmView()
+        public filmView(FilmModel film, Action onCloseCb)
         {
+            this.film = film;
+            this.onCloseCb = onCloseCb;
             InitializeComponent();
         }
 
@@ -39,14 +42,17 @@ namespace GoodFilmsApp
             // Convert the duration in seconds to a TimeSpan object
             TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
             // Display the duration in hours, minutes, and seconds
-            txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
-
-
+            txtMovieInfo.Text += $"\nDuration: {duration.Hours}h, {duration.Minutes}min";
         }
 
         private void starClickHandler(object sender, EventArgs e)
         {
 
+        }
+
+        private void filmView_Close(object sender, EventArgs e)
+        {
+            onCloseCb();
         }
     }
 }
