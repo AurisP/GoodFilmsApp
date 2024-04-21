@@ -23,21 +23,25 @@ namespace GoodFilmsApp
             InitializeComponent();
         }
 
-        public filmView(FilmModel filmModel)
+        private void updateStars()
         {
-            film = filmModel;
-            InitializeComponent();
+            pbStar1.Image = imgStar.Images[(film.User_Rating >= 1) ? 1 : 0];
+            pbStar2.Image = imgStar.Images[(film.User_Rating >= 2) ? 1 : 0];
+            pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
+            pbStar4.Image = imgStar.Images[(film.User_Rating >= 4) ? 1 : 0];
+            pbStar5.Image = imgStar.Images[(film.User_Rating >= 5) ? 1 : 0];
         }
 
         private void filmView_Load(object sender, EventArgs e)
         {
             lblFilmName.Text = film.Title;
             pbPoster.ImageLocation = "../../" + film.Poster_Url;
-            pbStar1.Image = imgStar.Images[(film.User_Rating >= 1) ? 1 : 0];
-            pbStar2.Image = imgStar.Images[(film.User_Rating >= 2) ? 1 : 0];
-            pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
-            pbStar4.Image = imgStar.Images[(film.User_Rating >= 4) ? 1 : 0];
-            pbStar5.Image = imgStar.Images[(film.User_Rating >= 5) ? 1 : 0];
+            updateStars();
+            pbStar1.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = film.User_Rating != 1 ? 1 : 0; updateStars(); }); // TOOD: Update database
+            pbStar2.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 2; updateStars(); });
+            pbStar3.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 3; updateStars(); });
+            pbStar4.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 4; updateStars(); });
+            pbStar5.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 5; updateStars(); });
             txtMovieInfo.Text = film.Description;
             // Convert the duration in seconds to a TimeSpan object
             TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
@@ -45,12 +49,7 @@ namespace GoodFilmsApp
             txtMovieInfo.Text += $"\nDuration: {duration.Hours}h, {duration.Minutes}min";
         }
 
-        private void starClickHandler(object sender, EventArgs e)
-        {
-
-        }
-
-        private void filmView_Close(object sender, EventArgs e)
+        private void filmView_Closed(object sender, FormClosedEventArgs e)
         {
             onCloseCb();
         }
