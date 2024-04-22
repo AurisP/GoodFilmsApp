@@ -43,6 +43,11 @@
             this.txtUserComments = new System.Windows.Forms.TextBox();
             this.lblUserComments = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnSaveComment = new System.Windows.Forms.Button();
+            this.dtpScheduleTime = new System.Windows.Forms.DateTimePicker();
+            this.lblScheduleFilm = new System.Windows.Forms.Label();
+            this.btnAddToSchedule = new System.Windows.Forms.Button();
+            this.cbFilmWatched = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbPoster)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbStar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbStar2)).BeginInit();
@@ -143,6 +148,7 @@
             this.txtMovieInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtMovieInfo.Size = new System.Drawing.Size(355, 226);
             this.txtMovieInfo.TabIndex = 8;
+            this.txtMovieInfo.TabStop = false;
             this.txtMovieInfo.UseWaitCursor = true;
             // 
             // txtUserComments
@@ -171,11 +177,66 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnSaveComment
+            // 
+            this.btnSaveComment.Location = new System.Drawing.Point(585, 464);
+            this.btnSaveComment.Name = "btnSaveComment";
+            this.btnSaveComment.Size = new System.Drawing.Size(125, 23);
+            this.btnSaveComment.TabIndex = 11;
+            this.btnSaveComment.Text = "Save comment";
+            this.btnSaveComment.UseVisualStyleBackColor = true;
+            this.btnSaveComment.Click += new System.EventHandler(this.btnSaveComment_Click);
+            // 
+            // dtpScheduleTime
+            // 
+            this.dtpScheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpScheduleTime.Location = new System.Drawing.Point(410, 510);
+            this.dtpScheduleTime.MinDate = new System.DateTime(1920, 1, 1, 0, 0, 0, 0);
+            this.dtpScheduleTime.Name = "dtpScheduleTime";
+            this.dtpScheduleTime.Size = new System.Drawing.Size(171, 20);
+            this.dtpScheduleTime.TabIndex = 12;
+            // 
+            // lblScheduleFilm
+            // 
+            this.lblScheduleFilm.AutoSize = true;
+            this.lblScheduleFilm.Location = new System.Drawing.Point(407, 494);
+            this.lblScheduleFilm.Name = "lblScheduleFilm";
+            this.lblScheduleFilm.Size = new System.Drawing.Size(102, 13);
+            this.lblScheduleFilm.TabIndex = 13;
+            this.lblScheduleFilm.Text = "Add film to schedule";
+            // 
+            // btnAddToSchedule
+            // 
+            this.btnAddToSchedule.Location = new System.Drawing.Point(585, 508);
+            this.btnAddToSchedule.Name = "btnAddToSchedule";
+            this.btnAddToSchedule.Size = new System.Drawing.Size(125, 23);
+            this.btnAddToSchedule.TabIndex = 14;
+            this.btnAddToSchedule.Text = "Add";
+            this.btnAddToSchedule.UseVisualStyleBackColor = true;
+            this.btnAddToSchedule.Click += new System.EventHandler(this.btnAddToSchedule_Click);
+            // 
+            // cbFilmWatched
+            // 
+            this.cbFilmWatched.AutoSize = true;
+            this.cbFilmWatched.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbFilmWatched.Location = new System.Drawing.Point(622, 44);
+            this.cbFilmWatched.Name = "cbFilmWatched";
+            this.cbFilmWatched.Size = new System.Drawing.Size(88, 17);
+            this.cbFilmWatched.TabIndex = 15;
+            this.cbFilmWatched.Text = "Film watched";
+            this.cbFilmWatched.UseVisualStyleBackColor = true;
+            this.cbFilmWatched.CheckedChanged += new System.EventHandler(this.cbFilmWatched_CheckedChanged);
+            // 
             // filmView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(974, 674);
+            this.ClientSize = new System.Drawing.Size(731, 548);
+            this.Controls.Add(this.cbFilmWatched);
+            this.Controls.Add(this.btnAddToSchedule);
+            this.Controls.Add(this.lblScheduleFilm);
+            this.Controls.Add(this.dtpScheduleTime);
+            this.Controls.Add(this.btnSaveComment);
             this.Controls.Add(this.lblUserComments);
             this.Controls.Add(this.txtUserComments);
             this.Controls.Add(this.txtMovieInfo);
@@ -219,5 +280,10 @@
         private System.Windows.Forms.TextBox txtUserComments;
         private System.Windows.Forms.Label lblUserComments;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button btnSaveComment;
+        private System.Windows.Forms.DateTimePicker dtpScheduleTime;
+        private System.Windows.Forms.Label lblScheduleFilm;
+        private System.Windows.Forms.Button btnAddToSchedule;
+        private System.Windows.Forms.CheckBox cbFilmWatched;
     }
 }

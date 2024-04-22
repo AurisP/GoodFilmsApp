@@ -84,5 +84,20 @@ namespace GoodFilmsApp
         {
             onCloseCb();
         }
+
+        private void btnSaveComment_Click(object sender, EventArgs e)
+        {
+            // controller.addComment(film, film.Title, txtUserComment.Text);
+        }
+
+        private void btnAddToSchedule_Click(object sender, EventArgs e)
+        {
+            // controller.setFilmScheduled(film, dtpScheduleTime.Value);
+        }
+
+        private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
+        {
+            // controller.setFilmWatched(film, cbFilmWatched.Checked);
+        }
     }
 }
