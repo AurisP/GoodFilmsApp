@@ -1,4 +1,6 @@
-﻿using ModelLibrary.Models;
+﻿using ControllerLibrary;
+using ModelLibrary;
+using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,13 +15,16 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
-        private FilmModel film;
         private Action onCloseCb;
-
-        public filmView(FilmModel film, Action onCloseCb)
+        private FilmModel film;
+        IController controller;
+        IDataAccess access;
+        public filmView(FilmModel film, Action onCloseCb, ref IController controller)
         {
             this.film = film;
             this.onCloseCb = onCloseCb;
+            this.controller = controller;
+            this.access = new CDataAccess();
             InitializeComponent();
         }
 
@@ -46,7 +51,33 @@ namespace GoodFilmsApp
             // Convert the duration in seconds to a TimeSpan object
             TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
             // Display the duration in hours, minutes, and seconds
-            txtMovieInfo.Text += $"\nDuration: {duration.Hours}h, {duration.Minutes}min";
+            txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
+
+            CommentModel comment;
+            comment = access.requestComments(film.Id);
+            if (comment != null)
+                txtUserComments.Text = comment.Comment_Text.ToString();
+            //var data = controller.requestComments(film);
+        }
+
+        private void addComment()
+        {
+            if ((txtUserComments).Tag != null)
+            {
+               int Id = controller.addComment(film, txtUserComments.Text);
+                //access.updateComment(film.Id,txtUserComments.Text, )
+            }        
+        //TODO implement correctly`
+        }
+
+        private void txtUserComments_TextChanged(object sender, EventArgs e)
+        {
+            ((txtUserComments).Tag) = true;
+        }
+
+        private void filmView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            addComment();
         }
 
         private void filmView_Closed(object sender, FormClosedEventArgs e)

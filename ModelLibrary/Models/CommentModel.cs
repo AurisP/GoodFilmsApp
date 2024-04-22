@@ -10,8 +10,8 @@ namespace ModelLibrary.Models
     {
         public int Id { get; set; }
         public FilmModel Film { get; set; }
-        public string CommentText { get; set; }
-        public string CommentDate { get; set; }
+        public string Comment_Text { get; set; }
+        public string Comment_Date { get; set; }
 
 
     }

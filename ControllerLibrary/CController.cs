@@ -2,8 +2,7 @@
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace ControllerLibrary
 {
@@ -14,18 +13,21 @@ namespace ControllerLibrary
         private CCallback<List<FilmModel>> filmsRxCb;
         private CCallback<CFilmsMetadataCache> metadataRxCb;
         private CCallback<List<ScheduledFilmModel>> scheduledFilmsRxCb;
+        private CCallback<CommentModel> commentRxCb;
         private CCallback<string> errorRxCb;
         private int globalId;
         public CController(
             Action<int, List<FilmModel>> filmsRxCb,
             Action<int, CFilmsMetadataCache> metadataRxCb,
             Action<int, List<ScheduledFilmModel>> scheduledFilmsRxCb,
+            Action<int, CommentModel> commentRxCb,
             Action<int, string> errorRxCb)
         {
             this.access = new CDataAccess();
             this.filmsRxCb = new CCallback<List<FilmModel>>(filmsRxCb);
             this.metadataRxCb = new CCallback<CFilmsMetadataCache>(metadataRxCb);
             this.scheduledFilmsRxCb = new CCallback<List<ScheduledFilmModel>>(scheduledFilmsRxCb);
+            this.commentRxCb = new CCallback<CommentModel>(commentRxCb);
             this.errorRxCb = new CCallback<string>(errorRxCb);
             globalId = 0;
         }
@@ -37,20 +39,33 @@ namespace ControllerLibrary
         {
             this.filter = null;
         }
-        int IController.addComment(FilmModel mode, string name, string comment)
+        int IController.addComment(FilmModel model, string comment)
         {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
+            int film_id = model.Id;
+            string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            errorRxCb.call(globalId, () => access.updateComment(film_id, comment, commentDate));
             return globalId++;
         }
-        int IController.requestFilms(int page, int count)
+        int IController.requestFilms(int page, int count, QueryModel queryModel, bool isFirstLoad)
         {
-            QueryModel q = new QueryModel();
+            //QueryModel queryModel = new QueryModel();
             if (this.filter != null)
             {
-                q.Query = filter.strSearch;
-                q.Random = filter.boolRandom;
+                queryModel.Query = filter.strSearch;
+                queryModel.Random = filter.boolRandom;
             }
-            filmsRxCb.call(globalId, () => access.requestFilms(page, count, q));
+            filmsRxCb.call(globalId, () => access.requestFilms(page, count, queryModel, isFirstLoad));
+            return globalId++;
+        }
+
+        int IController.requestComments(FilmModel model)
+        {
+            int film_id = model.Id;
+            commentRxCb.call(globalId, () => {
+            var data = access.requestComments(film_id);
+            return data;
+        });
             return globalId++;
         }
         int IController.rmComment(FilmModel model, int id)
@@ -75,7 +90,8 @@ namespace ControllerLibrary
         }
         int IController.requestMeta()
         {
-            metadataRxCb.call(globalId, () => {
+            metadataRxCb.call(globalId, () =>
+            {
                 var data = access.requestMetadata();
                 return new CFilmsMetadataCache(data.directors, data.genres, data.studios, data.languages, data.ageRatings);
             });
