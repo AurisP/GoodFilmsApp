@@ -14,21 +14,21 @@ namespace ControllerLibrary
         private CCallback<List<FilmModel>> filmsRxCb;
         private CCallback<CFilmsMetadataCache> metadataRxCb;
         private CCallback<List<ScheduledFilmModel>> scheduledFilmsRxCb;
-        private CCallback<List<CommentModel>> commentRxCb;
+        private CCallback<CommentModel> commentRxCb;
         private CCallback<string> errorRxCb;
         private int globalId;
         public CController(
             Action<int, List<FilmModel>> filmsRxCb,
             Action<int, CFilmsMetadataCache> metadataRxCb,
             Action<int, List<ScheduledFilmModel>> scheduledFilmsRxCb,
-            Action<int, List<CommentModel>> commentRxCb,
+            Action<int, CommentModel> commentRxCb,
             Action<int, string> errorRxCb)
         {
             this.access = new CDataAccess();
             this.filmsRxCb = new CCallback<List<FilmModel>>(filmsRxCb);
             this.metadataRxCb = new CCallback<CFilmsMetadataCache>(metadataRxCb);
             this.scheduledFilmsRxCb = new CCallback<List<ScheduledFilmModel>>(scheduledFilmsRxCb);
-            this.commentRxCb = new CCallback<List<CommentModel>>(commentRxCb);
+            this.commentRxCb = new CCallback<CommentModel>(commentRxCb);
             this.errorRxCb = new CCallback<string>(errorRxCb);
             globalId = 0;
         }
@@ -63,7 +63,10 @@ namespace ControllerLibrary
         int IController.requestComments(FilmModel model)
         {
             int film_id = model.Id;
-            commentRxCb.call(globalId, () => access.requestComments(film_id));
+            commentRxCb.call(globalId, () => {
+            var data = access.requestComments(film_id);
+            return data;
+        });
             return globalId++;
         }
         int IController.rmComment(FilmModel model, int id)

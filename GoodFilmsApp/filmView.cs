@@ -1,4 +1,5 @@
 ﻿using ControllerLibrary;
+using ModelLibrary;
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,16 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
-        IController controller;
-        FilmModel film;
         private Action onCloseCb;
         private FilmModel film;
-
-        public filmView(FilmModel film, Action onCloseCb)
+        IController controller;
+        IDataAccess access;
+        public filmView(FilmModel film, Action onCloseCb, ref IController controller)
         {
             this.film = film;
             this.onCloseCb = onCloseCb;
+            this.controller = controller;
+            this.access = new CDataAccess();
             InitializeComponent();
         }
 
@@ -51,19 +53,22 @@ namespace GoodFilmsApp
             // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
-            //txtUserComments.Text = controller.requestComments(film);
-
+            CommentModel comment;
+            comment = access.requestComments(film.Id);
+            if (comment != null)
+                txtUserComments.Text = comment.Comment_Text.ToString();
+            //var data = controller.requestComments(film);
         }
 
         private void addComment()
         {
             if ((txtUserComments).Tag != null)
             {
-               controller.addComment(film, txtUserComments.Text);
-            }
-            
-        //TODO implement correctly
-    }
+               int Id = controller.addComment(film, txtUserComments.Text);
+                //access.updateComment(film.Id,txtUserComments.Text, )
+            }        
+        //TODO implement correctly`
+        }
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
         {

@@ -14,7 +14,7 @@ namespace ModelLibrary
         int setFilmWatched(int id);
         int setFilmScheduled(int id, int date_unix_ts);
         string updateComment(int film_id, string comment, string commentDate);
-        List<CommentModel> requestComments(int film_id);
+        CommentModel requestComments(int film_id);
 
     }
 }

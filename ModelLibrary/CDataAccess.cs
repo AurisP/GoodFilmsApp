@@ -78,8 +78,18 @@ namespace ModelLibrary
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
-            template = builder.AddTemplate("INSERT INTO comments (film_id, comment_text, comment_date) VALUES (@FilmId, @CommentText, @CommentDate)"
-                , new {FilmId = film_id, CommentText = comment, CommentDate = commentDate});
+            var args = new { FilmId = film_id, CommentText = comment, CommentDate = commentDate };
+
+            var existingComment = cnn.QueryFirstOrDefault<CommentModel>("SELECT * FROM comments WHERE film_id = @FilmId", args);
+
+            if (existingComment != null)
+            {
+                template = builder.AddTemplate("UPDATE comments SET comment_text = @CommentText, comment_date = @CommentDate WHERE film_id = @FilmId", args);
+            }
+            else
+            {
+                template = builder.AddTemplate("INSERT INTO comments (film_id, comment_text, comment_date) VALUES (@FilmId, @CommentText, @CommentDate)", args);
+            }
 
             var rowsAffected = cnn.Execute(template.RawSql, template.Parameters);
             if (rowsAffected > 0)
@@ -92,15 +102,15 @@ namespace ModelLibrary
             }   
         }
 
-        List<CommentModel> IDataAccess.requestComments(int film_id)
+        CommentModel IDataAccess.requestComments(int film_id)
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
-            template = builder.AddTemplate("SELECT TOP 1 * FROM comments WHERE film_id = @FilmId"
-                , new { FIlmId = film_id });
+            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @FilmId"
+                , new { FilmId = film_id });
 
-            var output = cnn.Query<CommentModel>(template.RawSql, template.Parameters);
-            return output.ToList();
+            var output = cnn.QueryFirstOrDefault<CommentModel>(template.RawSql, template.Parameters);
+            return output;
         }
 
     }
