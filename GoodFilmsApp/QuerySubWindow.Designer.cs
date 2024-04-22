@@ -46,6 +46,9 @@
             this.tBoxReleaseYear = new System.Windows.Forms.TextBox();
             this.btnAgeRating = new System.Windows.Forms.Button();
             this.lblAgeRating = new System.Windows.Forms.Label();
+            this.btnChooseLanguage = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnClearFilters = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSearch
@@ -79,7 +82,7 @@
             // lblStudios
             // 
             this.lblStudios.AutoSize = true;
-            this.lblStudios.Location = new System.Drawing.Point(227, 49);
+            this.lblStudios.Location = new System.Drawing.Point(227, 53);
             this.lblStudios.Name = "lblStudios";
             this.lblStudios.Size = new System.Drawing.Size(37, 13);
             this.lblStudios.TabIndex = 6;
@@ -111,7 +114,7 @@
             // 
             // btnAddNewStudio
             // 
-            this.btnAddNewStudio.Location = new System.Drawing.Point(282, 45);
+            this.btnAddNewStudio.Location = new System.Drawing.Point(282, 49);
             this.btnAddNewStudio.Name = "btnAddNewStudio";
             this.btnAddNewStudio.Size = new System.Drawing.Size(94, 21);
             this.btnAddNewStudio.TabIndex = 10;
@@ -209,12 +212,46 @@
             this.lblAgeRating.TabIndex = 20;
             this.lblAgeRating.Text = "Age Ratings";
             // 
+            // btnChooseLanguage
+            // 
+            this.btnChooseLanguage.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnChooseLanguage.Location = new System.Drawing.Point(282, 12);
+            this.btnChooseLanguage.Name = "btnChooseLanguage";
+            this.btnChooseLanguage.Size = new System.Drawing.Size(94, 21);
+            this.btnChooseLanguage.TabIndex = 23;
+            this.btnChooseLanguage.Text = "Choose language";
+            this.btnChooseLanguage.UseVisualStyleBackColor = true;
+            this.btnChooseLanguage.Click += new System.EventHandler(this.btnChooseLanguage_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(227, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Language";
+            // 
+            // btnClearFilters
+            // 
+            this.btnClearFilters.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearFilters.Location = new System.Drawing.Point(16, 8);
+            this.btnClearFilters.Name = "btnClearFilters";
+            this.btnClearFilters.Size = new System.Drawing.Size(94, 21);
+            this.btnClearFilters.TabIndex = 24;
+            this.btnClearFilters.Text = "Clear filters";
+            this.btnClearFilters.UseVisualStyleBackColor = true;
+            this.btnClearFilters.Click += new System.EventHandler(this.btnClearFilters_Click);
+            // 
             // QuerySubWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.IndianRed;
             this.ClientSize = new System.Drawing.Size(392, 246);
+            this.Controls.Add(this.btnClearFilters);
+            this.Controls.Add(this.btnChooseLanguage);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnAgeRating);
             this.Controls.Add(this.lblAgeRating);
             this.Controls.Add(this.tBoxReleaseYear);
@@ -260,5 +297,8 @@
         private System.Windows.Forms.TextBox tBoxReleaseYear;
         private System.Windows.Forms.Button btnAgeRating;
         private System.Windows.Forms.Label lblAgeRating;
+        private System.Windows.Forms.Button btnChooseLanguage;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnClearFilters;
     }
 }

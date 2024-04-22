@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ModelLibrary.Models
+﻿namespace ModelLibrary.Models
 {
     public class GenreFilmModel
     {
         public int Id { get; set; }
 
-        public FilmModel Film { get; set; } 
+        public int film_id { get; set; } 
 
-        public GenreModel Genre { get; set; } 
+        public int genre_id { get; set; } 
     }
 }

@@ -11,24 +11,60 @@ namespace GoodFilmsApp
     // Partial class for the QuerySubWindow form
     public partial class QuerySubWindow : Form
     {
+
+        private List<StudioModel> _studios;
+        private List<GenreModel> _genres;
+        private List<DirectorModel> _directors;
+        private List<AgeRatingModel> _ageRatings;
+        private List<LanguageModel> _languages;
+        mainView _mainView;
         // Lists to store data fetched from the database
-        private ConstRef<CFilmsMetadataCache> data;
+        private ConstRef<CFilmsMetadataCache> _data;
         private List<int> _hoursMax = new List<int>() { 1, 2, 3, 4, 5 };
         private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
-        public QuerySubWindow(ConstRef<CFilmsMetadataCache> data)
+        public QuerySubWindow(ConstRef<CFilmsMetadataCache> data, bool isCleared,mainView mainView)
         {
             InitializeComponent();  // Initialize form components
-            Helpers.QueryModel = new QueryModel(); // Instantiate QueryModel
+            //Helpers.QueryModel = new QueryModel(); // Instantiate QueryModel
+            _mainView = mainView;
+            this._data = data;
 
-            this.data = data;
+            _studios = CDataAccess.LoadStudios();
+            _genres = CDataAccess.LoadGenres();
+            _directors = CDataAccess.LoadDirectors();
+            _ageRatings = CDataAccess.LoadAgeRatings();
+            _languages = CDataAccess.LoadLanguages();
+
+
+            cBoxMaxDuration.DataSource = _hoursMax;
+            cBoxMinDuration.DataSource = _hoursMin;
+            cBoxMaxDuration.SelectedItem = null;
+            cBoxMinDuration.SelectedItem = null;
+
+
 
             // Populate combo boxes for duration selection
             cBoxMaxDuration.DataSource = _hoursMax;
             cBoxMaxDuration.SelectedItem = null;
             cBoxMinDuration.DataSource = _hoursMin;
             cBoxMinDuration.SelectedItem = null;
+
+
+            if (!isCleared)
+            {
+                var temp = Helpers.QueryModel;
+
+                if (Helpers.QueryModel.MinDuration != 0)
+                    cBoxMinDuration.SelectedItem = Helpers.QueryModel.MinDuration;
+                if (Helpers.QueryModel.MaxDuration != 0)
+                    cBoxMaxDuration.SelectedItem = Helpers.QueryModel.MaxDuration;
+                if (Helpers.QueryModel.ReleaseYear != 0)
+                    tBoxReleaseYear.Text = Helpers.QueryModel.ReleaseYear.ToString();
+
+
+            }
         }
 
         
@@ -84,11 +120,13 @@ namespace GoodFilmsApp
                 {
 
                     var studiosTemp = Helpers.QueryModel.Studios;
-                    studiosTemp.AddRange(data.Value.studios);
-                    dataGridWindow = new DataGridWindow(studiosTemp.Distinct().ToList());
+                    var existingStudioIds = studiosTemp.Select(x => x.Id).ToList();
+
+                    studiosTemp.AddRange(_studios.Where(x => !existingStudioIds.Contains(x.Id)));
+                    dataGridWindow = new DataGridWindow(studiosTemp.OrderByDescending(x => x.Chosen).Distinct().ToList());
                 }
-                else // TODO: Formatting, this looks cursed
-                    dataGridWindow = new DataGridWindow(data.Value.studios);
+                else
+                    dataGridWindow = new DataGridWindow(_studios);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -107,12 +145,13 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.Genres.Count != 0)
                 {
                     var genresTemp = Helpers.QueryModel.Genres;
-                    genresTemp.AddRange(data.Value.genres);
-                    dataGridWindow = new DataGridWindow(genresTemp.Distinct().ToList());
+                    var existingGenresIds = genresTemp.Select(x => x.Id).ToList();
 
+                    genresTemp.AddRange(_genres.Where(x => !existingGenresIds.Contains(x.Id)));
+                    dataGridWindow = new DataGridWindow(genresTemp.OrderByDescending(x => x.Chosen).Distinct().ToList());
                 }
                 else
-                    dataGridWindow = new DataGridWindow(data.Value.genres);
+                    dataGridWindow = new DataGridWindow(_genres);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -131,12 +170,14 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.Directors.Count != 0)
                 {
                     var directorsTemp = Helpers.QueryModel.Directors;
-                    directorsTemp.AddRange(data.Value.directors);
-                    dataGridWindow = new DataGridWindow(directorsTemp.Distinct().ToList());
+                    var existingDirectorId = directorsTemp.Select(x => x.Id).ToList();
+
+                    directorsTemp.AddRange(_directors.Where(x => !existingDirectorId.Contains(x.Id)));
+                    dataGridWindow = new DataGridWindow(directorsTemp.OrderByDescending(x => x.Chosen).Distinct().ToList());
 
                 }
                 else
-                    dataGridWindow = new DataGridWindow(data.Value.directors);
+                    dataGridWindow = new DataGridWindow(_directors.ToList());
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -155,18 +196,44 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.AgeRatings.Count != 0)
                 {
                     var ageRatingTemp = Helpers.QueryModel.AgeRatings;
-                    ageRatingTemp.AddRange(data.Value.ageRatings);
-                    dataGridWindow = new DataGridWindow(ageRatingTemp.Distinct().ToList());
+                    var existingAgeIds = ageRatingTemp.Select(x => x.Id).ToList();
 
+                    ageRatingTemp.AddRange(_ageRatings.Where(x => !existingAgeIds.Contains(x.Id)));
+                    dataGridWindow = new DataGridWindow(ageRatingTemp.OrderByDescending(x => x.Chosen).Distinct().ToList());
                 }
                 else
-                    dataGridWindow = new DataGridWindow(data.Value.ageRatings);
+                    dataGridWindow = new DataGridWindow(_ageRatings);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Something gone wrong on age rating.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+
+        private void HandleLanguages()
+        {
+            try
+            {
+                DataGridWindow dataGridWindow;
+                if (Helpers.QueryModel.Languages.Count != 0)
+                {
+                    var languageTemp = Helpers.QueryModel.Languages;
+                    var existingLanguageIds = languageTemp.Select(x => x.Id).ToList();
+
+                    languageTemp.AddRange(_languages.Where(x => !existingLanguageIds.Contains(x.Id)));
+                    dataGridWindow = new DataGridWindow(languageTemp.OrderByDescending(x => x.Chosen).Distinct().ToList());
+                }
+                else
+                    dataGridWindow = new DataGridWindow(_languages);
+                dataGridWindow.StartPosition = FormStartPosition.CenterParent;
+                dataGridWindow.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something gone wrong on language part.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -185,6 +252,11 @@ namespace GoodFilmsApp
             HandleStudio();
         }
 
+        private void btnChooseLanguage_Click(object sender, EventArgs e)
+        {
+            HandleLanguages();
+        }
+
         private void btnAddNewGenre_Click(object sender, EventArgs e)
         {
             HandleGenres();
@@ -200,13 +272,26 @@ namespace GoodFilmsApp
             HandleAgeRatings();
         }
 
+
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             HandleQuery();
             var query = Helpers.QueryModel;
             this.Close();
-            MessageBox.Show("Searched");
+            _mainView.updateSearch(true);
+            //MessageBox.Show("Searched");
 
+        }
+
+
+        private void btnClearFilters_Click(object sender, EventArgs e)
+        {
+            QuerySubWindow querySubWindow = new QuerySubWindow(_data, true, _mainView);
+            Helpers.QueryModel = new QueryModel(); // Instantiate QueryModel
+            querySubWindow.StartPosition = FormStartPosition.CenterParent;
+            querySubWindow.ShowDialog();
+            this.Close();
         }
 
 

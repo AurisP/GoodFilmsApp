@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModelLibrary;
+using System;
 
 namespace ControllerLibrary
 {
@@ -12,7 +13,7 @@ namespace ControllerLibrary
         int setUserRating(FilmModel mode, int stars);
         int addComment(FilmModel mode, string name, string comment);
         int rmComment(FilmModel mode, int id);
-        int requestFilms(int page, int count);
+        int requestFilms(int page, int count,QueryModel queryModel,bool isFirstLoad);
         int requestMeta();
     }
 }

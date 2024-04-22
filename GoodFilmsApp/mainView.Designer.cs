@@ -49,18 +49,17 @@ namespace GoodFilmsApp
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(35, 40);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSearch.Location = new System.Drawing.Point(23, 26);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(680, 26);
+            this.txtSearch.Size = new System.Drawing.Size(455, 20);
             this.txtSearch.TabIndex = 1;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(758, 36);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSearch.Location = new System.Drawing.Point(505, 23);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(171, 35);
+            this.btnSearch.Size = new System.Drawing.Size(114, 23);
             this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -68,43 +67,36 @@ namespace GoodFilmsApp
             // 
             // gbSearchResults
             // 
-            this.gbSearchResults.Location = new System.Drawing.Point(35, 114);
-            this.gbSearchResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbSearchResults.Location = new System.Drawing.Point(23, 74);
             this.gbSearchResults.Name = "gbSearchResults";
-            this.gbSearchResults.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbSearchResults.Size = new System.Drawing.Size(1277, 270);
+            this.gbSearchResults.Size = new System.Drawing.Size(851, 176);
             this.gbSearchResults.TabIndex = 4;
             this.gbSearchResults.TabStop = false;
             this.gbSearchResults.Text = "Search Results";
             // 
             // gbRecommendedFilms
             // 
-            this.gbRecommendedFilms.Location = new System.Drawing.Point(35, 424);
-            this.gbRecommendedFilms.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbRecommendedFilms.Location = new System.Drawing.Point(23, 276);
             this.gbRecommendedFilms.Name = "gbRecommendedFilms";
-            this.gbRecommendedFilms.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbRecommendedFilms.Size = new System.Drawing.Size(1277, 270);
+            this.gbRecommendedFilms.Size = new System.Drawing.Size(851, 176);
             this.gbRecommendedFilms.TabIndex = 13;
             this.gbRecommendedFilms.TabStop = false;
             this.gbRecommendedFilms.Text = "Recommended Films";
             // 
             // gbScheduledFilms
             // 
-            this.gbScheduledFilms.Location = new System.Drawing.Point(35, 734);
-            this.gbScheduledFilms.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbScheduledFilms.Location = new System.Drawing.Point(23, 477);
             this.gbScheduledFilms.Name = "gbScheduledFilms";
-            this.gbScheduledFilms.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbScheduledFilms.Size = new System.Drawing.Size(1277, 270);
+            this.gbScheduledFilms.Size = new System.Drawing.Size(851, 176);
             this.gbScheduledFilms.TabIndex = 14;
             this.gbScheduledFilms.TabStop = false;
             this.gbScheduledFilms.Text = "Scheduled Films";
             // 
             // btnQuery
             // 
-            this.btnQuery.Location = new System.Drawing.Point(962, 36);
-            this.btnQuery.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnQuery.Location = new System.Drawing.Point(641, 23);
             this.btnQuery.Name = "btnQuery";
-            this.btnQuery.Size = new System.Drawing.Size(140, 35);
+            this.btnQuery.Size = new System.Drawing.Size(93, 23);
             this.btnQuery.TabIndex = 17;
             this.btnQuery.Text = "Filter";
             this.btnQuery.UseVisualStyleBackColor = true;
@@ -112,18 +104,20 @@ namespace GoodFilmsApp
             // 
             // btnSearchLeft
             // 
-            this.btnSearchLeft.Location = new System.Drawing.Point(579, 384);
+            this.btnSearchLeft.Location = new System.Drawing.Point(386, 250);
+            this.btnSearchLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSearchLeft.Name = "btnSearchLeft";
-            this.btnSearchLeft.Size = new System.Drawing.Size(32, 32);
+            this.btnSearchLeft.Size = new System.Drawing.Size(21, 21);
             this.btnSearchLeft.TabIndex = 0;
             this.btnSearchLeft.Text = "<";
             this.btnSearchLeft.UseVisualStyleBackColor = true;
             // 
             // btnSearchRight
             // 
-            this.btnSearchRight.Location = new System.Drawing.Point(737, 384);
+            this.btnSearchRight.Location = new System.Drawing.Point(491, 250);
+            this.btnSearchRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSearchRight.Name = "btnSearchRight";
-            this.btnSearchRight.Size = new System.Drawing.Size(32, 32);
+            this.btnSearchRight.Size = new System.Drawing.Size(21, 21);
             this.btnSearchRight.TabIndex = 18;
             this.btnSearchRight.Text = ">";
             this.btnSearchRight.UseVisualStyleBackColor = true;
@@ -131,35 +125,39 @@ namespace GoodFilmsApp
             // lblSearchPage
             // 
             this.lblSearchPage.AutoSize = true;
-            this.lblSearchPage.Location = new System.Drawing.Point(617, 390);
+            this.lblSearchPage.Location = new System.Drawing.Point(411, 253);
+            this.lblSearchPage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSearchPage.Name = "lblSearchPage";
-            this.lblSearchPage.Size = new System.Drawing.Size(92, 20);
+            this.lblSearchPage.Size = new System.Drawing.Size(64, 13);
             this.lblSearchPage.TabIndex = 19;
             this.lblSearchPage.Text = "page 1 of ...";
             // 
             // lblRecommendPage
             // 
             this.lblRecommendPage.AutoSize = true;
-            this.lblRecommendPage.Location = new System.Drawing.Point(617, 708);
+            this.lblRecommendPage.Location = new System.Drawing.Point(411, 460);
+            this.lblRecommendPage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRecommendPage.Name = "lblRecommendPage";
-            this.lblRecommendPage.Size = new System.Drawing.Size(92, 20);
+            this.lblRecommendPage.Size = new System.Drawing.Size(64, 13);
             this.lblRecommendPage.TabIndex = 22;
             this.lblRecommendPage.Text = "page 1 of ...";
             // 
             // btnRecommenRight
             // 
-            this.btnRecommenRight.Location = new System.Drawing.Point(737, 702);
+            this.btnRecommenRight.Location = new System.Drawing.Point(491, 456);
+            this.btnRecommenRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRecommenRight.Name = "btnRecommenRight";
-            this.btnRecommenRight.Size = new System.Drawing.Size(32, 32);
+            this.btnRecommenRight.Size = new System.Drawing.Size(21, 21);
             this.btnRecommenRight.TabIndex = 21;
             this.btnRecommenRight.Text = ">";
             this.btnRecommenRight.UseVisualStyleBackColor = true;
             // 
             // btnRecommendLeft
             // 
-            this.btnRecommendLeft.Location = new System.Drawing.Point(579, 702);
+            this.btnRecommendLeft.Location = new System.Drawing.Point(386, 456);
+            this.btnRecommendLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRecommendLeft.Name = "btnRecommendLeft";
-            this.btnRecommendLeft.Size = new System.Drawing.Size(32, 32);
+            this.btnRecommendLeft.Size = new System.Drawing.Size(21, 21);
             this.btnRecommendLeft.TabIndex = 20;
             this.btnRecommendLeft.Text = "<";
             this.btnRecommendLeft.UseVisualStyleBackColor = true;
@@ -167,35 +165,38 @@ namespace GoodFilmsApp
             // lblScheduledPage
             // 
             this.lblScheduledPage.AutoSize = true;
-            this.lblScheduledPage.Location = new System.Drawing.Point(617, 1023);
+            this.lblScheduledPage.Location = new System.Drawing.Point(411, 665);
+            this.lblScheduledPage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblScheduledPage.Name = "lblScheduledPage";
-            this.lblScheduledPage.Size = new System.Drawing.Size(92, 20);
+            this.lblScheduledPage.Size = new System.Drawing.Size(64, 13);
             this.lblScheduledPage.TabIndex = 25;
             this.lblScheduledPage.Text = "page 1 of ...";
             // 
             // btnScheduleRight
             // 
-            this.btnScheduleRight.Location = new System.Drawing.Point(737, 1017);
+            this.btnScheduleRight.Location = new System.Drawing.Point(491, 661);
+            this.btnScheduleRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnScheduleRight.Name = "btnScheduleRight";
-            this.btnScheduleRight.Size = new System.Drawing.Size(32, 32);
+            this.btnScheduleRight.Size = new System.Drawing.Size(21, 21);
             this.btnScheduleRight.TabIndex = 24;
             this.btnScheduleRight.Text = ">";
             this.btnScheduleRight.UseVisualStyleBackColor = true;
             // 
             // btnScheduleLeft
             // 
-            this.btnScheduleLeft.Location = new System.Drawing.Point(579, 1017);
+            this.btnScheduleLeft.Location = new System.Drawing.Point(386, 661);
+            this.btnScheduleLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnScheduleLeft.Name = "btnScheduleLeft";
-            this.btnScheduleLeft.Size = new System.Drawing.Size(32, 32);
+            this.btnScheduleLeft.Size = new System.Drawing.Size(21, 21);
             this.btnScheduleLeft.TabIndex = 23;
             this.btnScheduleLeft.Text = "<";
             this.btnScheduleLeft.UseVisualStyleBackColor = true;
             // 
             // mainView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1346, 1061);
+            this.ClientSize = new System.Drawing.Size(897, 690);
             this.Controls.Add(this.lblScheduledPage);
             this.Controls.Add(this.btnScheduleRight);
             this.Controls.Add(this.btnScheduleLeft);
@@ -211,10 +212,9 @@ namespace GoodFilmsApp
             this.Controls.Add(this.gbSearchResults);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.Name = "mainView";
             this.Text = "GoodFilms App";
-            this.Load += new System.EventHandler(this.mainView_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
