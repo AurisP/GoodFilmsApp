@@ -1,5 +1,4 @@
 ﻿using ControllerLibrary;
-using ModelLibrary;
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,8 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
+        private FilmModel film;
+        private IController controller;
         private Action onCloseCb;
         private FilmModel film;
         private IController controller;
@@ -22,6 +23,7 @@ namespace GoodFilmsApp
         public filmView(FilmModel film, Action onCloseCb, IController controller)
         {
             this.film = film;
+            // this.controller = rController;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
             InitializeComponent();

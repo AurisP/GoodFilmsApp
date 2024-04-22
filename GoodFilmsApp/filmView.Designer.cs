@@ -43,6 +43,7 @@
             this.txtUserComment = new System.Windows.Forms.TextBox();
             this.lblUserComments = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnSaveComment = new System.Windows.Forms.Button();
             this.dtpScheduleTime = new System.Windows.Forms.DateTimePicker();
             this.lblScheduleFilm = new System.Windows.Forms.Label();
             this.btnAddToSchedule = new System.Windows.Forms.Button();
@@ -165,10 +166,20 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnSaveComment
+            // 
+            this.btnSaveComment.Location = new System.Drawing.Point(585, 464);
+            this.btnSaveComment.Name = "btnSaveComment";
+            this.btnSaveComment.Size = new System.Drawing.Size(125, 23);
+            this.btnSaveComment.TabIndex = 11;
+            this.btnSaveComment.Text = "Save comment";
+            this.btnSaveComment.UseVisualStyleBackColor = true;
+            this.btnSaveComment.Click += new System.EventHandler(this.btnSaveComment_Click);
+            // 
             // dtpScheduleTime
             // 
             this.dtpScheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpScheduleTime.Location = new System.Drawing.Point(410, 530);
+            this.dtpScheduleTime.Location = new System.Drawing.Point(410, 510);
             this.dtpScheduleTime.MinDate = new System.DateTime(1920, 1, 1, 0, 0, 0, 0);
             this.dtpScheduleTime.Name = "dtpScheduleTime";
             this.dtpScheduleTime.Size = new System.Drawing.Size(171, 20);
@@ -177,7 +188,7 @@
             // lblScheduleFilm
             // 
             this.lblScheduleFilm.AutoSize = true;
-            this.lblScheduleFilm.Location = new System.Drawing.Point(407, 514);
+            this.lblScheduleFilm.Location = new System.Drawing.Point(407, 494);
             this.lblScheduleFilm.Name = "lblScheduleFilm";
             this.lblScheduleFilm.Size = new System.Drawing.Size(102, 13);
             this.lblScheduleFilm.TabIndex = 13;
@@ -185,7 +196,7 @@
             // 
             // btnAddToSchedule
             // 
-            this.btnAddToSchedule.Location = new System.Drawing.Point(587, 527);
+            this.btnAddToSchedule.Location = new System.Drawing.Point(585, 508);
             this.btnAddToSchedule.Name = "btnAddToSchedule";
             this.btnAddToSchedule.Size = new System.Drawing.Size(125, 23);
             this.btnAddToSchedule.TabIndex = 14;
@@ -209,11 +220,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 573);
+            this.ClientSize = new System.Drawing.Size(731, 548);
             this.Controls.Add(this.cbFilmWatched);
             this.Controls.Add(this.btnAddToSchedule);
             this.Controls.Add(this.lblScheduleFilm);
             this.Controls.Add(this.dtpScheduleTime);
+            this.Controls.Add(this.btnSaveComment);
             this.Controls.Add(this.lblUserComments);
             this.Controls.Add(this.txtUserComment);
             this.Controls.Add(this.txtMovieInfo);
@@ -256,6 +268,7 @@
         private System.Windows.Forms.TextBox txtUserComment;
         private System.Windows.Forms.Label lblUserComments;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button btnSaveComment;
         private System.Windows.Forms.DateTimePicker dtpScheduleTime;
         private System.Windows.Forms.Label lblScheduleFilm;
         private System.Windows.Forms.Button btnAddToSchedule;
