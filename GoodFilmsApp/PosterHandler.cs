@@ -15,7 +15,7 @@ namespace GoodFilmsApp
         List<PictureBox> pb = new List<PictureBox>();
         List<MouseEventHandler> events = new List<MouseEventHandler>();
 
-        public PosterHandler(int numOfPictures, PosterBoxSettings s, ref GroupBox gb)
+        public PosterHandler(int numOfPictures, PosterBoxSettings s, ref GroupBox gb, IController controller)
         {
             setOnChangeCb((films) => {
                 int j = 0;
@@ -32,7 +32,7 @@ namespace GoodFilmsApp
                     {
                         if (detailOpen) return;
                         detailOpen = true;
-                        var filmWindow = new filmView(this.films[iCopy], () => { detailOpen = false; });
+                        var filmWindow = new filmView(this.films[iCopy], () => { detailOpen = false; }, ref controller);
                         filmWindow.Show();
                     });
                     pb[j].MouseClick += ev;
