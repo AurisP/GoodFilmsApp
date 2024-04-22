@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ModelLibrary.Models
 {
@@ -19,7 +14,7 @@ namespace ModelLibrary.Models
 
         public int Release_Year { get; set; }
 
-        public AgeRatingModel Age_Rating { get; set; }
+        public int age_rating_id { get; set; }
 
         public string Trailer_Url { get; set; }
 

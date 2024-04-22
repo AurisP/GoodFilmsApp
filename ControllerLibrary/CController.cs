@@ -2,8 +2,7 @@
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace ControllerLibrary
 {
@@ -48,15 +47,15 @@ namespace ControllerLibrary
             errorRxCb.call(globalId, () => access.updateComment(film_id, comment, commentDate));
             return globalId++;
         }
-        int IController.requestFilms(int page, int count)
+        int IController.requestFilms(int page, int count, QueryModel queryModel, bool isFirstLoad)
         {
-            QueryModel q = new QueryModel();
+            //QueryModel queryModel = new QueryModel();
             if (this.filter != null)
             {
-                q.Query = filter.strSearch;
-                q.Random = filter.boolRandom;
+                queryModel.Query = filter.strSearch;
+                queryModel.Random = filter.boolRandom;
             }
-            filmsRxCb.call(globalId, () => access.requestFilms(page, count, q));
+            filmsRxCb.call(globalId, () => access.requestFilms(page, count, queryModel, isFirstLoad));
             return globalId++;
         }
 
@@ -91,7 +90,8 @@ namespace ControllerLibrary
         }
         int IController.requestMeta()
         {
-            metadataRxCb.call(globalId, () => {
+            metadataRxCb.call(globalId, () =>
+            {
                 var data = access.requestMetadata();
                 return new CFilmsMetadataCache(data.directors, data.genres, data.studios, data.languages, data.ageRatings);
             });
