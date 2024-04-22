@@ -27,9 +27,9 @@ namespace ModelLibrary.Models
 
         public int User_Rating { get; set; }
 
-        public int Watched { get; set; }
+        public bool Watched { get; set; }
 
-        public List<CommentModel> Comments { get; set; } = new List<CommentModel>();
+        public string Comment { get; set; }
 
         public List<DirectorFilmModel> DirectorFilms { get; set; } = new List<DirectorFilmModel>();
 

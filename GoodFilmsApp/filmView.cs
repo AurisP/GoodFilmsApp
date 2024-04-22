@@ -1,4 +1,5 @@
-﻿using ModelLibrary.Models;
+﻿using ControllerLibrary;
+using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,11 +15,13 @@ namespace GoodFilmsApp
     public partial class filmView : Form
     {
         private FilmModel film;
+        private IController controller;
         private Action onCloseCb;
 
         public filmView(FilmModel film, Action onCloseCb)
         {
             this.film = film;
+            // this.controller = rController;
             this.onCloseCb = onCloseCb;
             InitializeComponent();
         }
@@ -52,6 +55,21 @@ namespace GoodFilmsApp
         private void filmView_Closed(object sender, FormClosedEventArgs e)
         {
             onCloseCb();
+        }
+
+        private void btnSaveComment_Click(object sender, EventArgs e)
+        {
+            // controller.addComment(film, film.Title, txtUserComment.Text);
+        }
+
+        private void btnAddToSchedule_Click(object sender, EventArgs e)
+        {
+            // controller.setFilmScheduled(film, dtpScheduleTime.Value);
+        }
+
+        private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
+        {
+            // controller.setFilmWatched(film, cbFilmWatched.Checked);
         }
     }
 }
