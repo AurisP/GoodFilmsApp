@@ -146,7 +146,7 @@
             this.txtUserComment.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtUserComment.Multiline = true;
             this.txtUserComment.Name = "txtUserComment";
-            this.txtUserComment.Size = new System.Drawing.Size(355, 197);
+            this.txtUserComment.Size = new System.Drawing.Size(300, 180);
             this.txtUserComment.TabIndex = 9;
             this.txtUserComment.TextChanged += new System.EventHandler(this.txtUserComments_TextChanged);
             // 
@@ -168,17 +168,16 @@
             // dtpScheduleTime
             // 
             this.dtpScheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpScheduleTime.Location = new System.Drawing.Point(340, 541);
+            this.dtpScheduleTime.Location = new System.Drawing.Point(410, 530);
             this.dtpScheduleTime.MinDate = new System.DateTime(1920, 1, 1, 0, 0, 0, 0);
             this.dtpScheduleTime.Name = "dtpScheduleTime";
             this.dtpScheduleTime.Size = new System.Drawing.Size(171, 20);
             this.dtpScheduleTime.TabIndex = 12;
-            this.dtpScheduleTime.ValueChanged += new System.EventHandler(this.dtpScheduleTime_ValueChanged);
             // 
             // lblScheduleFilm
             // 
             this.lblScheduleFilm.AutoSize = true;
-            this.lblScheduleFilm.Location = new System.Drawing.Point(337, 525);
+            this.lblScheduleFilm.Location = new System.Drawing.Point(407, 514);
             this.lblScheduleFilm.Name = "lblScheduleFilm";
             this.lblScheduleFilm.Size = new System.Drawing.Size(102, 13);
             this.lblScheduleFilm.TabIndex = 13;
@@ -186,7 +185,7 @@
             // 
             // btnAddToSchedule
             // 
-            this.btnAddToSchedule.Location = new System.Drawing.Point(517, 538);
+            this.btnAddToSchedule.Location = new System.Drawing.Point(587, 527);
             this.btnAddToSchedule.Name = "btnAddToSchedule";
             this.btnAddToSchedule.Size = new System.Drawing.Size(125, 23);
             this.btnAddToSchedule.TabIndex = 14;
@@ -210,7 +209,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(785, 573);
+            this.ClientSize = new System.Drawing.Size(730, 573);
             this.Controls.Add(this.cbFilmWatched);
             this.Controls.Add(this.btnAddToSchedule);
             this.Controls.Add(this.lblScheduleFilm);
