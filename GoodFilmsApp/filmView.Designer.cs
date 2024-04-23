@@ -43,7 +43,6 @@
             this.txtUserComment = new System.Windows.Forms.TextBox();
             this.lblUserComments = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnSaveComment = new System.Windows.Forms.Button();
             this.dtpScheduleTime = new System.Windows.Forms.DateTimePicker();
             this.lblScheduleFilm = new System.Windows.Forms.Label();
             this.btnAddToSchedule = new System.Windows.Forms.Button();
@@ -62,7 +61,7 @@
             this.lblFilmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFilmName.Location = new System.Drawing.Point(20, 30);
             this.lblFilmName.Name = "lblFilmName";
-            this.lblFilmName.Size = new System.Drawing.Size(191, 39);
+            this.lblFilmName.Size = new System.Drawing.Size(153, 31);
             this.lblFilmName.TabIndex = 0;
             this.lblFilmName.Text = "Film Name";
             // 
@@ -143,12 +142,13 @@
             // 
             // txtUserComment
             // 
-            this.txtUserComment.AcceptsReturn = true;
-            this.txtUserComment.Location = new System.Drawing.Point(410, 330);
+            this.txtUserComment.Location = new System.Drawing.Point(410, 329);
+            this.txtUserComment.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtUserComment.Multiline = true;
             this.txtUserComment.Name = "txtUserComment";
-            this.txtUserComment.Size = new System.Drawing.Size(300, 128);
+            this.txtUserComment.Size = new System.Drawing.Size(300, 180);
             this.txtUserComment.TabIndex = 9;
+            this.txtUserComment.TextChanged += new System.EventHandler(this.txtUserComments_TextChanged);
             // 
             // lblUserComments
             // 
@@ -165,20 +165,10 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // btnSaveComment
-            // 
-            this.btnSaveComment.Location = new System.Drawing.Point(585, 464);
-            this.btnSaveComment.Name = "btnSaveComment";
-            this.btnSaveComment.Size = new System.Drawing.Size(125, 23);
-            this.btnSaveComment.TabIndex = 11;
-            this.btnSaveComment.Text = "Save comment";
-            this.btnSaveComment.UseVisualStyleBackColor = true;
-            this.btnSaveComment.Click += new System.EventHandler(this.btnSaveComment_Click);
-            // 
             // dtpScheduleTime
             // 
             this.dtpScheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpScheduleTime.Location = new System.Drawing.Point(410, 510);
+            this.dtpScheduleTime.Location = new System.Drawing.Point(410, 530);
             this.dtpScheduleTime.MinDate = new System.DateTime(1920, 1, 1, 0, 0, 0, 0);
             this.dtpScheduleTime.Name = "dtpScheduleTime";
             this.dtpScheduleTime.Size = new System.Drawing.Size(171, 20);
@@ -187,7 +177,7 @@
             // lblScheduleFilm
             // 
             this.lblScheduleFilm.AutoSize = true;
-            this.lblScheduleFilm.Location = new System.Drawing.Point(407, 494);
+            this.lblScheduleFilm.Location = new System.Drawing.Point(407, 514);
             this.lblScheduleFilm.Name = "lblScheduleFilm";
             this.lblScheduleFilm.Size = new System.Drawing.Size(102, 13);
             this.lblScheduleFilm.TabIndex = 13;
@@ -195,7 +185,7 @@
             // 
             // btnAddToSchedule
             // 
-            this.btnAddToSchedule.Location = new System.Drawing.Point(585, 508);
+            this.btnAddToSchedule.Location = new System.Drawing.Point(587, 527);
             this.btnAddToSchedule.Name = "btnAddToSchedule";
             this.btnAddToSchedule.Size = new System.Drawing.Size(125, 23);
             this.btnAddToSchedule.TabIndex = 14;
@@ -219,12 +209,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(731, 548);
+            this.ClientSize = new System.Drawing.Size(730, 573);
             this.Controls.Add(this.cbFilmWatched);
             this.Controls.Add(this.btnAddToSchedule);
             this.Controls.Add(this.lblScheduleFilm);
             this.Controls.Add(this.dtpScheduleTime);
-            this.Controls.Add(this.btnSaveComment);
             this.Controls.Add(this.lblUserComments);
             this.Controls.Add(this.txtUserComment);
             this.Controls.Add(this.txtMovieInfo);
@@ -267,7 +256,6 @@
         private System.Windows.Forms.TextBox txtUserComment;
         private System.Windows.Forms.Label lblUserComments;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.Button btnSaveComment;
         private System.Windows.Forms.DateTimePicker dtpScheduleTime;
         private System.Windows.Forms.Label lblScheduleFilm;
         private System.Windows.Forms.Button btnAddToSchedule;

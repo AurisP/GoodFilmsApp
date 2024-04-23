@@ -31,7 +31,6 @@ namespace GoodFilmsApp
         private void InitializeComponent()
         {
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.gbSearchResults = new System.Windows.Forms.GroupBox();
             this.gbRecommendedFilms = new System.Windows.Forms.GroupBox();
             this.gbScheduledFilms = new System.Windows.Forms.GroupBox();
@@ -54,16 +53,6 @@ namespace GoodFilmsApp
             this.txtSearch.Size = new System.Drawing.Size(455, 20);
             this.txtSearch.TabIndex = 1;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(505, 23);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(114, 23);
-            this.btnSearch.TabIndex = 2;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // gbSearchResults
             // 
@@ -94,7 +83,7 @@ namespace GoodFilmsApp
             // 
             // btnQuery
             // 
-            this.btnQuery.Location = new System.Drawing.Point(641, 23);
+            this.btnQuery.Location = new System.Drawing.Point(502, 24);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(93, 23);
             this.btnQuery.TabIndex = 17;
@@ -105,7 +94,7 @@ namespace GoodFilmsApp
             // btnSearchLeft
             // 
             this.btnSearchLeft.Location = new System.Drawing.Point(386, 250);
-            this.btnSearchLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSearchLeft.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearchLeft.Name = "btnSearchLeft";
             this.btnSearchLeft.Size = new System.Drawing.Size(21, 21);
             this.btnSearchLeft.TabIndex = 0;
@@ -115,7 +104,7 @@ namespace GoodFilmsApp
             // btnSearchRight
             // 
             this.btnSearchRight.Location = new System.Drawing.Point(491, 250);
-            this.btnSearchRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSearchRight.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearchRight.Name = "btnSearchRight";
             this.btnSearchRight.Size = new System.Drawing.Size(21, 21);
             this.btnSearchRight.TabIndex = 18;
@@ -145,7 +134,7 @@ namespace GoodFilmsApp
             // btnRecommenRight
             // 
             this.btnRecommenRight.Location = new System.Drawing.Point(491, 456);
-            this.btnRecommenRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRecommenRight.Margin = new System.Windows.Forms.Padding(2);
             this.btnRecommenRight.Name = "btnRecommenRight";
             this.btnRecommenRight.Size = new System.Drawing.Size(21, 21);
             this.btnRecommenRight.TabIndex = 21;
@@ -155,7 +144,7 @@ namespace GoodFilmsApp
             // btnRecommendLeft
             // 
             this.btnRecommendLeft.Location = new System.Drawing.Point(386, 456);
-            this.btnRecommendLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRecommendLeft.Margin = new System.Windows.Forms.Padding(2);
             this.btnRecommendLeft.Name = "btnRecommendLeft";
             this.btnRecommendLeft.Size = new System.Drawing.Size(21, 21);
             this.btnRecommendLeft.TabIndex = 20;
@@ -175,7 +164,7 @@ namespace GoodFilmsApp
             // btnScheduleRight
             // 
             this.btnScheduleRight.Location = new System.Drawing.Point(491, 661);
-            this.btnScheduleRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnScheduleRight.Margin = new System.Windows.Forms.Padding(2);
             this.btnScheduleRight.Name = "btnScheduleRight";
             this.btnScheduleRight.Size = new System.Drawing.Size(21, 21);
             this.btnScheduleRight.TabIndex = 24;
@@ -185,7 +174,7 @@ namespace GoodFilmsApp
             // btnScheduleLeft
             // 
             this.btnScheduleLeft.Location = new System.Drawing.Point(386, 661);
-            this.btnScheduleLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnScheduleLeft.Margin = new System.Windows.Forms.Padding(2);
             this.btnScheduleLeft.Name = "btnScheduleLeft";
             this.btnScheduleLeft.Size = new System.Drawing.Size(21, 21);
             this.btnScheduleLeft.TabIndex = 23;
@@ -210,7 +199,6 @@ namespace GoodFilmsApp
             this.Controls.Add(this.gbScheduledFilms);
             this.Controls.Add(this.gbRecommendedFilms);
             this.Controls.Add(this.gbSearchResults);
-            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
             this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.Name = "mainView";
@@ -222,7 +210,6 @@ namespace GoodFilmsApp
 
         #endregion
         private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.GroupBox gbSearchResults;
         private System.Windows.Forms.GroupBox gbRecommendedFilms;
         private System.Windows.Forms.GroupBox gbScheduledFilms;

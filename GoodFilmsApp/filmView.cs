@@ -58,15 +58,15 @@ namespace GoodFilmsApp
             CommentModel comment;
             comment = access.requestComments(film.Id);
             if (comment != null)
-                txtUserComments.Text = comment.Comment_Text.ToString();
+                txtUserComment.Text = comment.Comment_Text.ToString();
             //var data = controller.requestComments(film);
         }
 
         private void addComment()
         {
-            if ((txtUserComments).Tag != null)
+            if ((txtUserComment).Tag != null)
             {
-               int Id = controller.addComment(film, txtUserComments.Text);
+               int Id = controller.addComment(film, txtUserComment.Text);
                 //access.updateComment(film.Id,txtUserComments.Text, )
             }        
         //TODO implement correctly`
@@ -74,7 +74,7 @@ namespace GoodFilmsApp
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
         {
-            ((txtUserComments).Tag) = true;
+            ((txtUserComment).Tag) = true;
         }
 
         private void filmView_FormClosing(object sender, FormClosingEventArgs e)
@@ -89,17 +89,18 @@ namespace GoodFilmsApp
 
         private void btnSaveComment_Click(object sender, EventArgs e)
         {
-            // controller.addComment(film, film.Title, txtUserComment.Text);
+            controller.addComment(film, txtUserComment.Text);
         }
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            // controller.setFilmScheduled(film, dtpScheduleTime.Value);
+            controller.setFilmScheduled(film, dtpScheduleTime.Value);
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
-            // controller.setFilmWatched(film, cbFilmWatched.Checked);
+            controller.setFilmWatched(film, cbFilmWatched.Checked);
         }
+
     }
 }
