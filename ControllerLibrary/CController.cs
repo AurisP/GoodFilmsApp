@@ -63,9 +63,9 @@ namespace ControllerLibrary
         {
             int film_id = model.Id;
             commentRxCb.call(globalId, () => {
-            var data = access.requestComments(film_id);
-            return data;
-        });
+                var data = access.requestComments(film_id);
+                return data;
+            });
             return globalId++;
         }
         int IController.rmComment(FilmModel model, int id)
@@ -90,8 +90,7 @@ namespace ControllerLibrary
         }
         int IController.requestMeta()
         {
-            metadataRxCb.call(globalId, () =>
-            {
+            metadataRxCb.call(globalId, () => {
                 var data = access.requestMetadata();
                 return new CFilmsMetadataCache(data.directors, data.genres, data.studios, data.languages, data.ageRatings);
             });

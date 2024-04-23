@@ -17,16 +17,23 @@ namespace GoodFilmsApp
     {
         private Action onCloseCb;
         private FilmModel film;
-        IController controller;
-        IDataAccess access;
-        public filmView(FilmModel film, Action onCloseCb, ref IController controller)
+        private ConstRef<IController> controller;
+        private int commentId;
+        public filmView(FilmModel film, Action onCloseCb, ConstRef<IController> controller)
         {
             this.film = film;
-            // this.controller = rController;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
-            this.access = new CDataAccess();
             InitializeComponent();
+        }
+
+        public void rxComment(CommentModel comment, int id)
+        {
+            if (id != commentId) return;
+            if (comment == null) return;
+            this.Invoke(new Action(() => {
+                txtUserComment.Text = comment.Comment_Text.ToString();
+            }));
         }
 
         private void updateStars()
@@ -54,21 +61,15 @@ namespace GoodFilmsApp
             // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
-            CommentModel comment;
-            comment = access.requestComments(film.Id);
-            if (comment != null)
-                txtUserComment.Text = comment.Comment_Text.ToString();
-            //var data = controller.requestComments(film);
+            commentId = controller.Value.requestComments(film);
         }
 
         private void addComment()
         {
             if ((txtUserComment).Tag != null)
             {
-               int Id = controller.addComment(film, txtUserComment.Text);
-                //access.updateComment(film.Id,txtUserComments.Text, )
+                controller.Value.addComment(film, txtUserComment.Text);
             }        
-        //TODO implement correctly`
         }
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
@@ -88,17 +89,17 @@ namespace GoodFilmsApp
 
         private void btnSaveComment_Click(object sender, EventArgs e)
         {
-            controller.addComment(film, txtUserComment.Text);
+            controller.Value.addComment(film, txtUserComment.Text);
         }
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            controller.setFilmScheduled(film, dtpScheduleTime.Value);
+            controller.Value.setFilmScheduled(film, dtpScheduleTime.Value);
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
-            controller.setFilmWatched(film, cbFilmWatched.Checked);
+            controller.Value.setFilmWatched(film, cbFilmWatched.Checked);
         }
 
     }

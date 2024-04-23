@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 using ViewHandler;
 using ControllerLibrary;
+using System.Xml.Linq;
 
 namespace GoodFilmsApp
 {
@@ -44,13 +45,13 @@ namespace GoodFilmsApp
                     metadataCache = cache;
                 },
                 (id, _) => { },
-                (id, _) => { },
+                (id, comment) => { PosterHandler.rxComment(comment, id); },
                 (id, err) => Console.WriteLine("Controller Error: " + err));
             metadataId = controller.requestMeta();
             metadataCache = null;
-            postersSearch = new PosterHandler(7, new PosterBoxSettings(), ref gbSearchResults, controller);
-            postersRecommend = new PosterHandler(7, new PosterBoxSettings(), ref gbRecommendedFilms, controller);
-            postersScheduled = new PosterHandler(7, new PosterBoxSettings(), ref gbScheduledFilms, controller);
+            postersSearch = new PosterHandler(7, new PosterBoxSettings(), ref gbSearchResults, new ConstRef<IController>(()=>controller));
+            postersRecommend = new PosterHandler(7, new PosterBoxSettings(), ref gbRecommendedFilms, new ConstRef<IController>(() => controller));
+            postersScheduled = new PosterHandler(7, new PosterBoxSettings(), ref gbScheduledFilms, new ConstRef<IController>(() => controller));
             btnSearch_Click(null, null);
             updateRecommend();
             updateSearch(false);
@@ -58,7 +59,6 @@ namespace GoodFilmsApp
         }
         internal void updateSearch(bool fromFilter)
         {
-
             controller.clearFilters();
             if (txtSearch.Text != "" && fromFilter == false)
             {
@@ -66,10 +66,7 @@ namespace GoodFilmsApp
                 filter.strSearch = txtSearch.Text;
                 controller.addFilter(filter);
             }
-
-
             postersSearch.request(controller.requestFilms(0, 7, Helpers.QueryModel, Helpers.IsFirstLoad));
-
             var quey = Helpers.QueryModel;
         }
         private void updateRecommend()

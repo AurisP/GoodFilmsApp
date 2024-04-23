@@ -10,12 +10,12 @@ namespace GoodFilmsApp
 {
     internal class PosterHandler : CViewHandler
     {
-        static bool detailOpen = false;
+        static filmView detailView = null;
         List<FilmModel> films;
         List<PictureBox> pb = new List<PictureBox>();
         List<MouseEventHandler> events = new List<MouseEventHandler>();
 
-        public PosterHandler(int numOfPictures, PosterBoxSettings s, ref GroupBox gb, IController controller)
+        public PosterHandler(int numOfPictures, PosterBoxSettings s, ref GroupBox gb, ConstRef<IController> controller)
         {
             setOnChangeCb((films) => {
                 int j = 0;
@@ -30,10 +30,9 @@ namespace GoodFilmsApp
                     MouseEventHandler ev;
                     ev = new MouseEventHandler((_, __) =>
                     {
-                        if (detailOpen) return;
-                        detailOpen = true;
-                        var filmWindow = new filmView(this.films[iCopy], () => { detailOpen = false; }, ref controller);
-                        filmWindow.Show();
+                        if (detailView != null) return;
+                        detailView = new filmView(this.films[iCopy], () => { detailView = null; }, controller);
+                        detailView.Show();
                     });
                     pb[j].MouseClick += ev;
                     events[j] = ev;
@@ -62,6 +61,11 @@ namespace GoodFilmsApp
                 this.pb.Add(pb);
                 gb.Controls.Add(pb);
             }
+        }
+
+        public static void rxComment(CommentModel comment, int id)
+        {
+            detailView?.rxComment(comment, id);
         }
     }
 }
