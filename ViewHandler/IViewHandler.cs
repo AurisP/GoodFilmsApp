@@ -9,9 +9,8 @@ namespace ViewHandler
     using FilmModel = ModelLibrary.Models.FilmModel;
     public interface IViewHandler
     {
-        void request(int id);
-        void setOnChangeCb(Action<List<FilmModel>> cb);
-        void filmsRx(int id, List<FilmModel> films);
-        List<int> getVisibleIDs();
+        void requestFilms(int offset, int count, Action cb);
+        List<FilmModel> getFilms(int offset, int count);
+        int getMaxOffset();
     }
 }

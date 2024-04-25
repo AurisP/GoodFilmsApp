@@ -5,49 +5,42 @@ using System.Windows.Forms;
 using ViewHandler;
 using ModelLibrary.Models;
 using ControllerLibrary;
+using System.Xml.Linq;
+using System.Threading.Tasks;
 
 namespace GoodFilmsApp
 {
     internal class PosterHandler : CViewHandler
     {
         static filmView detailView = null;
-        List<FilmModel> films;
         List<PictureBox> pb = new List<PictureBox>();
         List<MouseEventHandler> events = new List<MouseEventHandler>();
-
-        public PosterHandler(int numOfPictures, PosterBoxSettings s, ref GroupBox gb, ConstRef<IController> controller)
+        Button btnLeft;
+        Button btnRight;
+        Label lblStatus;
+        IController controller;
+        int size;
+        int page;
+        public PosterHandler(
+            IController controller,
+            int numOfPictures, 
+            PosterBoxSettings s,
+            GroupBox gb, 
+            Button btnLeft,
+            Button btnRight,
+            Label lblStatus) : base(controller)
         {
-            setOnChangeCb((films) => {
-                int j = 0;
-                int i = 0;
-                this.films = films;
-                for (; j < pb.Count && i < films.Count; i++)
-                {
-                    if (this.films[i].Poster_Url == "" || this.films[i].Poster_Url == null) continue;
-                    pb[j].ImageLocation = "../../" + this.films[i].Poster_Url;
-                    pb[j].MouseClick -= events[j];
-                    int iCopy = i;
-                    MouseEventHandler ev;
-                    ev = new MouseEventHandler((_, __) =>
-                    {
-                        if (detailView != null) return;
-                        detailView = new filmView(this.films[iCopy], () => { detailView = null; }, controller);
-                        detailView.Show();
-                    });
-                    pb[j].MouseClick += ev;
-                    events[j] = ev;
-                    j++;
-                }
-                for (; j < pb.Count; j++)
-                {
-                    pb[j].ImageLocation = "";
-                    if (events[j] != null)
-                    {
-                        pb[j].MouseClick -= events[j];
-                    }
-                    events[j] = null;
-                }
-            });
+            this.size = numOfPictures;
+            page = 0;
+            this.btnLeft = btnLeft;
+            this.btnRight = btnRight;
+            this.lblStatus = lblStatus;
+            this.controller = controller;
+            btnLeft.Enabled = true;
+            btnRight.Enabled = true;
+            lblStatus.Text = "";
+            btnLeft.Click += (_, __) => setPage(this.page - 1);
+            btnRight.Click += (_, __) => setPage(this.page + 1);
             for (int i = 0; i < numOfPictures; i++)
             {
                 PictureBox pb = new PictureBox();
@@ -60,6 +53,56 @@ namespace GoodFilmsApp
                 events.Add(null);
                 this.pb.Add(pb);
                 gb.Controls.Add(pb);
+            }
+        }
+
+        private void updateView(List<FilmModel> films)
+        {
+            for (var i = 0; i < films.Count && i < pb.Count; i++)
+            {
+                var iCopy = i;
+                pb[i].MouseClick -= events[i];
+                var ev = new MouseEventHandler((_, __) =>
+                {
+                    if (detailView != null) return;
+                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller);
+                    detailView.Show();
+                });
+                pb[i].MouseClick += ev;
+                events[i] = ev;
+                if (films[i].Poster_Url == "" || films[i].Poster_Url == null)
+                {
+                    pb[i].ImageLocation = "";
+                }
+                else
+                {
+                    pb[i].ImageLocation = "../../" + films[i].Poster_Url;
+                }
+            }
+        }
+
+        public void request()
+        {
+            requestFilms(page * size, 64, () => // TODO: Change 64 into reasonable parameter
+            {
+                var films = getFilms(page * size, size);
+                updateView(films);
+            });
+        }
+
+        public void filterUpdate(CFilter filter)
+        {
+            request();
+        }
+
+        public void setPage(int page)
+        {
+            this.page = page;
+            var films = getFilms(this.page * size, size);
+            updateView(films);
+            if (films.Count != size)
+            {
+                request();
             }
         }
 

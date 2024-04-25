@@ -17,9 +17,9 @@ namespace GoodFilmsApp
     {
         private Action onCloseCb;
         private FilmModel film;
-        private ConstRef<IController> controller;
+        private IController controller;
         private int commentId;
-        public filmView(FilmModel film, Action onCloseCb, ConstRef<IController> controller)
+        public filmView(FilmModel film, Action onCloseCb, IController controller)
         {
             this.film = film;
             this.onCloseCb = onCloseCb;
@@ -61,14 +61,14 @@ namespace GoodFilmsApp
             // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
-            commentId = controller.Value.requestComments(film);
+            commentId = controller.requestComments(film);
         }
 
         private void addComment()
         {
             if ((txtUserComment).Tag != null)
             {
-                controller.Value.addComment(film, txtUserComment.Text);
+                controller.addComment(film, txtUserComment.Text);
             }        
         }
 
@@ -89,17 +89,17 @@ namespace GoodFilmsApp
 
         private void btnSaveComment_Click(object sender, EventArgs e)
         {
-            controller.Value.addComment(film, txtUserComment.Text);
+            controller.addComment(film, txtUserComment.Text);
         }
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            controller.Value.setFilmScheduled(film, dtpScheduleTime.Value);
+            controller.setFilmScheduled(film, dtpScheduleTime.Value);
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
-            controller.Value.setFilmWatched(film, cbFilmWatched.Checked);
+            controller.setFilmWatched(film, cbFilmWatched.Checked);
         }
 
     }

@@ -47,15 +47,19 @@ namespace ControllerLibrary
             errorRxCb.call(globalId, () => access.updateComment(film_id, comment, commentDate));
             return globalId++;
         }
-        int IController.requestFilms(int page, int count, QueryModel queryModel, bool isFirstLoad)
+        int IController.requestFilms(int offset, int count, Action<List<FilmModel>> cb)
         {
-            //QueryModel queryModel = new QueryModel();
+            QueryModel queryModel = new QueryModel();
             if (this.filter != null)
             {
                 queryModel.Query = filter.strSearch;
                 queryModel.Random = filter.boolRandom;
             }
-            filmsRxCb.call(globalId, () => access.requestFilms(page, count, queryModel, isFirstLoad));
+            filmsRxCb.call(globalId, () => {
+                List<FilmModel> models = access.requestFilms(offset, count, queryModel);
+                cb(models);
+                return models;
+                });
             return globalId++;
         }
 
