@@ -19,10 +19,12 @@ namespace GoodFilmsApp
         Button btnRight;
         Label lblStatus;
         IController controller;
+        mainView mv;
         int size;
         int page;
         public PosterHandler(
             IController controller,
+            mainView mv,
             int numOfPictures, 
             PosterBoxSettings s,
             GroupBox gb, 
@@ -35,6 +37,7 @@ namespace GoodFilmsApp
             this.btnLeft = btnLeft;
             this.btnRight = btnRight;
             this.lblStatus = lblStatus;
+            this.mv = mv;
             this.controller = controller;
             btnLeft.Enabled = true;
             btnRight.Enabled = true;
@@ -54,6 +57,22 @@ namespace GoodFilmsApp
                 this.pb.Add(pb);
                 gb.Controls.Add(pb);
             }
+        }
+
+        private void updateControls(List<FilmModel> films)
+        {
+            mv.Invoke(new Action(() => {
+                btnLeft.Enabled = page > 0;
+                btnRight.Enabled = btnRight.Enabled = films.Count >= size;
+                if (films.Count < size)
+                {
+                    lblStatus.Text = "page " + page.ToString() + " / " + (getMaxOffset() / size).ToString();
+                }
+                else
+                {
+                    lblStatus.Text = "page " + page.ToString() + " / " + (getMaxOffset() / size).ToString() + "...";
+                }
+            }));
         }
 
         private void updateView(List<FilmModel> films)
@@ -87,6 +106,7 @@ namespace GoodFilmsApp
             {
                 var films = getFilms(page * size, size);
                 updateView(films);
+                updateControls(films);
             });
         }
 
@@ -97,9 +117,14 @@ namespace GoodFilmsApp
 
         public void setPage(int page)
         {
+            if (page < 0)
+            {
+                page = 0;
+            }
             this.page = page;
             var films = getFilms(this.page * size, size);
             updateView(films);
+            updateControls(films);
             if (films.Count != size)
             {
                 request();

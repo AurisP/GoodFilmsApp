@@ -43,19 +43,19 @@ namespace GoodFilmsApp
                 (id, err) => Console.WriteLine("Controller Error: " + err));
             metadataId = controller.requestMeta();
             metadataCache = null;
-            postersSearch = new PosterHandler(controller,
+            postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
                 btnSearchLeft,
                 btnSearchRight,
                 lblSearchPage);
-            postersRecommend = new PosterHandler(controller,
+            postersRecommend = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbRecommendedFilms,
                 btnRecommendLeft,
                 btnRecommenRight,
                 lblRecommendPage);
-            postersScheduled = new PosterHandler(controller,
+            postersScheduled = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbScheduledFilms,
                 btnScheduleLeft,

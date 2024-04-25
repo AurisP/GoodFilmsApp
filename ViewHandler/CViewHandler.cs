@@ -20,6 +20,7 @@ namespace ViewHandler
         {
             controller.requestFilms(offset, count, (films) =>
             {
+                maxOffset = maxOffset > offset + films.Count ? maxOffset : offset + films.Count;
                 for (var i = 0; i < films.Count; i++)
                 {
                     if (offsetsToFilms.ContainsKey(offset + i))
@@ -47,6 +48,11 @@ namespace ViewHandler
         public int getMaxOffset()
         {
             return maxOffset;
+        }
+        public void clearView()
+        {
+            maxOffset = 0;
+            offsetsToFilms = new Dictionary<int, FilmModel>();
         }
     }
 }
