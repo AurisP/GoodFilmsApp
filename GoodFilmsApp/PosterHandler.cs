@@ -13,15 +13,16 @@ namespace GoodFilmsApp
     internal class PosterHandler : CViewHandler
     {
         static filmView detailView = null;
+        CFilter filter;
         List<PictureBox> pb = new List<PictureBox>();
         List<MouseEventHandler> events = new List<MouseEventHandler>();
         Button btnLeft;
         Button btnRight;
         Label lblStatus;
         IController controller;
-        mainView mv;
-        int size;
-        int page;
+        mainView mv; // Have to keep track of this to update buttons in the same thread as they were created, god I love C#
+        int size;    // Amount of PictureBoxes
+        int page;    // Current page we're on
         public PosterHandler(
             IController controller,
             mainView mv,
@@ -77,8 +78,13 @@ namespace GoodFilmsApp
 
         private void updateView(List<FilmModel> films)
         {
-            for (var i = 0; i < films.Count && i < pb.Count; i++)
+            for (var i = 0; i < pb.Count; i++)
             {
+                if (i >= films.Count)
+                {
+                    pb[i].ImageLocation = "";
+                    continue;
+                }
                 var iCopy = i;
                 pb[i].MouseClick -= events[i];
                 var ev = new MouseEventHandler((_, __) =>
@@ -102,6 +108,8 @@ namespace GoodFilmsApp
 
         public void request()
         {
+            controller.clearFilters();
+            controller.addFilter(filter);
             requestFilms(page * size, 64, () => // TODO: Change 64 into reasonable parameter
             {
                 var films = getFilms(page * size, size);
@@ -110,17 +118,16 @@ namespace GoodFilmsApp
             });
         }
 
-        public void filterUpdate(CFilter filter)
+        public void setFilter(CFilter filter)
         {
+            clearView();
+            this.filter = filter;
             request();
         }
 
         public void setPage(int page)
         {
-            if (page < 0)
-            {
-                page = 0;
-            }
+            if (page < 0) page = 0;
             this.page = page;
             var films = getFilms(this.page * size, size);
             updateView(films);

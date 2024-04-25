@@ -61,33 +61,21 @@ namespace GoodFilmsApp
                 btnScheduleLeft,
                 btnScheduleRight,
                 lblScheduledPage);
-            btnSearch_Click(null, null);
             updateRecommend();
-            updateSearch(false);
+            updateSearch();
 
         }
-        internal void updateSearch(bool fromFilter)
+        internal void updateSearch()
         {
-            controller.clearFilters();
-            if (txtSearch.Text != "" && fromFilter == false)
-            {
-                CFilter filter = new CFilter();
-                filter.strSearch = txtSearch.Text;
-                controller.addFilter(filter);
-            }
-            postersSearch.request();
+            CFilter filter = new CFilter();
+            filter.strSearch = txtSearch.Text;
+            postersSearch.setFilter(filter);
         }
         private void updateRecommend()
         {
-            controller.clearFilters();
             CFilter filter = new CFilter();
             filter.boolRandom = true;
-            controller.addFilter(filter);
-            postersRecommend.request();
-        }
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            updateSearch(false);
+            postersRecommend.setFilter(filter);
         }
 
         //##
@@ -107,7 +95,7 @@ namespace GoodFilmsApp
             else
                 Helpers.QueryModel.Query = txtSearch.Text;
 
-            updateSearch(false);
+            updateSearch();
         }
 
 
