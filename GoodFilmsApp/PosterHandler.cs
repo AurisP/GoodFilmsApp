@@ -67,11 +67,11 @@ namespace GoodFilmsApp
                 btnRight.Enabled = btnRight.Enabled = films.Count >= size;
                 if (films.Count < size)
                 {
-                    lblStatus.Text = "page " + page.ToString() + " / " + (getMaxOffset() / size).ToString();
+                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + (getMaxOffset() / size + 1).ToString();
                 }
                 else
                 {
-                    lblStatus.Text = "page " + page.ToString() + " / " + (getMaxOffset() / size).ToString() + "...";
+                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + (getMaxOffset() / size + 1).ToString() + "...";
                 }
             }));
         }
