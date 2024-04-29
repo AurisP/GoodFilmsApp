@@ -1,10 +1,13 @@
 ﻿using ControllerLibrary;
+using CSVExporterDNF;
+using ModelLibrary;
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +22,9 @@ namespace GoodFilmsApp
         private Action onCloseCb;
         private FilmModel film;
         private IController controller;
+        private int commentId;
+        private string path;
+        
         private bool ignoreCheck;
         public filmView(FilmModel film, Action onCloseCb, IController controller)
         {
@@ -27,7 +33,8 @@ namespace GoodFilmsApp
             this.onCloseCb = onCloseCb;
             this.controller = controller;
             InitializeComponent();
-        }
+            
+    }
 
         private void updateStars()
         {
@@ -106,5 +113,11 @@ namespace GoodFilmsApp
             film.Watched = cbFilmWatched.Checked;
         }
 
+        private void btnSaveAs_Click_1(object sender, EventArgs e)
+        {
+            CSView csview = new CSView(film, ref path);
+            csview.StartPosition = FormStartPosition.CenterParent;
+            csview.ShowDialog(this);
+        }
     }
 }
