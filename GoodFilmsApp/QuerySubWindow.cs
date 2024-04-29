@@ -294,6 +294,9 @@ namespace GoodFilmsApp
             this.Close();
         }
 
+        private void cBoxMaxDuration_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

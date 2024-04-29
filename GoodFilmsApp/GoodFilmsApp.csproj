@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSVExporterDNF">
+      <HintPath>..\CSVExporterDNF.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.1.35\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -124,6 +127,15 @@
     <Compile Include="QuerySubWindow.designer.cs">
       <DependentUpon>QuerySubWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="CSView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CSView.Designer.cs">
+      <DependentUpon>CSView.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CSView.resx">
+      <DependentUpon>CSView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataGridWindow.resx">
       <DependentUpon>DataGridWindow.cs</DependentUpon>
     </EmbeddedResource>
