@@ -48,6 +48,7 @@
             this.lblScheduleFilm = new System.Windows.Forms.Label();
             this.btnAddToSchedule = new System.Windows.Forms.Button();
             this.cbFilmWatched = new System.Windows.Forms.CheckBox();
+            this.btnSaveAs = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPoster)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbStar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbStar2)).BeginInit();
@@ -216,11 +217,22 @@
             this.cbFilmWatched.UseVisualStyleBackColor = true;
             this.cbFilmWatched.CheckedChanged += new System.EventHandler(this.cbFilmWatched_CheckedChanged);
             // 
+            // btnSaveAs
+            // 
+            this.btnSaveAs.Location = new System.Drawing.Point(541, 40);
+            this.btnSaveAs.Name = "btnSaveAs";
+            this.btnSaveAs.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveAs.TabIndex = 25;
+            this.btnSaveAs.Text = "Save As";
+            this.btnSaveAs.UseVisualStyleBackColor = true;
+            this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click_1);
+            // 
             // filmView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(731, 548);
+            this.Controls.Add(this.btnSaveAs);
             this.Controls.Add(this.cbFilmWatched);
             this.Controls.Add(this.btnAddToSchedule);
             this.Controls.Add(this.lblScheduleFilm);
@@ -273,5 +285,6 @@
         private System.Windows.Forms.Label lblScheduleFilm;
         private System.Windows.Forms.Button btnAddToSchedule;
         private System.Windows.Forms.CheckBox cbFilmWatched;
+        private System.Windows.Forms.Button btnSaveAs;
     }
 }
