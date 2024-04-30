@@ -18,7 +18,6 @@ namespace GoodFilmsApp
     public partial class mainView : Form
     {
         IController controller;
-        int metadataId;
         CFilmsMetadataCache metadataCache;
         PosterHandler postersSearch;
         PosterHandler postersRecommend;
@@ -27,22 +26,9 @@ namespace GoodFilmsApp
         public mainView()
         {
             InitializeComponent();
-            controller = new CController(
-                (id, films) => { },
-                (id, cache) =>
-                {
-                    if (id != metadataId)
-                    {
-                        Console.WriteLine("Controller Error: Incorrect ID ", id, " in metadata rx, expected ", metadataId);
-                        return;
-                    }
-                    metadataCache = cache;
-                },
-                (id, _) => { },
-                (id, comment) => { PosterHandler.rxComment(comment, id); },
-                (id, err) => Console.WriteLine("Controller Error: " + err));
-            metadataId = controller.requestMeta();
+            controller = new CController();
             metadataCache = null;
+            controller.requestMeta((metadata) => { metadataCache = metadata; }, (error) => { MessageBox.Show(error); });
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
@@ -63,7 +49,6 @@ namespace GoodFilmsApp
                 lblScheduledPage);
             updateRecommend();
             updateSearch();
-
         }
         internal void updateSearch()
         {
@@ -77,8 +62,6 @@ namespace GoodFilmsApp
             filter.boolRandom = true;
             postersRecommend.setFilter(filter);
         }
-
-        //##
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
             if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?

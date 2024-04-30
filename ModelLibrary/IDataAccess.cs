@@ -11,10 +11,12 @@ namespace ModelLibrary
     {
         MetadataModel requestMetadata();
         List<FilmModel> requestFilms(int offset, int amount, QueryModel query);
-        int setFilmWatched(int id);
-        int setFilmScheduled(int id, int date_unix_ts);
-        string updateComment(int film_id, string comment, string commentDate);
-        CommentModel requestComments(int film_id);
+        void setFilmWatched(int id, bool watched);
+        void setFilmScheduled(int id, long date_unix_ts);
+        void setFilmRating(int id, int stars);
+        void setComment(int film_id, string comment, string commentDate);
+        CommentModel requestComment(int film_id);
+        void removeComment(int comment_id);
 
     }
 }

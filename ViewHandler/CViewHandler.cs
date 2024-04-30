@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using ControllerLibrary;
+using System.Windows.Forms;
 
 namespace ViewHandler
 {
@@ -16,9 +17,9 @@ namespace ViewHandler
             maxOffset = 0;
             this.controller = controller;
         }
-        public void requestFilms(int offset, int count, Action cb)
+        public void requestFilms(CFilter filter, int offset, int count, Action cb)
         {
-            controller.requestFilms(offset, count, (films) =>
+            controller.requestFilms(filter, offset, count, (films) =>
             {
                 maxOffset = maxOffset > offset + films.Count ? maxOffset : offset + films.Count;
                 for (var i = 0; i < films.Count; i++)
@@ -33,6 +34,10 @@ namespace ViewHandler
                     }
                 }
                 cb?.Invoke();
+            }, 
+            (error) =>
+            {
+                MessageBox.Show(error);
             });
         }
         public List<FilmModel> getFilms(int offset, int count)
