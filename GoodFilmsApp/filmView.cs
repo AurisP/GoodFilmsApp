@@ -3,13 +3,9 @@ using ModelLibrary;
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace GoodFilmsApp
 {
@@ -17,7 +13,17 @@ namespace GoodFilmsApp
     {
         private Action onCloseCb;
         private FilmModel film;
-        private IController controller;
+        IController controller;
+        IDataAccess access;
+
+        List<LanguageModel> _languages;
+        List<StudioModel> _studios;
+        List<GenreModel> _genres;
+        string _director;
+        int _releaseYear;
+        double _durationHour;
+        string _ageRating;
+ 
         private bool ignoreCheck;
         private mainView parent;
         public filmView(mainView parent, FilmModel film, Action onCloseCb, IController controller)
@@ -27,6 +33,43 @@ namespace GoodFilmsApp
             this.onCloseCb = onCloseCb;
             this.controller = controller;
             InitializeComponent();
+
+
+            _languages = CDataAccess.LoadLanguages()
+                .Where(
+                d => CDataAccess.LoadLanguagesFilms()
+                .Where(x => x.film_id == film.Id)
+                .Select(s => (int)s.language_id)
+                .Contains(d.Id)).ToList();
+            _studios = CDataAccess.LoadStudios()
+                .Where(
+                d => CDataAccess.LoadStudioFilms()
+                .Where(x => x.film_id == film.Id)
+                .Select(s => (int)s.studio_id)
+                .Contains(d.Id)).ToList();
+            _genres = CDataAccess.LoadGenres()
+                .Where(
+                d => CDataAccess.LoadGenresFilms()
+                .Where(x => x.film_id == film.Id)
+                .Select(s => (int)s.genre_id)
+                .Contains(d.Id)).ToList();
+
+            _director = CDataAccess.LoadDirectors().Where(d => d.Id == CDataAccess.LoadDirectorFilms().Where(x => x.Id == film.Id).FirstOrDefault().director_id).FirstOrDefault().Name;
+            _releaseYear = film.Release_Year;
+            // Convert the duration in seconds to a TimeSpan object
+            TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
+            // Calculate hours and minutes separately
+            int hours = duration.Hours;
+            int minutes = duration.Minutes;
+            // Display the duration in hours and minutes
+            lblDurationResult.Text = $"{hours}h {minutes}min";
+            _ageRating = CDataAccess.LoadAgeRatings().Where(x => x.Id == film.age_rating_id).FirstOrDefault().Rating.ToString();
+
+            lblDirectorResult.Text = _director;
+            lblReleaseYearResult.Text = _releaseYear.ToString();
+            lblAgeRatingResult.Text = _ageRating;
+
+
         }
 
         private void updateStars()
@@ -106,5 +149,27 @@ namespace GoodFilmsApp
             film.Watched = cbFilmWatched.Checked;
         }
 
+        private void lblLanguageResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_languages);
+            informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
+            informationDataGridWİndow.ShowDialog(this);
+        }
+
+        private void lblStudioResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_studios);
+            informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
+            informationDataGridWİndow.ShowDialog(this);
+        }
+
+        private void lblGenreResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            InformationDataGridWindow informationDataGridWindow = new InformationDataGridWindow(_genres);
+            informationDataGridWindow.StartPosition = FormStartPosition.CenterParent;
+            informationDataGridWindow.ShowDialog(this);
+        }
+
+       
     }
 }

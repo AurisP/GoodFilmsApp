@@ -64,7 +64,7 @@ namespace GoodFilmsApp
                 MessageBox.Show("Please choose max duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        
+
         // Method to handle release year selection
         private void HandleReleaseYear()
         {
@@ -76,6 +76,9 @@ namespace GoodFilmsApp
             {
                 filter.intReleaseYear = null;
             }
+
+
+
         }
 
         // Method to handle studio selection
