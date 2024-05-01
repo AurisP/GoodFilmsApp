@@ -121,7 +121,6 @@ namespace ControllerLibrary
             {
                 try
                 {
-                    Console.WriteLine("CONTROLLER REL year " + filter.intReleaseYear.ToString());
                     var films = access.requestFilms(offset, count, filter.toQuery());
                     on_success?.Invoke(films);
                 }

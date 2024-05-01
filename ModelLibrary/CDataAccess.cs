@@ -93,10 +93,9 @@ namespace ModelLibrary
             }
             else
             {
-                template = builder.AddTemplate("SELECT * FROM films ORDER BY title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                template = builder.AddTemplate("SELECT * FROM films /**where**/ ORDER BY title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
             Console.WriteLine("SQL: " + template.RawSql);
-            Console.WriteLine("release year " + query.intReleaseYear.ToString());
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
            /* if (queryModel.ReleaseYear != 0)
                 output = output.Where(x => x.Release_Year == queryModel.ReleaseYear);
