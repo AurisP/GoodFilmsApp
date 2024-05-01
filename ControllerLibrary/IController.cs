@@ -1,5 +1,6 @@
 ﻿using ModelLibrary;
 using System;
+using System.Collections.Generic;
 
 namespace ControllerLibrary
 {
@@ -14,7 +15,7 @@ namespace ControllerLibrary
         int addComment(FilmModel mode, string comment);
         int requestComments(FilmModel model);
         int rmComment(FilmModel mode, int id);
-        int requestFilms(int page, int count,QueryModel queryModel,bool isFirstLoad);
+        int requestFilms(int offset, int count, Action<List<FilmModel>> cb = null);
         int requestMeta();
     }
 }

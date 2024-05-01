@@ -44,9 +44,8 @@ namespace ModelLibrary
             );
         }
 
-        List<FilmModel> IDataAccess.requestFilms(int start, int amount, QueryModel queryModel, bool isFirstLoad)
+        List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel queryModel)
         {
-            int offset = (start - 1) * amount;
             SqlBuilder builder = new SqlBuilder();
             if (queryModel.Query != null)
             {
@@ -144,12 +143,6 @@ namespace ModelLibrary
                 .ToList();
 
                 output = output.Where(x => chosenLanguageFilms.Select(y => y.film_id).Contains(x.Id));
-            }
-
-            if (isFirstLoad)
-            {
-                isFirstLoad = false;
-                queryModel.Random = false;
             }
 
             return output.ToList();
