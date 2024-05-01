@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 using ViewHandler;
 using ControllerLibrary;
+using System.Xml.Linq;
 
 namespace GoodFilmsApp
 {
@@ -28,12 +28,7 @@ namespace GoodFilmsApp
         {
             InitializeComponent();
             controller = new CController(
-                (id, films) =>
-                {
-                    postersSearch.filmsRx(id, films);
-                    postersRecommend.filmsRx(id, films);
-                    postersScheduled.filmsRx(id, films);
-                },
+                (id, films) => { },
                 (id, cache) =>
                 {
                     if (id != metadataId)
@@ -44,45 +39,43 @@ namespace GoodFilmsApp
                     metadataCache = cache;
                 },
                 (id, _) => { },
-                (id, _) => { },
+                (id, comment) => { PosterHandler.rxComment(comment, id); },
                 (id, err) => Console.WriteLine("Controller Error: " + err));
             metadataId = controller.requestMeta();
             metadataCache = null;
-            postersSearch = new PosterHandler(7, new PosterBoxSettings(), ref gbSearchResults, controller);
-            postersRecommend = new PosterHandler(7, new PosterBoxSettings(), ref gbRecommendedFilms, controller);
-            postersScheduled = new PosterHandler(7, new PosterBoxSettings(), ref gbScheduledFilms, controller);
-            btnSearch_Click(null, null);
+            postersSearch = new PosterHandler(controller, this,
+                7, new PosterBoxSettings(), 
+                gbSearchResults,
+                btnSearchLeft,
+                btnSearchRight,
+                lblSearchPage);
+            postersRecommend = new PosterHandler(controller, this,
+                7, new PosterBoxSettings(),
+                gbRecommendedFilms,
+                btnRecommendLeft,
+                btnRecommenRight,
+                lblRecommendPage);
+            postersScheduled = new PosterHandler(controller, this,
+                7, new PosterBoxSettings(),
+                gbScheduledFilms,
+                btnScheduleLeft,
+                btnScheduleRight,
+                lblScheduledPage);
             updateRecommend();
-            updateSearch(false);
+            updateSearch();
 
         }
-        internal void updateSearch(bool fromFilter)
+        internal void updateSearch()
         {
-
-            controller.clearFilters();
-            if (txtSearch.Text != "" && fromFilter == false)
-            {
-                CFilter filter = new CFilter();
-                filter.strSearch = txtSearch.Text;
-                controller.addFilter(filter);
-            }
-
-
-            postersSearch.request(controller.requestFilms(0, 7, Helpers.QueryModel, Helpers.IsFirstLoad));
-
-            var quey = Helpers.QueryModel;
+            CFilter filter = new CFilter();
+            filter.strSearch = txtSearch.Text;
+            postersSearch.setFilter(filter);
         }
         private void updateRecommend()
         {
-            controller.clearFilters();
             CFilter filter = new CFilter();
             filter.boolRandom = true;
-            controller.addFilter(filter);
-            postersRecommend.request(controller.requestFilms(0, 7, Helpers.QueryModel, Helpers.IsFirstLoad));
-        }
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            updateSearch(false);
+            postersRecommend.setFilter(filter);
         }
 
         //##
@@ -102,7 +95,7 @@ namespace GoodFilmsApp
             else
                 Helpers.QueryModel.Query = txtSearch.Text;
 
-            updateSearch(false);
+            updateSearch();
         }
 
 

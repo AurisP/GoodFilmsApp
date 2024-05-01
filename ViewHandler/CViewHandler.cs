@@ -1,42 +1,58 @@
 ﻿using ModelLibrary.Models;
 using System.Collections.Generic;
 using System;
+using ControllerLibrary;
 
 namespace ViewHandler
 {
     public class CViewHandler : IViewHandler
     {
-        private List<FilmModel> films;
-        private HashSet<int> expectedIds;
-        private Action<List<FilmModel>> cb;
-        public CViewHandler()
+        private Dictionary<int, FilmModel> offsetsToFilms;
+        private int maxOffset;
+        private IController controller;
+        public CViewHandler(IController controller)
         {
-            cb = (_) => {};
-            films = new List<FilmModel>();
-            expectedIds = new HashSet<int>();
+            offsetsToFilms = new Dictionary<int, FilmModel>();
+            maxOffset = 0;
+            this.controller = controller;
         }
-        public void request(int id)
+        public void requestFilms(int offset, int count, Action cb)
         {
-            expectedIds.Add(id);
-        }
-        public void setOnChangeCb(Action<List<FilmModel>> cb)
-        {
-            this.cb = cb;
-        }
-        public void filmsRx(int id, List<FilmModel> films)
-        {
-            if (!expectedIds.Contains(id)) return;
-            this.films.AddRange(films);
-            cb?.Invoke(films);
-        }
-        public List<int> getVisibleIDs()
-        {
-            List<int> ids = new List<int>();
-            for (var i = 0; i < films.Count; i++)
+            controller.requestFilms(offset, count, (films) =>
             {
-                ids.Add(films[i].Id);
+                maxOffset = maxOffset > offset + films.Count ? maxOffset : offset + films.Count;
+                for (var i = 0; i < films.Count; i++)
+                {
+                    if (offsetsToFilms.ContainsKey(offset + i))
+                    {
+                        offsetsToFilms[offset + i] = films[i];
+                    }
+                    else
+                    {
+                        offsetsToFilms.Add(offset + i, films[i]);
+                    }
+                }
+                cb?.Invoke();
+            });
+        }
+        public List<FilmModel> getFilms(int offset, int count)
+        {
+            List<FilmModel> result = new List<FilmModel>();
+            for (var i = 0; i < count; i++)
+            {
+                if (!offsetsToFilms.ContainsKey(offset + i)) continue;
+                result.Add(offsetsToFilms[offset + i]);
             }
-            return ids;
+            return result;
+        }
+        public int getMaxOffset()
+        {
+            return maxOffset;
+        }
+        public void clearView()
+        {
+            maxOffset = 0;
+            offsetsToFilms = new Dictionary<int, FilmModel>();
         }
     }
 }

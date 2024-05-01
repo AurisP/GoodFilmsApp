@@ -279,7 +279,7 @@ namespace GoodFilmsApp
             HandleQuery();
             var query = Helpers.QueryModel;
             this.Close();
-            _mainView.updateSearch(true);
+            _mainView.updateSearch();
             //MessageBox.Show("Searched");
 
         }
