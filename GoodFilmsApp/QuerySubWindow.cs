@@ -17,32 +17,36 @@ namespace GoodFilmsApp
         private List<DirectorModel> _directors;
         private List<AgeRatingModel> _ageRatings;
         private List<LanguageModel> _languages;
-        mainView _mainView;
+        private mainView _mainView;
         // Lists to store data fetched from the database
         private ConstRef<CFilmsMetadataCache> _data;
         private List<int> _hoursMax = new List<int>() { 1, 2, 3, 4, 5 };
         private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
-        public QuerySubWindow(ConstRef<CFilmsMetadataCache> data, bool isCleared,mainView mainView)
+        public QuerySubWindow(ConstRef<CFilmsMetadataCache> data, bool isCleared, mainView mainView)
         {
             InitializeComponent();  // Initialize form components
             //Helpers.QueryModel = new QueryModel(); // Instantiate QueryModel
             _mainView = mainView;
             this._data = data;
 
+            // Load data from database
             _studios = CDataAccess.LoadStudios();
             _genres = CDataAccess.LoadGenres();
             _directors = CDataAccess.LoadDirectors();
             _ageRatings = CDataAccess.LoadAgeRatings();
             _languages = CDataAccess.LoadLanguages();
 
-
+            // Initialize combo boxes for duration selection
             cBoxMaxDuration.DataSource = _hoursMax;
             cBoxMinDuration.DataSource = _hoursMin;
             cBoxMaxDuration.SelectedItem = null;
             cBoxMinDuration.SelectedItem = null;
 
+            // Set DropDownStyle to DropDownList for read-only behavior
+            cBoxMinDuration.DropDownStyle = ComboBoxStyle.DropDownList;
+            cBoxMaxDuration.DropDownStyle = ComboBoxStyle.DropDownList;
 
 
             // Populate combo boxes for duration selection
@@ -52,8 +56,10 @@ namespace GoodFilmsApp
             cBoxMinDuration.SelectedItem = null;
 
 
+            // Check if filters need to be cleared
             if (!isCleared)
             {
+                // Populate filters with previous selections
                 var temp = Helpers.QueryModel;
 
                 if (Helpers.QueryModel.MinDuration != 0)
@@ -63,11 +69,10 @@ namespace GoodFilmsApp
                 if (Helpers.QueryModel.ReleaseYear != 0)
                     tBoxReleaseYear.Text = Helpers.QueryModel.ReleaseYear.ToString();
 
-
             }
         }
 
-        
+
         // Method to handle minimum duration selection
         private void HandleMinTime()
         {
@@ -95,19 +100,51 @@ namespace GoodFilmsApp
                 MessageBox.Show("Please choose max duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        
+
         // Method to handle release year selection
         private void HandleReleaseYear()
         {
             try
             {
                 if (!string.IsNullOrEmpty(tBoxReleaseYear.Text))
-                    Helpers.QueryModel.ReleaseYear = Convert.ToInt32(tBoxReleaseYear.Text);
+                {
+                    int releaseYear = Convert.ToInt32(tBoxReleaseYear.Text);
+                    if (releaseYear == 0)
+                    {
+                        MessageBox.Show("Release year cannot be 0.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return; // Exit the method without further processing
+                    }
+                    Helpers.QueryModel.ReleaseYear = releaseYear;
+                }
+                else
+                {
+                    // If the input is empty, set release year to 0 or handle it as needed
+                    Helpers.QueryModel.ReleaseYear = 0;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something gone wrong on Release Year.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Invalid release year format.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        // Method to handle query parameters
+        private void HandleQuery()
+        {
+            HandleMinTime();
+            HandleMaxTime();
+            HandleReleaseYear();
+
+            // Check if min duration is greater than max duration
+            if (Helpers.QueryModel.MinDuration > Helpers.QueryModel.MaxDuration)
+            {
+                MessageBox.Show("Minimum duration cannot be greater than maximum duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Helpers.QueryModel.MinDuration = 0; // Reset min duration
+                Helpers.QueryModel.MaxDuration = 0; // Reset max duration
+            }
+
+
+
         }
 
         // Method to handle studio selection
@@ -237,15 +274,6 @@ namespace GoodFilmsApp
             }
         }
 
-        // Method to handle query parameters
-        private void HandleQuery()
-        {
-            HandleMinTime();
-            HandleMaxTime();
-            HandleReleaseYear();
-
-        }
-
         //Buttons:
         private void btnAddNewStudio_Click(object sender, EventArgs e)
         {
@@ -293,7 +321,5 @@ namespace GoodFilmsApp
             querySubWindow.ShowDialog();
             this.Close();
         }
-
-
     }
 }
