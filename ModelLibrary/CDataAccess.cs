@@ -30,8 +30,6 @@ namespace ModelLibrary
 
         public CDataAccess()
         {
-            Console.WriteLine("Opening database");
-            Console.WriteLine(LoadConnectionString());
             this.cnn = new SQLiteConnection(LoadConnectionString());
             this.cnn.Open();
         }
@@ -54,6 +52,36 @@ namespace ModelLibrary
             {
                 builder = builder.Where("title LIKE @Query", new { Query = "%" + queryModel.Query + "%" });
             }
+            if (queryModel.ReleaseYear != null)
+            {
+                builder = builder.Where("release_year = @Year", new { Year = queryModel.ReleaseYear });
+            }
+            if (queryModel.MaxDuration != null)
+            {
+                builder = builder.Where("duration_sec <= @Seconds", new { Seconds = Convert.ToDouble(queryModel.MaxDuration) * 3600 });
+            }
+            if (queryModel.MinDuration != null)
+            {
+                builder = builder.Where("duration_sec >= @Seconds", new { Seconds = Convert.ToDouble(queryModel.MinDuration) * 3600 });
+            }
+            if (queryModel.AgeRatings != null && queryModel.AgeRatings.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var rating in queryModel.AgeRatings)
+                {
+                    queries.Add("age_rating_id = " + rating.Id.ToString());
+                }
+                builder = builder.Where(String.Join(" OR ", queries.ToArray()));
+            }
+            if (queryModel.Genres != null && queryModel.Genres.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var rating in queryModel.AgeRatings)
+                {
+                    queries.Add("age_rating_id = " + rating.Id.ToString());
+                }
+                builder = builder.Where(String.Join(" OR ", queries.ToArray()));
+            }
             Template template;
             if (queryModel.Random)
             {
@@ -62,20 +90,15 @@ namespace ModelLibrary
             else if (queryModel.Query != null)
             {
                 template = builder.AddTemplate("SELECT * FROM films /**where**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
-
             }
             else
             {
                 template = builder.AddTemplate("SELECT * FROM films ORDER BY title");
             }
-
+            Console.WriteLine("SQL: " + template.RawSql);
+            Console.WriteLine("release year ", queryModel.ReleaseYear);
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
-            //string query = "SELECT * FROM films ORDER BY title";
-
-            //var output = cnn.Query<FilmModel>(query);
-
-
-            if (queryModel.ReleaseYear != 0)
+           /* if (queryModel.ReleaseYear != 0)
                 output = output.Where(x => x.Release_Year == queryModel.ReleaseYear);
 
 
@@ -146,7 +169,7 @@ namespace ModelLibrary
                 .ToList();
 
                 output = output.Where(x => chosenLanguageFilms.Select(y => y.film_id).Contains(x.Id));
-            }
+            }*/
 
             return output.ToList();
         }

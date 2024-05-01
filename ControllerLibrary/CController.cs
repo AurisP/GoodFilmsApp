@@ -126,6 +126,7 @@ namespace ControllerLibrary
                     {
                         query.Query = filter.strSearch;
                         query.Random = filter.boolRandom;
+                        query.ReleaseYear = filter.intReleaseYear;
                     }
                     var films = access.requestFilms(offset, count, query);
                     on_success?.Invoke(films);
