@@ -1,130 +1,198 @@
 ﻿using ModelLibrary.Models;
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using ControllerLibrary;
 
 namespace GoodFilmsApp
 {
+    public class CStudioData
+    {
+        public int Id { get; set; }
+        public string Studio { get; set; }
+        public bool Chosen { get; set; }
+    }
+    public class CGenreData
+    {
+        public int Id { get; set; }
+        public string Genre { get; set; }
+        public bool Chosen { get; set; }
+    }
+    public class CDirectorData
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool Chosen { get; set; }
+    }
+    public class CAgeRatingData
+    {
+        public int Id { get; set; }
+        public string Rating { get; set; }
+        public bool Chosen { get; set; }
+    }
+    public class CLanguageData
+    {
+        public int Id { get; set; }
+        public string Language { get; set; }
+        public bool Chosen { get; set; }
+    }
     public partial class DataGridWindow : Form
     {
         //// Lists to store different models
-        List<StudioModel> _studioModels;
-        List<GenreModel> _genreModel;
-        List<DirectorModel> _directorModel;
-        List<AgeRatingModel> _ageRatingModel;
-        List<LanguageModel> _languageModels;
+        private Action onSave;
+        private List<CStudioData> studioData;
+        private List<CGenreData> genreData;
+        private List<CDirectorData> directorData;
+        private List<CAgeRatingData> ageRatingData;
+        private List<CLanguageData> languageData;
         bool _canCellChangeEventFire = false;
 
 
         public DataGridWindow()
         {
             InitializeComponent(); // Form components
+            onSave = () => { };
         }
 
         // Constructors to populate the data grid with a list of ...
         #region data grid
-        public DataGridWindow(List<StudioModel> studioModels)
+        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<StudioModel> studioModels)
         {
             InitializeComponent();
-            _studioModels = studioModels;
-
-            dgwMain.DataSource = _studioModels;
+            studioData = studioModels
+                            .OrderByDescending(x => filter.listStudios.Contains(x.Id))
+                            .Select(x => new CStudioData { Id = x.Id, Studio = x.Studio, Chosen = false })
+                            .ToList();
+            for (var i = 0; i < studioModels.Count; i++)
+            {
+                if (!filter.listStudios.Contains(studioData[i].Id)) break;
+                studioData[i].Chosen = true;
+            }
+            dgwMain.DataSource = studioData;
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
+            this.onSave = () => {
+                filter.listStudios = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                onChange(filter);
+            };
         }
 
-        public DataGridWindow(List<LanguageModel> languageModels)
+        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<LanguageModel> languageModels)
         {
             InitializeComponent();
-            _languageModels = languageModels;
-
-            dgwMain.DataSource = _languageModels;
+            languageData = languageModels
+                             .OrderByDescending(x => filter.listLanguages.Contains(x.Id))
+                             .Select(x => new CLanguageData { Id = x.Id, Language = x.Language, Chosen = false })
+                             .ToList();
+            for (var i = 0; i < languageModels.Count; i++)
+            {
+                if (!filter.listLanguages.Contains(languageData[i].Id)) break;
+                languageData[i].Chosen = true;
+            }
+            dgwMain.DataSource = languageData;
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
+            this.onSave = () => {
+                filter.listLanguages = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                onChange(filter);
+            };
         }
 
-        public DataGridWindow(List<GenreModel> genreModel)
+        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<GenreModel> genreModels)
         {
             InitializeComponent();
-            _genreModel = genreModel;
-
-            dgwMain.DataSource = _genreModel;
+            genreData = genreModels
+                              .OrderByDescending(x => filter.listGenres.Contains(x.Id))
+                              .Select(x => new CGenreData { Id = x.Id, Genre = x.Genre, Chosen = false })
+                              .ToList();
+            for (var i = 0; i < genreModels.Count; i++)
+            {
+                if (!filter.listGenres.Contains(genreData[i].Id)) break;
+                genreData[i].Chosen = true;
+            }
+            dgwMain.DataSource = genreData;
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
+            this.onSave = () => {
+                filter.listGenres = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                onChange(filter);
+            };
         }
 
-        public DataGridWindow(List<DirectorModel> directorModel)
+        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<DirectorModel> directorModels)
         {
             InitializeComponent();
-            _directorModel = directorModel;
-
-
-            tBoxDirectorSearch.Visible = true;
-            tBoxDirectorSearch.Text = "";
-
-            dgwMain.DataSource = _directorModel;
+            directorData = directorModels
+                              .OrderByDescending(x => filter.listDirectors.Contains(x.Id))
+                              .Select(x => new CDirectorData { Id = x.Id, Name = x.Name, Chosen = false })
+                              .ToList();
+            for (var i = 0; i < directorModels.Count; i++)
+            {
+                if (!filter.listDirectors.Contains(directorData[i].Id)) break;
+                directorData[i].Chosen = true;
+            }
+            dgwMain.DataSource = directorData;
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
+            this.onSave = () => {
+                filter.listGenres = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                onChange(filter);
+            };
         }
-
-
-        public DataGridWindow(List<AgeRatingModel> ageRatingModel)
+        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<AgeRatingModel> ageRatingModels)
         {
             InitializeComponent();
-            _ageRatingModel = ageRatingModel;
-
-            dgwMain.DataSource = _ageRatingModel;
+            ageRatingData = ageRatingModels
+                              .OrderByDescending(x => filter.listAgeRatings.Contains(x.Id))
+                              .Select(x => new CAgeRatingData { Id = x.Id, Rating = x.Rating, Chosen = false })
+                              .ToList();
+            for (var i = 0; i < ageRatingModels.Count; i++)
+            {
+                if (!filter.listAgeRatings.Contains(ageRatingData[i].Id)) break;
+                ageRatingData[i].Chosen = true;
+            }
+            dgwMain.DataSource = ageRatingData;
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
+            this.onSave = () => {
+                filter.listGenres = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                onChange(filter);
+            };
         }
         #endregion
         //---
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
-            // Check which list is being displayed in the data grid and update the corresponding list in the QueryModel
-            if (_studioModels != null)
-            {
-                List<StudioModel> studios = dgwMain.DataSource as List<StudioModel>;
-
-                Helpers.QueryModel.Studios = studios.Where(x => x.Chosen == true).ToList();
-            }
-            else if (_genreModel != null)
-            {
-                List<GenreModel> genres = dgwMain.DataSource as List<GenreModel>;
-
-                Helpers.QueryModel.Genres = genres.Where(x => x.Chosen == true).ToList();
-            }
-            else if (_directorModel != null)
-            {
-                Helpers.QueryModel.Directors = _directorModel.Where(x => x.Chosen == true).ToList();
-            }
-            else if (_ageRatingModel != null)
-            {
-                List<AgeRatingModel> directors = dgwMain.DataSource as List<AgeRatingModel>;
-
-                Helpers.QueryModel.AgeRatings = directors.Where(x => x.Chosen == true).ToList();
-            }
-            else if (_languageModels != null)
-            {
-                List<LanguageModel> languages = dgwMain.DataSource as List<LanguageModel>;
-
-                Helpers.QueryModel.Languages = languages.Where(x => x.Chosen == true).ToList();
-            }
-
-
-            this.Close(); // Close the form
+            this.onSave(); // Perform save action defined in constructor
+            this.Close();  // Close the form
         }
 
         private void tBoxDirectorSearch_TextChanged(object sender, System.EventArgs e)
         {
-            string input = tBoxDirectorSearch.Text;
+            /*string input = tBoxDirectorSearch.Text;
 
             if (string.IsNullOrEmpty(input))
             {
-                dgwMain.DataSource = _directorModel;
+                dgwMain.DataSource = directorModel;
                 return;
             }
 
@@ -134,7 +202,7 @@ namespace GoodFilmsApp
 
             if (dgwMain.Rows.Count == 0)
             {
-                dgwMain.DataSource = _directorModel;
+                dgwMain.DataSource = directorModel;
             }
             foreach (DataGridViewColumn col in dgwMain.Columns)
             {
@@ -156,13 +224,13 @@ namespace GoodFilmsApp
             dgwMain.DataSource = dataTable;
             #endregion
 
-            HandleValueChnge();
+            HandleValueChnge();*/
 
         }
 
         private void dgwMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (_directorModel != null)
+            /*if (_directorModel != null)
             {
 
                 if (_canCellChangeEventFire == false)
@@ -171,13 +239,13 @@ namespace GoodFilmsApp
                     return;
                 }
                 HandleValueChnge();
-            }
+            }*/
 
         }
 
         private void HandleValueChnge()
         {
-            List<DirectorModel> chosenValues = new List<DirectorModel>();
+            /*List<DirectorModel> chosenValues = new List<DirectorModel>();
 
             foreach (DataGridViewRow row in dgwMain.Rows)
             {
@@ -192,13 +260,10 @@ namespace GoodFilmsApp
                         Id = Convert.ToInt32(row.Cells[0].Value.ToString()),
                         Name = row.Cells[1].Value.ToString(),
                     };
-                    if (row.Cells[2].Value == null)
+                    if (row.Cells[2].Value == null || row.Cells[2].Value == DBNull.Value)
                     {
                         model.Chosen = false;
-                    }
-                    else if (row.Cells[2].Value == DBNull.Value)
-                    {
-                        model.Chosen = false;
+
                     }
                     else
                     {
@@ -218,14 +283,14 @@ namespace GoodFilmsApp
             for (int i = 0; i < chosenValues.Count; i++)
                 _directorModel.Where(x => x.Id == chosenValues[i].Id).FirstOrDefault().Chosen = true;
             for (int i = 0; i < unChosenValues.Count; i++)
-                _directorModel.Where(x => x.Id == unChosenValues[i].Id).FirstOrDefault().Chosen = false;
+                _directorModel.Where(x => x.Id == unChosenValues[i].Id).FirstOrDefault().Chosen = false;*/
         }
 
 
         private void dgwMain_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (_directorModel != null)
-                dgwMain.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            //if (_directorModel != null)
+            //    dgwMain.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
 

@@ -121,14 +121,8 @@ namespace ControllerLibrary
             {
                 try
                 {
-                    QueryModel query = new QueryModel();
-                    if (filter != null)
-                    {
-                        query.Query = filter.strSearch;
-                        query.Random = filter.boolRandom;
-                        query.ReleaseYear = filter.intReleaseYear;
-                    }
-                    var films = access.requestFilms(offset, count, query);
+                    Console.WriteLine("CONTROLLER REL year " + filter.intReleaseYear.ToString());
+                    var films = access.requestFilms(offset, count, filter.toQuery());
                     on_success?.Invoke(films);
                 }
                 catch (Exception ex)

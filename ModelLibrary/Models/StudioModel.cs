@@ -12,8 +12,5 @@ namespace ModelLibrary.Models
 
         public string Studio { get; set; }
 
-        //##
-        public bool Chosen { get; set; }
-        //##
     }
 }

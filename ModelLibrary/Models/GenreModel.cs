@@ -6,8 +6,5 @@
 
         public string Genre { get; set; }
 
-        //##
-        public bool Chosen { get; set; }
-        //###
     }
 }

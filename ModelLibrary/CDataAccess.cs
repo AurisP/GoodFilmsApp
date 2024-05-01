@@ -45,26 +45,35 @@ namespace ModelLibrary
             );
         }
 
-        List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel queryModel)
+        List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel query)
         {
             SqlBuilder builder = new SqlBuilder();
-            if (queryModel.Query != null)
+            if (query.strSearch != null)
             {
-                builder = builder.Where("title LIKE @Query", new { Query = "%" + queryModel.Query + "%" });
+                builder = builder.Where("title LIKE @Query", new { Query = "%" + query.strSearch + "%" });
             }
-            if (queryModel.ReleaseYear != null)
+            if (query.intReleaseYear != null)
             {
-                builder = builder.Where("release_year = @Year", new { Year = queryModel.ReleaseYear });
+                builder = builder.Where("release_year = @Year", new { Year = query.intReleaseYear });
             }
-            if (queryModel.MaxDuration != null)
+            if (query.intMaxLenSec != null)
             {
-                builder = builder.Where("duration_sec <= @Seconds", new { Seconds = Convert.ToDouble(queryModel.MaxDuration) * 3600 });
+                builder = builder.Where("duration_sec <= @Seconds", new { Seconds = Convert.ToDouble(query.intMaxLenSec) * 3600 });
             }
-            if (queryModel.MinDuration != null)
+            if (query.intMinLenSec != null)
             {
-                builder = builder.Where("duration_sec >= @Seconds", new { Seconds = Convert.ToDouble(queryModel.MinDuration) * 3600 });
+                builder = builder.Where("duration_sec >= @Seconds", new { Seconds = Convert.ToDouble(query.intMinLenSec) * 3600 });
             }
-            if (queryModel.AgeRatings != null && queryModel.AgeRatings.Count > 0)
+            if (query.listAgeRatings != null && query.listAgeRatings.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var rating in query.listAgeRatings)
+                {
+                    queries.Add("age_rating_id = " + rating.ToString());
+                }
+                builder = builder.Where(String.Join(" OR ", queries.ToArray()));
+            }
+            /*if (query.Genres != null && query.Genres.Count > 0)
             {
                 List<string> queries = new List<string>();
                 foreach (var rating in queryModel.AgeRatings)
@@ -72,31 +81,22 @@ namespace ModelLibrary
                     queries.Add("age_rating_id = " + rating.Id.ToString());
                 }
                 builder = builder.Where(String.Join(" OR ", queries.ToArray()));
-            }
-            if (queryModel.Genres != null && queryModel.Genres.Count > 0)
-            {
-                List<string> queries = new List<string>();
-                foreach (var rating in queryModel.AgeRatings)
-                {
-                    queries.Add("age_rating_id = " + rating.Id.ToString());
-                }
-                builder = builder.Where(String.Join(" OR ", queries.ToArray()));
-            }
+            }*/
             Template template;
-            if (queryModel.Random)
+            if (query.boolRandom)
             {
                 template = builder.AddTemplate("SELECT * FROM films /**where**/ ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
-            else if (queryModel.Query != null)
+            else if (query.strSearch != null)
             {
                 template = builder.AddTemplate("SELECT * FROM films /**where**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
             else
             {
-                template = builder.AddTemplate("SELECT * FROM films ORDER BY title");
+                template = builder.AddTemplate("SELECT * FROM films ORDER BY title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
             Console.WriteLine("SQL: " + template.RawSql);
-            Console.WriteLine("release year ", queryModel.ReleaseYear);
+            Console.WriteLine("release year " + query.intReleaseYear.ToString());
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
            /* if (queryModel.ReleaseYear != 0)
                 output = output.Where(x => x.Release_Year == queryModel.ReleaseYear);
@@ -197,90 +197,6 @@ namespace ModelLibrary
             int rows = cnn.Execute(template.RawSql, template.Parameters);
             if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-
-        public static List<AgeRatingModel> LoadAgeRatings()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<AgeRatingModel>("select * from age_ratings", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<LanguageModel> LoadLanguages()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<LanguageModel>("select * from languages", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<LanguageFilmModel> LoadLanguagesFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<LanguageFilmModel>("select * from languages_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-
-        public static List<StudioModel> LoadStudios()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<StudioModel>("select * from studios", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<DirectorModel> LoadDirectors()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<DirectorModel>("select * from directors", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-        public static List<GenreModel> LoadGenres()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<GenreModel>("select * from genres", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<GenreFilmModel> LoadGenresFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<GenreFilmModel>("select * from genres_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<StudioFilmModel> LoadStudioFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<StudioFilmModel>("select * from studios_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-
-
-        public static List<DirectorFilmModel> LoadDirectorFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<DirectorFilmModel>("select * from directors_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
         void IDataAccess.setComment(int filmId, string comment, string commentDate) //TODO: add also update with insert
         {
             SqlBuilder builder = new SqlBuilder();
