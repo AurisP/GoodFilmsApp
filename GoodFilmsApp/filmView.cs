@@ -59,6 +59,7 @@ namespace GoodFilmsApp
                 }));
             }, 
             (error) => { MessageBox.Show(error); });
+            cbFilmWatched.Checked = film.Watched;
         }
 
         private void addComment()

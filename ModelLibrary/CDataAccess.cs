@@ -14,6 +14,7 @@ using System.Collections;
 using static Dapper.SqlBuilder;
 using System.Data.Entity.Infrastructure;
 using System.Runtime.CompilerServices;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace ModelLibrary
 {
@@ -29,6 +30,8 @@ namespace ModelLibrary
 
         public CDataAccess()
         {
+            Console.WriteLine("Opening database");
+            Console.WriteLine(LoadConnectionString());
             this.cnn = new SQLiteConnection(LoadConnectionString());
             this.cnn.Open();
         }
@@ -148,17 +151,28 @@ namespace ModelLibrary
             return output.ToList();
         }
 
-        void IDataAccess.setFilmWatched(int id, bool watched)
+        void IDataAccess.setFilmWatched(int filmId, bool watched)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            builder = builder.Where("id = @whereId", new { whereId = filmId });
+            Template template = builder.AddTemplate("UPDATE films SET watched = @setWatched /**where**/", new { setWatched = watched} );
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-        void IDataAccess.setFilmScheduled(int id, long date_unix_ts)
+        void IDataAccess.setFilmScheduled(int filmId, DateTime date)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            Template template = builder.AddTemplate("INSERT INTO soon_to_watch_films (film_id, watch_date) VALUES (@setFilmId, @setDate)", new { setFilmId = filmId, setDate = date });
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-        void IDataAccess.setFilmRating(int id, int stars)
+        void IDataAccess.setFilmRating(int filmId, int stars)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            builder = builder.Where("id = @whereId", new { whereId = filmId });
+            Template template = builder.AddTemplate("UPDATE films SET user_rating = @setRating /**where**/", new { setRating = stars });
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
 
         public static List<AgeRatingModel> LoadAgeRatings()
@@ -244,13 +258,13 @@ namespace ModelLibrary
             }
         }
 
-        void IDataAccess.setComment(int film_id, string comment, string commentDate) //TODO: add also update with insert
+        void IDataAccess.setComment(int filmId, string comment, string commentDate) //TODO: add also update with insert
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
-            var args = new { FilmId = film_id, CommentText = comment, CommentDate = commentDate };
+            var args = new { whereFilmId = filmId, CommentText = comment, CommentDate = commentDate };
 
-            var existingComment = cnn.QueryFirstOrDefault<CommentModel>("SELECT * FROM comments WHERE film_id = @FilmId", args);
+            var existingComment = cnn.QueryFirstOrDefault<CommentModel>("SELECT * FROM comments WHERE film_id = @whereFilmId", args);
 
             if (existingComment != null)
             {
@@ -272,22 +286,21 @@ namespace ModelLibrary
             }   
         }
 
-        CommentModel IDataAccess.requestComment(int film_id)
+        CommentModel IDataAccess.requestComment(int filmId)
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
-            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @FilmId", new { FilmId = film_id });
+            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @whereFilmId", new { whereFilmId = filmId });
             var output = cnn.QueryFirstOrDefault<CommentModel>(template.RawSql, template.Parameters);
             return output;
         }
-        void IDataAccess.removeComment(int comment_id)
+        void IDataAccess.removeComment(int commentId)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            Template template;
+            template = builder.AddTemplate("DELETE FROM comments WHERE id = @whereCommentId", new { whereCommentId = commentId });
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-
     }
-
-
-
-
 }

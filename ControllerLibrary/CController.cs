@@ -45,7 +45,7 @@ namespace ControllerLibrary
             {
                 try
                 {
-                    access.setFilmScheduled(model.Id, ((DateTimeOffset)date).ToUnixTimeSeconds());
+                    access.setFilmScheduled(model.Id, date);
                     on_success?.Invoke();
                 }
                 catch (Exception ex)

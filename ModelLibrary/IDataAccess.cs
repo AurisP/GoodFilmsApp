@@ -1,9 +1,6 @@
 ﻿using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModelLibrary
 {
@@ -11,12 +8,12 @@ namespace ModelLibrary
     {
         MetadataModel requestMetadata();
         List<FilmModel> requestFilms(int offset, int amount, QueryModel query);
-        void setFilmWatched(int id, bool watched);
-        void setFilmScheduled(int id, long date_unix_ts);
-        void setFilmRating(int id, int stars);
-        void setComment(int film_id, string comment, string commentDate);
-        CommentModel requestComment(int film_id);
-        void removeComment(int comment_id);
+        void setFilmWatched(int filmId, bool watched);
+        void setFilmScheduled(int filmId, DateTime date);
+        void setFilmRating(int filmId, int stars);
+        void setComment(int filmId, string comment, string commentDate);
+        CommentModel requestComment(int filmId);
+        void removeComment(int commentId);
 
     }
 }
