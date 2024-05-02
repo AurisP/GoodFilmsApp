@@ -75,6 +75,11 @@ namespace ControllerLibrary
             {
                 try
                 {
+                    if (comment == null && comment == "")
+                    {
+                        on_success?.Invoke();
+                        return;
+                    }
                     string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     access.setComment(model.Id, comment, commentDate);
                     on_success?.Invoke();

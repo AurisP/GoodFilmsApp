@@ -152,22 +152,11 @@ namespace ModelLibrary
             int rows = cnn.Execute(template.RawSql, template.Parameters);
             if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-        void IDataAccess.setComment(int filmId, string comment, string commentDate) //TODO: add also update with insert
+        void IDataAccess.setComment(int filmId, string comment, string commentDate)
         {
             SqlBuilder builder = new SqlBuilder();
-            Template template;
-            var args = new { whereFilmId = filmId, CommentText = comment, CommentDate = commentDate };
-
-            var existingComment = cnn.QueryFirstOrDefault<CommentModel>("SELECT * FROM comments WHERE film_id = @whereFilmId", args);
-
-            if (existingComment != null)
-            {
-                template = builder.AddTemplate("UPDATE comments SET comment_text = @CommentText, comment_date = @CommentDate WHERE film_id = @FilmId", args);
-            }
-            else
-            {
-                template = builder.AddTemplate("INSERT INTO comments (film_id, comment_text, comment_date) VALUES (@FilmId, @CommentText, @CommentDate)", args);
-            }
+            Template template = builder.AddTemplate("REPLACE INTO comments (id, film_id, comment_text, comment_date) VALUES ((SELECT id FROM comments WHERE film_id=@FilmId), @FilmId, @CommentText, @CommentDate)", 
+                new {CommentText = comment, CommentDate = commentDate, FilmId = filmId});
             int rows = cnn.Execute(template.RawSql, template.Parameters);
             if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
