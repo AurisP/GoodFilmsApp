@@ -80,6 +80,10 @@ namespace ControllerLibrary
                         on_success?.Invoke();
                         return;
                     }
+                    if (comment.Length > 4000)
+                    {
+                        comment = comment.Substring(0, 4000);
+                    }
                     string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     access.setComment(model.Id, comment, commentDate);
                     on_success?.Invoke();
