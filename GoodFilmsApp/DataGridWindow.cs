@@ -47,8 +47,6 @@ namespace GoodFilmsApp
         private List<CDirectorData> directorData;
         private List<CAgeRatingData> ageRatingData;
         private List<CLanguageData> languageData;
-        bool _canCellChangeEventFire = false;
-
 
         public DataGridWindow()
         {
@@ -146,7 +144,7 @@ namespace GoodFilmsApp
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
             this.onSave = () => {
-                filter.listGenres = dgwMain.Rows.Cast<DataGridViewRow>()
+                filter.listDirectors = dgwMain.Rows.Cast<DataGridViewRow>()
                     .Where(x => (bool)x.Cells["Chosen"].Value == true)
                     .Select(x => (int)x.Cells["Id"].Value)
                     .ToList();
@@ -169,7 +167,7 @@ namespace GoodFilmsApp
             dgwMain.Columns["Id"].Visible = false;
             dgwMain.Columns["Chosen"].HeaderText = "";
             this.onSave = () => {
-                filter.listGenres = dgwMain.Rows.Cast<DataGridViewRow>()
+                filter.listAgeRatings = dgwMain.Rows.Cast<DataGridViewRow>()
                     .Where(x => (bool)x.Cells["Chosen"].Value == true)
                     .Select(x => (int)x.Cells["Id"].Value)
                     .ToList();

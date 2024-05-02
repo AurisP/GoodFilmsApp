@@ -75,11 +75,11 @@ namespace GoodFilmsApp
         {
             try
             {
-                filter.intReleaseYear = Convert.ToInt32(tBoxReleaseYear.Text);
+                if (tBoxReleaseYear.Text != null && tBoxReleaseYear.Text != "") filter.intReleaseYear = Convert.ToInt32(tBoxReleaseYear.Text);
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show("Something gone wrong on Release Year.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                filter.intReleaseYear = null;
             }
         }
 
@@ -194,10 +194,9 @@ namespace GoodFilmsApp
         private void btnSearch_Click(object sender, EventArgs e)
         {
             HandleQuery();
-            this.Close();
             this.onUpdate(filter);
-            //MessageBox.Show("Searched");
-
+            Console.WriteLine("AGE " + filter.listAgeRatings.Count.ToString());
+            this.Close();
         }
 
         private void btnClearFilters_Click(object sender, EventArgs e)
