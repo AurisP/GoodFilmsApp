@@ -34,6 +34,7 @@ namespace GoodFilmsApp
             pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
             pbStar4.Image = imgStar.Images[(film.User_Rating >= 4) ? 1 : 0];
             pbStar5.Image = imgStar.Images[(film.User_Rating >= 5) ? 1 : 0];
+            controller.setFilmRating(film, film.User_Rating, null, (error) => { MessageBox.Show(error); });
         }
 
         private void filmView_Load(object sender, EventArgs e)
@@ -99,7 +100,7 @@ namespace GoodFilmsApp
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
             if (ignoreCheck) return;
-            controller.setFilmWatched(film, cbFilmWatched.Checked, () => { MessageBox.Show("Set as checked"); }, (error) => { MessageBox.Show(error); });
+            controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
             film.Watched = cbFilmWatched.Checked;
         }
 
