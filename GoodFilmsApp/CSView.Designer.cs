@@ -128,7 +128,6 @@
             this.Controls.Add(this.btnSaveAs);
             this.Name = "CSView";
             this.Text = "Saving FIle";
-            this.Load += new System.EventHandler(this.CSView_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

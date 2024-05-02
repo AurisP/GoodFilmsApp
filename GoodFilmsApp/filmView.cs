@@ -20,10 +20,8 @@ namespace GoodFilmsApp
         private FilmModel film;
         private IController controller;
         private Action onCloseCb;
-        private FilmModel film;
-        private IController controller;
         private int commentId;
-        private string path;
+        private string path = null;
         
         private bool ignoreCheck;
         public filmView(FilmModel film, Action onCloseCb, IController controller)

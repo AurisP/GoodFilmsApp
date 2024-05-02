@@ -18,13 +18,13 @@ namespace GoodFilmsApp
     {
         private FilmModel film;
         private IExporter exporter;
-        
+        // TODO: add path reference not value
+        private string path = null;
         public CSView(FilmModel film, ref string path)
         {
             InitializeComponent();
             this.film = film;
             this.exporter = new CExporter();
-
         }
 
         private void btnSaveAs_Click(object sender, EventArgs e)
@@ -69,22 +69,21 @@ namespace GoodFilmsApp
             exporter.textQualifier = txtTextQualifier.Text;
 
             //TODO implement path as a reference to filmView
-            string path = null;
+
             //Ask for place for file
-            if (!(checkBoxNewFile.Checked && path != null))
+            if (!checkBoxNewFile.Checked && path != null) { }
+
+            else
                 path = exporter.setFileToSave().ToString();
                 
-            Array filmArray = new string[] { film.Title, film.Description, film.Duration_Sec.ToString(), film.User_Rating.ToString(), film.Comment };
-
+            Array filmArray = new string[,] { { film.Title, film.Description, film.Duration_Sec.ToString(), film.User_Rating.ToString()/*film.Comment*/ } };
+            
             // Save Array to file
             // TODO: Doesnt work, gives error with array
             var count = exporter.saveDataToCsv(ref filmArray, checkBoxAppend.Checked);
             MessageBox.Show("CSV file saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Close();
         }
 
-        private void CSView_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
