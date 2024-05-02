@@ -92,6 +92,10 @@
     <Compile Include="IDataAccess.cs" />
     <Compile Include="CDataAccess.cs" />
     <Compile Include="Models\AgeRatingModel.cs" />
+    <Compile Include="Models\CAgeRatingModel.cs" />
+    <Compile Include="Models\CCommentModel.cs" />
+    <Compile Include="Models\CDirectorFilmModel.cs" />
+    <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DirectorFilmModel.cs" />
     <Compile Include="Models\DirectorModel.cs" />
     <Compile Include="Models\FilmModel.cs" />
