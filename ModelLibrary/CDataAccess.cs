@@ -148,12 +148,15 @@ namespace ModelLibrary
             return output.ToList();
         }
 
-        int IDataAccess.setFilmWatched(int id)
+        void IDataAccess.setFilmWatched(int id, bool watched)
         {
             throw new NotImplementedException();
         }
-
-        int IDataAccess.setFilmScheduled(int id, int date_unix_ts)
+        void IDataAccess.setFilmScheduled(int id, long date_unix_ts)
+        {
+            throw new NotImplementedException();
+        }
+        void IDataAccess.setFilmRating(int id, int stars)
         {
             throw new NotImplementedException();
         }
@@ -241,10 +244,7 @@ namespace ModelLibrary
             }
         }
 
-
-
-
-        string IDataAccess.updateComment(int film_id, string comment, string commentDate) //TODO: add also update with insert
+        void IDataAccess.setComment(int film_id, string comment, string commentDate) //TODO: add also update with insert
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
@@ -264,23 +264,25 @@ namespace ModelLibrary
             var rowsAffected = cnn.Execute(template.RawSql, template.Parameters);
             if (rowsAffected > 0)
             {
-                return String.Empty;
+            //    return String.Empty;
             } 
             else
             {
-                return "Error";
+            //    return "Error";
             }   
         }
 
-        CommentModel IDataAccess.requestComments(int film_id)
+        CommentModel IDataAccess.requestComment(int film_id)
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
-            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @FilmId"
-                , new { FilmId = film_id });
-
+            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @FilmId", new { FilmId = film_id });
             var output = cnn.QueryFirstOrDefault<CommentModel>(template.RawSql, template.Parameters);
             return output;
+        }
+        void IDataAccess.removeComment(int comment_id)
+        {
+            throw new NotImplementedException();
         }
 
     }

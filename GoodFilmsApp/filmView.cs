@@ -18,22 +18,12 @@ namespace GoodFilmsApp
         private Action onCloseCb;
         private FilmModel film;
         private IController controller;
-        private int commentId;
         public filmView(FilmModel film, Action onCloseCb, IController controller)
         {
             this.film = film;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
             InitializeComponent();
-        }
-
-        public void rxComment(CommentModel comment, int id)
-        {
-            if (id != commentId) return;
-            if (comment == null) return;
-            this.Invoke(new Action(() => {
-                txtUserComment.Text = comment.Comment_Text.ToString();
-            }));
         }
 
         private void updateStars()
@@ -61,20 +51,25 @@ namespace GoodFilmsApp
             // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
-            commentId = controller.requestComments(film);
+            controller.requestComment(film, (comment) =>
+            {
+                if (comment == null) return;
+                this.Invoke(new Action(() => {
+                    txtUserComment.Text = comment.Comment_Text.ToString();
+                }));
+            }, 
+            (error) => { MessageBox.Show(error); });
         }
 
         private void addComment()
         {
-            if ((txtUserComment).Tag != null)
-            {
-                controller.addComment(film, txtUserComment.Text);
-            }        
+            if (txtUserComment.Text == null) return;
+            controller.addComment(film, txtUserComment.Text, null, (error) => { MessageBox.Show(error); });
         }
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
         {
-            ((txtUserComment).Tag) = true;
+            txtUserComment.Tag = true;
         }
 
         private void filmView_FormClosing(object sender, FormClosingEventArgs e)
@@ -89,17 +84,17 @@ namespace GoodFilmsApp
 
         private void btnSaveComment_Click(object sender, EventArgs e)
         {
-            controller.addComment(film, txtUserComment.Text);
+            addComment();
         }
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            controller.setFilmScheduled(film, dtpScheduleTime.Value);
+            controller.setFilmScheduled(film, dtpScheduleTime.Value, null, (error) => { MessageBox.Show(error); });
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
-            controller.setFilmWatched(film, cbFilmWatched.Checked);
+            controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
         }
 
     }

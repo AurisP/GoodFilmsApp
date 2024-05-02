@@ -108,9 +108,7 @@ namespace GoodFilmsApp
 
         public void request()
         {
-            controller.clearFilters();
-            controller.addFilter(filter);
-            requestFilms(page * size, 64, () => // TODO: Change 64 into reasonable parameter
+            requestFilms(filter, page * size, 64, () => // TODO: Change 64 into reasonable parameter
             {
                 var films = getFilms(page * size, size);
                 updateView(films);
@@ -136,11 +134,6 @@ namespace GoodFilmsApp
             {
                 request();
             }
-        }
-
-        public static void rxComment(CommentModel comment, int id)
-        {
-            detailView?.rxComment(comment, id);
         }
     }
 }
