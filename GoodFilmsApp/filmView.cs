@@ -18,6 +18,7 @@ namespace GoodFilmsApp
         private Action onCloseCb;
         private FilmModel film;
         private IController controller;
+        private bool ignoreCheck;
         public filmView(FilmModel film, Action onCloseCb, IController controller)
         {
             this.film = film;
@@ -59,7 +60,9 @@ namespace GoodFilmsApp
                 }));
             }, 
             (error) => { MessageBox.Show(error); });
+            ignoreCheck = true;
             cbFilmWatched.Checked = film.Watched;
+            ignoreCheck = false;
         }
 
         private void addComment()
@@ -95,7 +98,9 @@ namespace GoodFilmsApp
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
-            controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
+            if (ignoreCheck) return;
+            controller.setFilmWatched(film, cbFilmWatched.Checked, () => { MessageBox.Show("Set as checked"); }, (error) => { MessageBox.Show(error); });
+            film.Watched = cbFilmWatched.Checked;
         }
 
     }

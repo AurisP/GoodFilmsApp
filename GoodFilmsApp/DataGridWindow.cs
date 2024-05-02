@@ -289,9 +289,5 @@ namespace GoodFilmsApp
             //if (_directorModel != null)
             //    dgwMain.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
-
-
-
-
     }
 }
