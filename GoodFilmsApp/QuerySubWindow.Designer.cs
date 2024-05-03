@@ -103,7 +103,7 @@
             this.cBoxMaxDuration.Name = "cBoxMaxDuration";
             this.cBoxMaxDuration.Size = new System.Drawing.Size(121, 21);
             this.cBoxMaxDuration.TabIndex = 8;
-            this.cBoxMaxDuration.SelectedIndexChanged += new System.EventHandler(this.cBoxMaxDuration_SelectedIndexChanged);
+            //this.cBoxMaxDuration.SelectedIndexChanged += new System.EventHandler(this.cBoxMaxDuration_SelectedIndexChanged);
             // 
             // lblAddedStudios
             // 
