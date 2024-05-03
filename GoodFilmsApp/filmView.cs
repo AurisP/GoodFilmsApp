@@ -19,17 +19,20 @@ namespace GoodFilmsApp
     {
         private FilmModel film;
         private IController controller;
+        private IExporter exporter;
         private Action onCloseCb;
         private int commentId;
-        private string path = null;
+        private Ref<string> path;
         
         private bool ignoreCheck;
-        public filmView(FilmModel film, Action onCloseCb, IController controller)
+        public filmView(FilmModel film, Action onCloseCb, IController controller, IExporter exporter, ref Ref<string> path)
         {
             this.film = film;
             // this.controller = rController;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
+            this.exporter = exporter;
+            this.path = path;
             InitializeComponent();
             
     }
@@ -113,7 +116,7 @@ namespace GoodFilmsApp
 
         private void btnSaveAs_Click_1(object sender, EventArgs e)
         {
-            CSView csview = new CSView(film, ref path);
+            CSView csview = new CSView(film, exporter, ref path);
             csview.StartPosition = FormStartPosition.CenterParent;
             csview.ShowDialog(this);
         }

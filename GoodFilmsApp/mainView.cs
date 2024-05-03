@@ -12,11 +12,13 @@ using System.Windows.Forms;
 using ViewHandler;
 using ControllerLibrary;
 using System.Xml.Linq;
+using CSVExporterDNF;
 
 namespace GoodFilmsApp
 {
     public partial class mainView : Form
     {
+        IExporter exporter;
         CFilter searchFilter;
         IController controller;
         CFilmsMetadataCache metadataCache;
@@ -24,11 +26,16 @@ namespace GoodFilmsApp
         PosterHandler postersRecommend;
         PosterHandler postersScheduled;
         internal bool _isFirstLoad = true;
+        Ref<string> path;
         public mainView()
         {
             InitializeComponent();
             searchFilter = new CFilter();
             controller = new CController();
+            string myValue = null;
+            path = new Ref<string>(() => myValue, value => myValue = value);
+            exporter = new CExporter();
+            
             metadataCache = null;
             controller.requestMeta((metadata) => { metadataCache = metadata; }, (error) => { MessageBox.Show(error); });
             postersSearch = new PosterHandler(controller, this,
@@ -36,19 +43,25 @@ namespace GoodFilmsApp
                 gbSearchResults,
                 btnSearchLeft,
                 btnSearchRight,
-                lblSearchPage);
+                lblSearchPage,
+                exporter,
+                ref path);
             postersRecommend = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbRecommendedFilms,
                 btnRecommendLeft,
                 btnRecommenRight,
-                lblRecommendPage);
+                lblRecommendPage,
+                exporter,
+                ref path);
             postersScheduled = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbScheduledFilms,
                 btnScheduleLeft,
                 btnScheduleRight,
-                lblScheduledPage);
+                lblScheduledPage,
+                exporter,
+                ref path); ; ;
             updateRecommend();
             updateSearch();
         }
