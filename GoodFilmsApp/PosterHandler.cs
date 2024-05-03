@@ -7,6 +7,7 @@ using ModelLibrary.Models;
 using ControllerLibrary;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using CSVExporterDNF;
 
 namespace GoodFilmsApp
 {
@@ -20,6 +21,8 @@ namespace GoodFilmsApp
         Button btnRight;
         Label lblStatus;
         IController controller;
+        IExporter exporter;
+        private Ref<string> path;
         mainView mv; // Have to keep track of this to update buttons in the same thread as they were created, god I love C#
         int size;    // Amount of PictureBoxes
         int page;    // Current page we're on
@@ -31,7 +34,9 @@ namespace GoodFilmsApp
             GroupBox gb, 
             Button btnLeft,
             Button btnRight,
-            Label lblStatus) : base(controller)
+            Label lblStatus,
+            IExporter exporter,
+            ref Ref<string> path) : base(controller)
         {
             this.size = numOfPictures;
             page = 0;
@@ -43,6 +48,8 @@ namespace GoodFilmsApp
             btnLeft.Enabled = false;
             btnRight.Enabled = false;
             lblStatus.Text = "";
+            this.exporter = exporter;
+            this.path = path;
             btnLeft.Click += (_, __) => setPage(this.page - 1);
             btnRight.Click += (_, __) => setPage(this.page + 1);
             for (int i = 0; i < numOfPictures; i++)
@@ -90,7 +97,7 @@ namespace GoodFilmsApp
                 var ev = new MouseEventHandler((_, __) =>
                 {
                     if (detailView != null) return;
-                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller);
+                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller, exporter, ref path);
                     detailView.Show();
                 });
                 pb[i].MouseClick += ev;
