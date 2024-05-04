@@ -28,7 +28,7 @@ namespace ViewHandler
                 {
                     knowAbsoluteEnd = true;
                 }
-                for (var i = 0; i < films.Count-1; i++)
+                for (var i = 0; i < films.Count; i++)
                 {
                     if (offsetsToFilms.ContainsKey(offset + i))
                     {
