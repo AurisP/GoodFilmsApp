@@ -139,13 +139,13 @@ namespace ControllerLibrary
                 }
             });
         }
-        void IController.requestDirectors(CFilter filter, Action<List<DirectorModel>> on_success, Action<String> on_error)
+        void IController.requestDirectors(CFilter filter, int offset, int count, Action<List<DirectorModel>> on_success, Action<String> on_error)
         {
             runAsync(() =>
             {
                 try
                 {
-                    var directors = access.requestDirectors(filter.toQuery());
+                    var directors = access.requestDirectors(offset, count, filter.toQuery());
                     on_success?.Invoke(directors);
                 }
                 catch (Exception ex)
@@ -154,13 +154,13 @@ namespace ControllerLibrary
                 }
             });
         }
-        void IController.requestGenres(CFilter filter, Action<List<GenreModel>> on_success, Action<String> on_error)
+        void IController.requestGenres(CFilter filter, int offset, int count, Action<List<GenreModel>> on_success, Action<String> on_error)
         {
             runAsync(() =>
             {
                 try
                 {
-                    var genres = access.requestGenres(filter.toQuery());
+                    var genres = access.requestGenres(offset, count, filter.toQuery());
                     on_success?.Invoke(genres);
                 }
                 catch (Exception ex)
@@ -169,13 +169,13 @@ namespace ControllerLibrary
                 }
             });
         }
-        void IController.requestLanguage(CFilter filter, Action<List<LanguageModel>> on_success, Action<String> on_error)
+        void IController.requestLanguages(CFilter filter, int offset, int count, Action<List<LanguageModel>> on_success, Action<String> on_error)
         {
             runAsync(() =>
             {
                 try
                 {
-                    var languages = access.requestLanguages(filter.toQuery());
+                    var languages = access.requestLanguages(offset, count, filter.toQuery());
                     on_success?.Invoke(languages);
                 }
                 catch (Exception ex)
@@ -184,14 +184,29 @@ namespace ControllerLibrary
                 }
             });
         }
-        void IController.requestStudio(CFilter filter, Action<List<StudioModel>> on_success, Action<String> on_error)
+        void IController.requestStudios(CFilter filter, int offset, int count, Action<List<StudioModel>> on_success, Action<String> on_error)
         {
             runAsync(() =>
             {
                 try
                 {
-                    var studios = access.requestStudios(filter.toQuery());
+                    var studios = access.requestStudios(offset, count, filter.toQuery());
                     on_success?.Invoke(studios);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestAgeRatings(CFilter filter, int offset, int count, Action<List<AgeRatingModel>> on_success, Action<String> on_error = null)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var ageRatings = access.requestAgeRatings(offset, count, filter.toQuery());
+                    on_success?.Invoke(ageRatings);
                 }
                 catch (Exception ex)
                 {

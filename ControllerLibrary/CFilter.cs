@@ -50,7 +50,8 @@ namespace ControllerLibrary
                 listDirectors = this.listDirectors,
                 listAgeRatings = this.listAgeRatings,
                 listLanguages = this.listLanguages,
-                listExcludeFilms = this.listExcludeFilms,
+                listExcludeIds = this.listExcludeIds,
+                listIncludeIds = this.listIncludeIds,
                 boolRandom = this.boolRandom,
                 boolExcludeWatched = this.boolExcludeWatched
             };

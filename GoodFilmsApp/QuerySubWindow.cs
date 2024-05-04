@@ -11,6 +11,7 @@ namespace GoodFilmsApp
     // Partial class for the QuerySubWindow form
     public partial class QuerySubWindow : Form
     {
+        IController controller;
         Action<CFilter> onUpdate;
         CFilter filter;
         mainView _mainView;
@@ -20,10 +21,11 @@ namespace GoodFilmsApp
         private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
-        public QuerySubWindow(CFilmsMetadataCache data, CFilter filter, Action<CFilter> onUpdate, mainView mainView)
+        public QuerySubWindow(IController controller, CFilmsMetadataCache data, CFilter filter, Action<CFilter> onUpdate, mainView mainView)
         {
             InitializeComponent();  // Initialize form components
             _mainView = mainView;
+            this.controller = controller;
             this.data = data;
             this.onUpdate = onUpdate;
             this.filter = filter;
@@ -88,7 +90,9 @@ namespace GoodFilmsApp
         {
             try
             {
-                var dataGridWindow = new DataGridWindow(filter, onUpdate, data.studios.OrderByDescending(x => filter.listStudios.Contains(x.Id)).ToList());
+                // var dataGridWindow = new DataGridWindow(filter, onUpdate, data.studios.OrderByDescending(x => filter.listStudios.Contains(x.Id)).ToList());
+                var dataGridWindow = new DataGridWindow(controller, filter);
+                dataGridWindow.initForStudios(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -103,7 +107,9 @@ namespace GoodFilmsApp
         {
             try
             {
-                var dataGridWindow = new DataGridWindow(filter, onUpdate, data.genres.OrderByDescending(x => filter.listGenres.Contains(x.Id)).ToList());
+                //var dataGridWindow = new DataGridWindow(filter, onUpdate, data.genres.OrderByDescending(x => filter.listGenres.Contains(x.Id)).ToList());
+                var dataGridWindow = new DataGridWindow(controller, filter);
+                dataGridWindow.initForGenres(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -118,7 +124,9 @@ namespace GoodFilmsApp
         {
             try
             {
-                var dataGridWindow = new DataGridWindow(filter, onUpdate, data.directors.OrderByDescending(x => filter.listDirectors.Contains(x.Id)).ToList());
+                //var dataGridWindow = new DataGridWindow(filter, onUpdate, data.directors.OrderByDescending(x => filter.listDirectors.Contains(x.Id)).ToList());
+                var dataGridWindow = new DataGridWindow(controller, filter);
+                dataGridWindow.initForDirectors(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -133,7 +141,8 @@ namespace GoodFilmsApp
         {
             try
             {
-                var dataGridWindow = new DataGridWindow(filter, onUpdate, data.ageRatings.OrderByDescending(x => filter.listAgeRatings.Contains(x.Id)).ToList());
+                var dataGridWindow = new DataGridWindow(controller, filter);
+                dataGridWindow.initForAgeRatings(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
@@ -147,7 +156,8 @@ namespace GoodFilmsApp
         {
             try
             {
-                var dataGridWindow = new DataGridWindow(filter, onUpdate, data.languages.OrderByDescending(x => filter.listLanguages.Contains(x.Id)).ToList());
+                var dataGridWindow = new DataGridWindow(controller, filter);
+                dataGridWindow.initForLanguages(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
                 dataGridWindow.ShowDialog(this);
             }
