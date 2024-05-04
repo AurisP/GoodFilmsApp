@@ -18,6 +18,5 @@ namespace ControllerLibrary
         void requestLanguages(CFilter filter, int offset, int count, Action<List<LanguageModel>> on_success, Action<String> on_error = null);
         void requestStudios(CFilter filter, int offset, int count, Action<List<StudioModel>> on_success, Action<String> on_error = null);
         void requestAgeRatings(CFilter filter, int offset, int count, Action<List<AgeRatingModel>> on_success, Action<String> on_error = null);
-        void requestMeta(Action<CFilmsMetadataCache> on_success, Action<String> on_error = null);
     }
 }

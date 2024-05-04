@@ -19,7 +19,6 @@ namespace GoodFilmsApp
     {
         CFilter searchFilter;
         IController controller;
-        CFilmsMetadataCache metadataCache;
         PosterHandler postersSearch;
         PosterHandler postersRecommend;
         PosterHandler postersScheduled;
@@ -30,7 +29,6 @@ namespace GoodFilmsApp
             searchFilter = new CFilter();
             controller = new CController();
             metadataCache = null;
-            controller.requestMeta((metadata) => { metadataCache = metadata; }, (error) => { MessageBox.Show(error); });
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
@@ -64,8 +62,7 @@ namespace GoodFilmsApp
         }
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
-            if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?
-            QuerySubWindow querySubWindow = new QuerySubWindow(controller, metadataCache, searchFilter, (filter) => {
+            QuerySubWindow querySubWindow = new QuerySubWindow(controller, searchFilter, (filter) => {
                 searchFilter = filter;
                 updateSearch();
             }, this);

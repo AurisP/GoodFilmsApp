@@ -6,7 +6,6 @@ namespace ModelLibrary
 {
     public interface IDataAccess // Funtions shall be synchronous and possibly throw exceptions
     {
-        MetadataModel requestMetadata();
         List<FilmModel> requestFilms(int offset, int amount, QueryModel query);
         List<DirectorModel> requestDirectors(int offset, int amount, QueryModel query);
         List<GenreModel> requestGenres(int offset, int amount, QueryModel query);
