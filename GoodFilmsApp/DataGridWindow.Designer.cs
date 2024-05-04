@@ -30,7 +30,7 @@
         {
             this.btnSave = new System.Windows.Forms.Button();
             this.dgwMain = new System.Windows.Forms.DataGridView();
-            this.tBoxDirectorSearch = new System.Windows.Forms.TextBox();
+            this.tBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgwMain)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,13 +54,13 @@
             this.dgwMain.Size = new System.Drawing.Size(441, 345);
             this.dgwMain.TabIndex = 1;
             // 
-            // tBoxDirectorSearch
+            // tBox
             // 
-            this.tBoxDirectorSearch.Location = new System.Drawing.Point(12, 22);
-            this.tBoxDirectorSearch.Name = "tBoxDirectorSearch";
-            this.tBoxDirectorSearch.Size = new System.Drawing.Size(349, 20);
-            this.tBoxDirectorSearch.TabIndex = 2;
-            this.tBoxDirectorSearch.TextChanged += new System.EventHandler(this.tBox_TextChanged);
+            this.tBox.Location = new System.Drawing.Point(12, 22);
+            this.tBox.Name = "tBox";
+            this.tBox.Size = new System.Drawing.Size(349, 20);
+            this.tBox.TabIndex = 2;
+            this.tBox.TextChanged += new System.EventHandler(this.tBox_TextChanged);
             // 
             // DataGridWindow
             // 
@@ -68,7 +68,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Green;
             this.ClientSize = new System.Drawing.Size(465, 415);
-            this.Controls.Add(this.tBoxDirectorSearch);
+            this.Controls.Add(this.tBox);
             this.Controls.Add(this.dgwMain);
             this.Controls.Add(this.btnSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -84,6 +84,6 @@
 
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.DataGridView dgwMain;
-        private System.Windows.Forms.TextBox tBoxDirectorSearch;
+        private System.Windows.Forms.TextBox tBox;
     }
 }
