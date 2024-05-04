@@ -45,7 +45,7 @@ namespace ControllerLibrary
             {
                 try
                 {
-                    access.setFilmScheduled(model.Id, ((DateTimeOffset)date).ToUnixTimeSeconds());
+                    access.setFilmScheduled(model.Id, date);
                     on_success?.Invoke();
                 }
                 catch (Exception ex)
@@ -75,6 +75,15 @@ namespace ControllerLibrary
             {
                 try
                 {
+                    if (comment == null && comment == "")
+                    {
+                        on_success?.Invoke();
+                        return;
+                    }
+                    if (comment.Length > 4000)
+                    {
+                        comment = comment.Substring(0, 4000);
+                    }
                     string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     access.setComment(model.Id, comment, commentDate);
                     on_success?.Invoke();
@@ -121,13 +130,7 @@ namespace ControllerLibrary
             {
                 try
                 {
-                    QueryModel query = new QueryModel();
-                    if (filter != null)
-                    {
-                        query.Query = filter.strSearch;
-                        query.Random = filter.boolRandom;
-                    }
-                    var films = access.requestFilms(offset, count, query);
+                    var films = access.requestFilms(offset, count, filter.toQuery());
                     on_success?.Invoke(films);
                 }
                 catch (Exception ex)

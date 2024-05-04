@@ -18,6 +18,7 @@ namespace GoodFilmsApp
         private Action onCloseCb;
         private FilmModel film;
         private IController controller;
+        private bool ignoreCheck;
         public filmView(FilmModel film, Action onCloseCb, IController controller)
         {
             this.film = film;
@@ -33,6 +34,7 @@ namespace GoodFilmsApp
             pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
             pbStar4.Image = imgStar.Images[(film.User_Rating >= 4) ? 1 : 0];
             pbStar5.Image = imgStar.Images[(film.User_Rating >= 5) ? 1 : 0];
+            controller.setFilmRating(film, film.User_Rating, null, (error) => { MessageBox.Show(error); });
         }
 
         private void filmView_Load(object sender, EventArgs e)
@@ -59,6 +61,9 @@ namespace GoodFilmsApp
                 }));
             }, 
             (error) => { MessageBox.Show(error); });
+            ignoreCheck = true;
+            cbFilmWatched.Checked = film.Watched;
+            ignoreCheck = false;
         }
 
         private void addComment()
@@ -94,7 +99,9 @@ namespace GoodFilmsApp
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
+            if (ignoreCheck) return;
             controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
+            film.Watched = cbFilmWatched.Checked;
         }
 
     }

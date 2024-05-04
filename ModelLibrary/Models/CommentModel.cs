@@ -13,6 +13,5 @@ namespace ModelLibrary.Models
         public string Comment_Text { get; set; }
         public string Comment_Date { get; set; }
 
-
     }
 }

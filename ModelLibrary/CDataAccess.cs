@@ -14,10 +14,10 @@ using System.Collections;
 using static Dapper.SqlBuilder;
 using System.Data.Entity.Infrastructure;
 using System.Runtime.CompilerServices;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace ModelLibrary
 {
-
     public class CDataAccess : IDataAccess
     {
         public static string LoadConnectionString(string id = "Default")
@@ -44,250 +44,135 @@ namespace ModelLibrary
             );
         }
 
-        List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel queryModel)
+        List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel query)
         {
             SqlBuilder builder = new SqlBuilder();
-            if (queryModel.Query != null)
+            if (query.strSearch != null)
             {
-                builder = builder.Where("title LIKE @Query", new { Query = "%" + queryModel.Query + "%" });
+                builder = builder.Where("films.title LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            if (query.intReleaseYear != null)
+            {
+                builder = builder.Where("films.release_year = @Year", new { Year = query.intReleaseYear });
+            }
+            if (query.intMaxLenSec != null)
+            {
+                builder = builder.Where("films.duration_sec <= @Seconds", new { Seconds = query.intMaxLenSec });
+            }
+            if (query.intMinLenSec != null)
+            {
+                builder = builder.Where("films.duration_sec >= @Seconds", new { Seconds = query.intMinLenSec });
+            }
+            if (query.listAgeRatings != null && query.listAgeRatings.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var rating in query.listAgeRatings)
+                {
+                    queries.Add("films.age_rating_id = " + rating.ToString());
+                }
+                builder = builder.Where("(" + String.Join(" OR ", queries.ToArray()) + ")");
+            }
+            if (query.listGenres != null && query.listGenres.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var genre in query.listGenres)
+                {
+                    queries.Add("genres_films.genre_id=" + genre.ToString());
+                }
+                builder = builder.InnerJoin("genres_films ON genres_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
+            }
+            if (query.listDirectors != null && query.listDirectors.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var director in query.listDirectors)
+                {
+                    queries.Add("directors_films.director_id=" + director.ToString());
+                }
+                builder = builder.InnerJoin("directors_films ON directors_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
+            }
+            if (query.listLanguages != null && query.listLanguages.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var language in query.listLanguages)
+                {
+                    queries.Add("languages_films.language_id=" + language.ToString());
+                }
+                builder = builder.InnerJoin("languages_films ON languages_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
+            }
+            if (query.listStudios != null && query.listStudios.Count > 0)
+            {
+                List<string> queries = new List<string>();
+                foreach (var studio in query.listStudios)
+                {
+                    queries.Add("studios_films.studio_id=" + studio.ToString());
+                }
+                builder = builder.InnerJoin("studios_films ON studios_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
             Template template;
-            if (queryModel.Random)
+            if (query.boolRandom)
             {
-                template = builder.AddTemplate("SELECT * FROM films /**where**/ ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
-            else if (queryModel.Query != null)
+            else if (query.strSearch != null)
             {
-                template = builder.AddTemplate("SELECT * FROM films /**where**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
-
+                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
             else
             {
-                template = builder.AddTemplate("SELECT * FROM films ORDER BY title");
+                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id ORDER BY films.title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
-
+            Console.WriteLine(template.RawSql);
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
-            //string query = "SELECT * FROM films ORDER BY title";
-
-            //var output = cnn.Query<FilmModel>(query);
-
-
-            if (queryModel.ReleaseYear != 0)
-                output = output.Where(x => x.Release_Year == queryModel.ReleaseYear);
-
-
-
-            double second = 3600;
-            if (queryModel.MaxDuration != 0)
-                output = output.Where(x => x.Duration_Sec / second <= Convert.ToDouble(queryModel.MaxDuration));
-            if (queryModel.MinDuration != 0)
-                output = output.Where(x => x.Duration_Sec / second >= Convert.ToDouble(queryModel.MinDuration));
-
-            if (queryModel.AgeRatings.Count != 0)
-                output = output.Where(x => queryModel.AgeRatings.Select(u => u.Id).ToList().Contains(x.age_rating_id));
-
-
-            if (queryModel.Directors.Count != 0)
-            {
-                var allDirectorFilms = LoadDirectorFilms();
-
-
-                var selectedDirectorIds = queryModel.Directors.Select(u => u.Id).ToList();
-
-                var chosenDirectorFilms = allDirectorFilms
-                .Where(x => selectedDirectorIds.Contains(x.director_id))
-                .ToList();
-
-                output = output.Where(x => chosenDirectorFilms.Select(y => y.film_id).Contains(x.Id));
-            }
-
-
-            if (queryModel.Genres.Count != 0)
-            {
-                var allGenresFilms = LoadGenresFilms();
-
-
-                var selectedGenresIds = queryModel.Genres.Select(u => u.Id).ToList();
-
-                var chosenGenreFilms = allGenresFilms
-                .Where(x => selectedGenresIds.Contains(x.genre_id))
-                .ToList();
-
-                output = output.Where(x => chosenGenreFilms.Select(y => y.film_id).Contains(x.Id));
-            }
-
-
-            if (queryModel.Studios.Count != 0)
-            {
-                var allStudioFilms = LoadStudioFilms();
-
-
-                var selectedStudioIds = queryModel.Studios.Select(u => u.Id).ToList();
-
-                var chosenStudioFilms = allStudioFilms
-                .Where(x => selectedStudioIds.Contains(x.studio_id))
-                .ToList();
-
-                output = output.Where(x => chosenStudioFilms.Select(y => y.film_id).Contains(x.Id));
-            }
-
-
-            if (queryModel.Languages.Count != 0)
-            {
-                var allLanguagesFilms = LoadLanguagesFilms();
-
-                var selectedLanguageIds = queryModel.Languages.Select(u => u.Id).ToList();
-
-                var chosenLanguageFilms = allLanguagesFilms
-                .Where(x => selectedLanguageIds.Contains(x.language_id))
-                .ToList();
-
-                output = output.Where(x => chosenLanguageFilms.Select(y => y.film_id).Contains(x.Id));
-            }
-
             return output.ToList();
         }
 
-        void IDataAccess.setFilmWatched(int id, bool watched)
+        void IDataAccess.setFilmWatched(int filmId, bool watched)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            builder = builder.Where("id = @whereId", new { whereId = filmId });
+            Template template = builder.AddTemplate("UPDATE films SET watched = @setWatched /**where**/", new { setWatched = watched} );
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-        void IDataAccess.setFilmScheduled(int id, long date_unix_ts)
+        void IDataAccess.setFilmScheduled(int filmId, DateTime date)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            Template template = builder.AddTemplate("INSERT INTO soon_to_watch_films (film_id, watch_date) VALUES (@setFilmId, @setDate)", new { setFilmId = filmId, setDate = date });
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-        void IDataAccess.setFilmRating(int id, int stars)
+        void IDataAccess.setFilmRating(int filmId, int stars)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            builder = builder.Where("id = @whereId", new { whereId = filmId });
+            Template template = builder.AddTemplate("UPDATE films SET user_rating = @setRating /**where**/", new { setRating = stars });
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-
-        public static List<AgeRatingModel> LoadAgeRatings()
+        void IDataAccess.setComment(int filmId, string comment, string commentDate)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<AgeRatingModel>("select * from age_ratings", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<LanguageModel> LoadLanguages()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<LanguageModel>("select * from languages", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<LanguageFilmModel> LoadLanguagesFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<LanguageFilmModel>("select * from languages_films", new DynamicParameters());
-                return output.ToList();
-            }
+            SqlBuilder builder = new SqlBuilder();
+            Template template = builder.AddTemplate("REPLACE INTO comments (id, film_id, comment_text, comment_date) VALUES ((SELECT id FROM comments WHERE film_id=@FilmId), @FilmId, @CommentText, @CommentDate)", 
+                new {CommentText = comment, CommentDate = commentDate, FilmId = filmId});
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
 
-
-        public static List<StudioModel> LoadStudios()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<StudioModel>("select * from studios", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<DirectorModel> LoadDirectors()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<DirectorModel>("select * from directors", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-        public static List<GenreModel> LoadGenres()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<GenreModel>("select * from genres", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<GenreFilmModel> LoadGenresFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<GenreFilmModel>("select * from genres_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        public static List<StudioFilmModel> LoadStudioFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<StudioFilmModel>("select * from studios_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-
-
-        public static List<DirectorFilmModel> LoadDirectorFilms()
-        {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<DirectorFilmModel>("select * from directors_films", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-
-        void IDataAccess.setComment(int film_id, string comment, string commentDate) //TODO: add also update with insert
+        CommentModel IDataAccess.requestComment(int filmId)
         {
             SqlBuilder builder = new SqlBuilder();
             Template template;
-            var args = new { FilmId = film_id, CommentText = comment, CommentDate = commentDate };
-
-            var existingComment = cnn.QueryFirstOrDefault<CommentModel>("SELECT * FROM comments WHERE film_id = @FilmId", args);
-
-            if (existingComment != null)
-            {
-                template = builder.AddTemplate("UPDATE comments SET comment_text = @CommentText, comment_date = @CommentDate WHERE film_id = @FilmId", args);
-            }
-            else
-            {
-                template = builder.AddTemplate("INSERT INTO comments (film_id, comment_text, comment_date) VALUES (@FilmId, @CommentText, @CommentDate)", args);
-            }
-
-            var rowsAffected = cnn.Execute(template.RawSql, template.Parameters);
-            if (rowsAffected > 0)
-            {
-            //    return String.Empty;
-            } 
-            else
-            {
-            //    return "Error";
-            }   
-        }
-
-        CommentModel IDataAccess.requestComment(int film_id)
-        {
-            SqlBuilder builder = new SqlBuilder();
-            Template template;
-            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @FilmId", new { FilmId = film_id });
+            template = builder.AddTemplate("SELECT * FROM comments WHERE film_id = @whereFilmId", new { whereFilmId = filmId });
             var output = cnn.QueryFirstOrDefault<CommentModel>(template.RawSql, template.Parameters);
             return output;
         }
-        void IDataAccess.removeComment(int comment_id)
+        void IDataAccess.removeComment(int commentId)
         {
-            throw new NotImplementedException();
+            SqlBuilder builder = new SqlBuilder();
+            Template template;
+            template = builder.AddTemplate("DELETE FROM comments WHERE id = @whereCommentId", new { whereCommentId = commentId });
+            int rows = cnn.Execute(template.RawSql, template.Parameters);
+            if (rows != 1) throw new Exception("Number of affected rows not 1, actually (" + rows.ToString() + ")");
         }
-
     }
-
-
-
-
 }

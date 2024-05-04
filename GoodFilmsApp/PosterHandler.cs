@@ -40,8 +40,8 @@ namespace GoodFilmsApp
             this.lblStatus = lblStatus;
             this.mv = mv;
             this.controller = controller;
-            btnLeft.Enabled = true;
-            btnRight.Enabled = true;
+            btnLeft.Enabled = false;
+            btnRight.Enabled = false;
             lblStatus.Text = "";
             btnLeft.Click += (_, __) => setPage(this.page - 1);
             btnRight.Click += (_, __) => setPage(this.page + 1);

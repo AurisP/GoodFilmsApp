@@ -17,6 +17,7 @@ namespace GoodFilmsApp
 {
     public partial class mainView : Form
     {
+        CFilter searchFilter;
         IController controller;
         CFilmsMetadataCache metadataCache;
         PosterHandler postersSearch;
@@ -26,6 +27,7 @@ namespace GoodFilmsApp
         public mainView()
         {
             InitializeComponent();
+            searchFilter = new CFilter();
             controller = new CController();
             metadataCache = null;
             controller.requestMeta((metadata) => { metadataCache = metadata; }, (error) => { MessageBox.Show(error); });
@@ -50,11 +52,9 @@ namespace GoodFilmsApp
             updateRecommend();
             updateSearch();
         }
-        internal void updateSearch()
+        private void updateSearch()
         {
-            CFilter filter = new CFilter();
-            filter.strSearch = txtSearch.Text;
-            postersSearch.setFilter(filter);
+            postersSearch.setFilter(searchFilter);
         }
         private void updateRecommend()
         {
@@ -65,22 +65,18 @@ namespace GoodFilmsApp
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
             if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?
-            QuerySubWindow querySubWindow = new QuerySubWindow(new ConstRef<CFilmsMetadataCache>(() => metadataCache), false, this);
-
+            QuerySubWindow querySubWindow = new QuerySubWindow(metadataCache, searchFilter, (filter) => {
+                searchFilter = filter;
+                updateSearch();
+            }, this);
             querySubWindow.StartPosition = FormStartPosition.CenterParent;
             querySubWindow.ShowDialog(this);
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSearch.Text))
-                Helpers.QueryModel.Query = null;
-            else
-                Helpers.QueryModel.Query = txtSearch.Text;
-
+            searchFilter.strSearch = txtSearch.Text;
             updateSearch();
         }
-
-
     }
 }
