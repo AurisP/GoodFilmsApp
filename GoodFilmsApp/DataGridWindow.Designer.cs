@@ -36,9 +36,9 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(369, 58);
+            this.btnSave.Location = new System.Drawing.Point(382, 22);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(84, 41);
+            this.btnSave.Size = new System.Drawing.Size(71, 20);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Okay";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -51,19 +51,16 @@
             this.dgwMain.Location = new System.Drawing.Point(12, 58);
             this.dgwMain.Name = "dgwMain";
             this.dgwMain.RowHeadersVisible = false;
-            this.dgwMain.Size = new System.Drawing.Size(349, 345);
+            this.dgwMain.Size = new System.Drawing.Size(441, 345);
             this.dgwMain.TabIndex = 1;
-            this.dgwMain.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgwMain_CellContentClick);
-            this.dgwMain.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgwMain_CellValueChanged);
             // 
             // tBoxDirectorSearch
             // 
-            this.tBoxDirectorSearch.Location = new System.Drawing.Point(261, 32);
+            this.tBoxDirectorSearch.Location = new System.Drawing.Point(12, 22);
             this.tBoxDirectorSearch.Name = "tBoxDirectorSearch";
-            this.tBoxDirectorSearch.Size = new System.Drawing.Size(100, 20);
+            this.tBoxDirectorSearch.Size = new System.Drawing.Size(349, 20);
             this.tBoxDirectorSearch.TabIndex = 2;
-            this.tBoxDirectorSearch.Visible = false;
-            this.tBoxDirectorSearch.TextChanged += new System.EventHandler(this.tBoxDirectorSearch_TextChanged);
+            this.tBoxDirectorSearch.TextChanged += new System.EventHandler(this.tBox_TextChanged);
             // 
             // DataGridWindow
             // 

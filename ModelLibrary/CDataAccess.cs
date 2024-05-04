@@ -126,6 +126,98 @@ namespace ModelLibrary
             return output.ToList();
         }
 
+        List<DirectorModel> IDataAccess.requestDirectors(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("directors.name LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            Template template;
+            if (query.boolRandom)
+            {
+                template = builder.AddTemplate("SELECT directors.* FROM directors /**innerjoin**/ /**where**/ GROUP BY directors.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else if (query.strSearch != null)
+            {
+                template = builder.AddTemplate("SELECT directors.* FROM directors /**innerjoin**/ /**where**/ GROUP BY directors.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else
+            {
+                template = builder.AddTemplate("SELECT directors.* FROM directors /**innerjoin**/ /**where**/ GROUP BY directors.id ORDER BY directors.name LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            var output = cnn.Query<DirectorModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<GenreModel> IDataAccess.requestGenres(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("genres.name LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            Template template;
+            if (query.boolRandom)
+            {
+                template = builder.AddTemplate("SELECT genres.* FROM genres /**innerjoin**/ /**where**/ GROUP BY genres.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else if (query.strSearch != null)
+            {
+                template = builder.AddTemplate("SELECT genres.* FROM genres /**innerjoin**/ /**where**/ GROUP BY genres.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else
+            {
+                template = builder.AddTemplate("SELECT genres.* FROM genres /**innerjoin**/ /**where**/ GROUP BY genres.id ORDER BY genres.name LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            var output = cnn.Query<GenreModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<LanguageModel> IDataAccess.requestLanguages(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("languages.name LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            Template template;
+            if (query.boolRandom)
+            {
+                template = builder.AddTemplate("SELECT languages.* FROM languages /**innerjoin**/ /**where**/ GROUP BY languages.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else if (query.strSearch != null)
+            {
+                template = builder.AddTemplate("SELECT languages.* FROM languages /**innerjoin**/ /**where**/ GROUP BY languages.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else
+            {
+                template = builder.AddTemplate("SELECT languages.* FROM languages /**innerjoin**/ /**where**/ GROUP BY languages.id ORDER BY languages.name LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            var output = cnn.Query<LanguageModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<StudioModel> IDataAccess.requestStudios(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("studios.name LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            Template template;
+            if (query.boolRandom)
+            {
+                template = builder.AddTemplate("SELECT studios.* FROM studios /**innerjoin**/ /**where**/ GROUP BY studios.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else if (query.strSearch != null)
+            {
+                template = builder.AddTemplate("SELECT studios.* FROM studios /**innerjoin**/ /**where**/ GROUP BY studios.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            else
+            {
+                template = builder.AddTemplate("SELECT studios.* FROM studios /**innerjoin**/ /**where**/ GROUP BY studios.id ORDER BY studios.name LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            }
+            var output = cnn.Query<StudioModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
         void IDataAccess.setFilmWatched(int filmId, bool watched)
         {
             SqlBuilder builder = new SqlBuilder();

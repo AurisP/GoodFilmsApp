@@ -16,7 +16,8 @@ namespace ControllerLibrary
         public List<int> listDirectors;
         public List<int> listAgeRatings;
         public List<int> listLanguages;
-        public List<int> listExcludeFilms;
+        public List<int> listExcludeIds;
+        public List<int> listIncludeIds;
         public bool boolRandom;
         public bool boolExcludeWatched;
 
@@ -31,7 +32,8 @@ namespace ControllerLibrary
             listDirectors = new List<int>();
             listAgeRatings = new List<int>();
             listLanguages = new List<int>();
-            listExcludeFilms = new List<int>();
+            listExcludeIds = new List<int>();
+            listIncludeIds = new List<int>();
             boolRandom = false;
             boolExcludeWatched = false;
         }

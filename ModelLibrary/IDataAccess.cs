@@ -8,6 +8,10 @@ namespace ModelLibrary
     {
         MetadataModel requestMetadata();
         List<FilmModel> requestFilms(int offset, int amount, QueryModel query);
+        List<DirectorModel> requestDirectors(int offset, int amount, QueryModel query);
+        List<GenreModel> requestGenres(int offset, int amount, QueryModel query);
+        List<LanguageModel> requestLanguages(int offset, int amount, QueryModel query);
+        List<StudioModel> requestStudios(int offset, int amount, QueryModel query);
         void setFilmWatched(int filmId, bool watched);
         void setFilmScheduled(int filmId, DateTime date);
         void setFilmRating(int filmId, int stars);

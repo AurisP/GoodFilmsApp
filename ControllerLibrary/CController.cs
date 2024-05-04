@@ -139,6 +139,66 @@ namespace ControllerLibrary
                 }
             });
         }
+        void IController.requestDirectors(CFilter filter, Action<List<DirectorModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var directors = access.requestDirectors(filter.toQuery());
+                    on_success?.Invoke(directors);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestGenres(CFilter filter, Action<List<GenreModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var genres = access.requestGenres(filter.toQuery());
+                    on_success?.Invoke(genres);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestLanguage(CFilter filter, Action<List<LanguageModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var languages = access.requestLanguages(filter.toQuery());
+                    on_success?.Invoke(languages);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestStudio(CFilter filter, Action<List<StudioModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var studios = access.requestStudios(filter.toQuery());
+                    on_success?.Invoke(studios);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
         void IController.requestMeta(Action<CFilmsMetadataCache> on_success, Action<String> on_error)
         {
             runAsync(() =>
