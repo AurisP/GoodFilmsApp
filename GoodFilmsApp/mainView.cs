@@ -31,7 +31,6 @@ namespace GoodFilmsApp
             InitializeComponent();
             searchFilter = new CFilter();
             controller = new CController();
-            metadataCache = null;
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
