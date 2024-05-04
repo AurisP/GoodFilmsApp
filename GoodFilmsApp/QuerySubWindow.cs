@@ -28,11 +28,6 @@ namespace GoodFilmsApp
             this.onUpdate = onUpdate;
             this.filter = filter;
 
-            cBoxMaxDuration.DataSource = _hoursMax;
-            cBoxMinDuration.DataSource = _hoursMin;
-            cBoxMaxDuration.SelectedItem = null;
-            cBoxMinDuration.SelectedItem = null;
-
             // Populate combo boxes for duration selection
             cBoxMaxDuration.DataSource = _hoursMax;
             cBoxMaxDuration.SelectedItem = null;
@@ -208,11 +203,18 @@ namespace GoodFilmsApp
 
         private void btnClearFilters_Click(object sender, EventArgs e)
         {
-            /*QuerySubWindow querySubWindow = new QuerySubWindow(data, true, _mainView);
-            Helpers.QueryModel = new QueryModel(); // Instantiate QueryModel
-            querySubWindow.StartPosition = FormStartPosition.CenterParent;
-            querySubWindow.ShowDialog();
-            this.Close();*/
+            filter.listAgeRatings = new List<int>();
+            filter.listDirectors = new List<int>();
+            filter.listGenres = new List<int>();
+            filter.listLanguages = new List<int>();
+            filter.listStudios = new List<int>();
+            cBoxMaxDuration.SelectedItem = null;
+            cBoxMinDuration.SelectedItem = null;
+            cBoxMaxDuration.Text = "";
+            cBoxMinDuration.Text = "";
+            tBoxReleaseYear.Text = "";
+            HandleQuery();
+            this.onUpdate(filter);
         }
     }
 }
