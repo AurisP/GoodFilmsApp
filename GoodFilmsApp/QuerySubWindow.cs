@@ -203,7 +203,6 @@ namespace GoodFilmsApp
         {
             HandleQuery();
             this.onUpdate(filter);
-            Console.WriteLine("AGE " + filter.listAgeRatings.Count.ToString());
             this.Close();
         }
 
