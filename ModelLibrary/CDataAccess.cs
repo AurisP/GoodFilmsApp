@@ -49,82 +49,79 @@ namespace ModelLibrary
             SqlBuilder builder = new SqlBuilder();
             if (query.strSearch != null)
             {
-                builder = builder.Where("title LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+                builder = builder.Where("films.title LIKE @Query", new { Query = "%" + query.strSearch + "%" });
             }
             if (query.intReleaseYear != null)
             {
-                builder = builder.Where("release_year = @Year", new { Year = query.intReleaseYear });
+                builder = builder.Where("films.release_year = @Year", new { Year = query.intReleaseYear });
             }
             if (query.intMaxLenSec != null)
             {
-                builder = builder.Where("duration_sec <= @Seconds", new { Seconds = query.intMaxLenSec });
+                builder = builder.Where("films.duration_sec <= @Seconds", new { Seconds = query.intMaxLenSec });
             }
             if (query.intMinLenSec != null)
             {
-                builder = builder.Where("duration_sec >= @Seconds", new { Seconds = query.intMinLenSec });
+                builder = builder.Where("films.duration_sec >= @Seconds", new { Seconds = query.intMinLenSec });
             }
             if (query.listAgeRatings != null && query.listAgeRatings.Count > 0)
             {
                 List<string> queries = new List<string>();
                 foreach (var rating in query.listAgeRatings)
                 {
-                    queries.Add("age_rating_id = " + rating.ToString());
+                    queries.Add("films.age_rating_id = " + rating.ToString());
                 }
                 builder = builder.Where("(" + String.Join(" OR ", queries.ToArray()) + ")");
             }
             if (query.listGenres != null && query.listGenres.Count > 0)
             {
-                builder = builder.InnerJoin("genres_films ON genres_films.film_id = films.id");
                 List<string> queries = new List<string>();
                 foreach (var genre in query.listGenres)
                 {
                     queries.Add("genres_films.genre_id=" + genre.ToString());
                 }
-                builder = builder.Where("(" + String.Join(" OR ", queries.ToArray()) + ")");
+                builder = builder.InnerJoin("genres_films ON genres_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
             if (query.listDirectors != null && query.listDirectors.Count > 0)
             {
-                builder = builder.InnerJoin("directors_films ON directors_films.film_id = films.id");
                 List<string> queries = new List<string>();
                 foreach (var director in query.listDirectors)
                 {
                     queries.Add("directors_films.director_id=" + director.ToString());
                 }
-                builder = builder.Where("(" + String.Join(" OR ", queries.ToArray()) + ")");
+                builder = builder.InnerJoin("directors_films ON directors_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
             if (query.listLanguages != null && query.listLanguages.Count > 0)
             {
-                builder = builder.InnerJoin("languages_films ON languages_films.film_id = films.id");
                 List<string> queries = new List<string>();
                 foreach (var language in query.listLanguages)
                 {
                     queries.Add("languages_films.language_id=" + language.ToString());
                 }
-                builder = builder.Where("(" + String.Join(" OR ", queries.ToArray()) + ")");
+                builder = builder.InnerJoin("languages_films ON languages_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
             if (query.listStudios != null && query.listStudios.Count > 0)
             {
-                builder = builder.InnerJoin("studios_films ON studios_films.film_id = films.id");
                 List<string> queries = new List<string>();
                 foreach (var studio in query.listStudios)
                 {
                     queries.Add("studios_films.studio_id=" + studio.ToString());
                 }
-                builder = builder.Where("(" + String.Join(" OR ", queries.ToArray()) + ")");
+                builder = builder.InnerJoin("studios_films ON studios_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
             Template template;
             if (query.boolRandom)
             {
-                template = builder.AddTemplate("SELECT * FROM films /**innerjoin**/ /**where**/ ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
             else if (query.strSearch != null)
             {
-                template = builder.AddTemplate("SELECT * FROM films /**innerjoin**/ /**where**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
             else
             {
-                template = builder.AddTemplate("SELECT * FROM films /**innerjoin**/ /**where**/ ORDER BY title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id ORDER BY films.title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             }
+            Console.WriteLine(template.RawSql);
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
             return output.ToList();
         }
