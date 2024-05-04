@@ -25,7 +25,6 @@ namespace GoodFilmsApp
         }
 
         // Constructors to populate the data grid with a list of ...
-        #region data grid
         public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<StudioModel> studioModels)
         {
             InitializeComponent();
@@ -144,120 +143,15 @@ namespace GoodFilmsApp
                 onChange(filter);
             };
         }
-        #endregion
-        //---
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             this.onSave(); // Perform save action defined in constructor
             this.Close();  // Close the form
         }
-
-        private void tBoxDirectorSearch_TextChanged(object sender, System.EventArgs e)
+        private void tBox_TextChanged(object sender, EventArgs e)
         {
-            /*string input = tBoxDirectorSearch.Text;
 
-            if (string.IsNullOrEmpty(input))
-            {
-                dgwMain.DataSource = directorModel;
-                return;
-            }
-
-            #region dataTable
-            DataTable dataTable = new DataTable();
-            var rows = dgwMain.Rows;
-
-            if (dgwMain.Rows.Count == 0)
-            {
-                dgwMain.DataSource = directorModel;
-            }
-            foreach (DataGridViewColumn col in dgwMain.Columns)
-            {
-                dataTable.Columns.Add(col.Name);
-            }
-
-            foreach (DataGridViewRow row in dgwMain.Rows)
-            {
-                DataRow dRow = dataTable.NewRow();
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    dRow[cell.ColumnIndex] = cell.Value;
-                }
-                dataTable.Rows.Add(dRow);
-            }
-
-            dataTable.DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", input);
-
-            dgwMain.DataSource = dataTable;
-            #endregion
-
-            HandleValueChnge();*/
-
-        }
-
-        private void dgwMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            /*if (_directorModel != null)
-            {
-
-                if (_canCellChangeEventFire == false)
-                {
-                    _canCellChangeEventFire = true;
-                    return;
-                }
-                HandleValueChnge();
-            }*/
-
-        }
-
-        private void HandleValueChnge()
-        {
-            /*List<DirectorModel> chosenValues = new List<DirectorModel>();
-
-            foreach (DataGridViewRow row in dgwMain.Rows)
-            {
-                if (
-                    row.Cells[0].Value != null
-                    //&& row.Cells[1].Value != null
-                    //&& row.Cells[2].Value != null
-                    )
-                {
-                    var model = new DirectorModel()
-                    {
-                        Id = Convert.ToInt32(row.Cells[0].Value.ToString()),
-                        Name = row.Cells[1].Value.ToString(),
-                    };
-                    if (row.Cells[2].Value == null || row.Cells[2].Value == DBNull.Value)
-                    {
-                        model.Chosen = false;
-
-                    }
-                    else
-                    {
-                        model.Chosen = Convert.ToBoolean(row.Cells[2].Value);
-                    }
-
-                    chosenValues.Add(model);
-
-                }
-
-            }
-
-            var unChosenValues = chosenValues.Where(x => x.Chosen == false).ToList();
-            chosenValues = chosenValues.Where(x => x.Chosen == true).ToList();
-
-
-            for (int i = 0; i < chosenValues.Count; i++)
-                _directorModel.Where(x => x.Id == chosenValues[i].Id).FirstOrDefault().Chosen = true;
-            for (int i = 0; i < unChosenValues.Count; i++)
-                _directorModel.Where(x => x.Id == unChosenValues[i].Id).FirstOrDefault().Chosen = false;*/
-        }
-
-
-        private void dgwMain_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //if (_directorModel != null)
-            //    dgwMain.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
     }
 }
