@@ -9,20 +9,26 @@ namespace ViewHandler
     public class CViewHandler : IViewHandler
     {
         private Dictionary<int, FilmModel> offsetsToFilms;
+        private bool knowAbsoluteEnd;
         private int maxOffset;
         private IController controller;
         public CViewHandler(IController controller)
         {
             offsetsToFilms = new Dictionary<int, FilmModel>();
             maxOffset = 0;
+            knowAbsoluteEnd = false;
             this.controller = controller;
         }
         public void requestFilms(CFilter filter, int offset, int count, Action cb)
         {
-            controller.requestFilms(filter, offset, count, (films) =>
+            controller.requestFilms(filter, offset, count + 1, (films) =>
             {
                 maxOffset = maxOffset > offset + films.Count ? maxOffset : offset + films.Count;
-                for (var i = 0; i < films.Count; i++)
+                if (films.Count < count + 1)
+                {
+                    knowAbsoluteEnd = true;
+                }
+                for (var i = 0; i < films.Count-1; i++)
                 {
                     if (offsetsToFilms.ContainsKey(offset + i))
                     {
@@ -49,6 +55,11 @@ namespace ViewHandler
                 result.Add(offsetsToFilms[offset + i]);
             }
             return result;
+        }
+
+        public bool getAbsoluteEndKnown()
+        {
+            return knowAbsoluteEnd;
         }
         public int getMaxOffset()
         {

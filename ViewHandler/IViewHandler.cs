@@ -12,6 +12,8 @@ namespace ViewHandler
     {
         void requestFilms(CFilter filter, int offset, int count, Action cb);
         List<FilmModel> getFilms(int offset, int count);
+        bool getAbsoluteEndKnown();
         int getMaxOffset();
+        void clearView();
     }
 }
