@@ -31,10 +31,6 @@ namespace GoodFilmsApp
             InitializeComponent();
             searchFilter = new CFilter();
             controller = new CController();
-            string myValue = null;
-            path = new Ref<string>(() => myValue, value => myValue = value);
-            exporter = new CExporter();
-            
             metadataCache = null;
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
