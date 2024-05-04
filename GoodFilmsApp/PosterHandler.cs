@@ -119,6 +119,7 @@ namespace GoodFilmsApp
         public void setFilter(CFilter filter)
         {
             clearView();
+            this.page = 0;
             this.filter = filter;
             request();
         }

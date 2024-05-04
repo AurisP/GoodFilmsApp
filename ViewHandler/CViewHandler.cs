@@ -67,6 +67,7 @@ namespace ViewHandler
         }
         public void clearView()
         {
+            knowAbsoluteEnd = false;
             maxOffset = 0;
             offsetsToFilms = new Dictionary<int, FilmModel>();
         }
