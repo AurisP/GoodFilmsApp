@@ -136,7 +136,7 @@ namespace GoodFilmsApp
             HandleReleaseYear();
 
             // Check if min duration is greater than max duration
-            if (Helpers.QueryModel.MinDuration > Helpers.QueryModel.MaxDuration)
+            if (Helpers.QueryModel.MinDuration > Helpers.QueryModel.MaxDuration && Helpers.QueryModel.MaxDuration > 0)
             {
                 MessageBox.Show("Minimum duration cannot be greater than maximum duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Helpers.QueryModel.MinDuration = 0; // Reset min duration
