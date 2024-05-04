@@ -214,20 +214,5 @@ namespace ControllerLibrary
                 }
             });
         }
-        void IController.requestMeta(Action<CFilmsMetadataCache> on_success, Action<String> on_error)
-        {
-            runAsync(() =>
-            {
-                try
-                {
-                    var meta = access.requestMetadata();
-                    on_success?.Invoke(new CFilmsMetadataCache(meta.directors, meta.genres, meta.studios, meta.languages, meta.ageRatings));
-                }
-                catch (Exception ex)
-                {
-                    on_error?.Invoke("Error while requesting metadata: " + ex.ToString());
-                }
-            });
-        }
     }
 }

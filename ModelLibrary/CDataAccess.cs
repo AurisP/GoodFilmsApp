@@ -24,26 +24,12 @@ namespace ModelLibrary
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
-
         private IDbConnection cnn;
-
         public CDataAccess()
         {
             this.cnn = new SQLiteConnection(LoadConnectionString());
             this.cnn.Open();
         }
-
-        MetadataModel IDataAccess.requestMetadata()
-        {
-            return new MetadataModel( // TODO: any way to do this in 1 request?
-                cnn.Query<DirectorModel>((new SqlBuilder()).AddTemplate("SELECT * FROM directors").RawSql).ToList(),
-                cnn.Query<GenreModel>((new SqlBuilder()).AddTemplate("SELECT * FROM genres").RawSql).ToList(),
-                cnn.Query<StudioModel>((new SqlBuilder()).AddTemplate("SELECT * FROM studios").RawSql).ToList(),
-                cnn.Query<LanguageModel>((new SqlBuilder()).AddTemplate("SELECT * FROM languages").RawSql).ToList(),
-                cnn.Query<AgeRatingModel>((new SqlBuilder()).AddTemplate("SELECT * FROM age_ratings").RawSql).ToList()
-            );
-        }
-
         List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel query)
         {
             SqlBuilder builder = new SqlBuilder();
@@ -125,7 +111,6 @@ namespace ModelLibrary
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
             return output.ToList();
         }
-
         List<DirectorModel> IDataAccess.requestDirectors(int offset, int amount, QueryModel query)
         {
             SqlBuilder builder = new SqlBuilder();

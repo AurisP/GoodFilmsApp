@@ -16,17 +16,15 @@ namespace GoodFilmsApp
         CFilter filter;
         mainView _mainView;
         // Lists to store data fetched from the database
-        private CFilmsMetadataCache data;
         private List<int> _hoursMax = new List<int>() { 1, 2, 3, 4, 5 };
         private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
-        public QuerySubWindow(IController controller, CFilmsMetadataCache data, CFilter filter, Action<CFilter> onUpdate, mainView mainView)
+        public QuerySubWindow(IController controller, CFilter filter, Action<CFilter> onUpdate, mainView mainView)
         {
             InitializeComponent();  // Initialize form components
             _mainView = mainView;
             this.controller = controller;
-            this.data = data;
             this.onUpdate = onUpdate;
             this.filter = filter;
 
