@@ -88,12 +88,13 @@ namespace GoodFilmsApp
             }
             catch (Exception ex)
             {
+                path.Value = "";
+                lblPath.Text = path.Value;
                 MessageBox.Show("Error occurred while saving CSV file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            MessageBox.Show("CSV file saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             this.Close();
         }
-
     }
 }
