@@ -48,6 +48,7 @@ namespace GoodFilmsApp
                 lblScheduledPage);
             updateRecommend();
             updateSearch();
+            updateScheduled();
         }
         public void updateSearch()
         {
