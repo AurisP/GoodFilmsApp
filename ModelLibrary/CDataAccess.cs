@@ -99,7 +99,7 @@ namespace ModelLibrary
                 builder = builder.InnerJoin("soon_to_watch_films ON soon_to_watch_films.film_id = films.id");
                 builder = builder.OrderBy("soon_to_watch_films.watch_date");
             }
-            if (query.boolRandom || query.strSearch != null)
+            if (query.boolRandom || query.strSearch == null || query.strSearch == "")
             {
                 builder = builder.OrderBy("RANDOM()");
             }
