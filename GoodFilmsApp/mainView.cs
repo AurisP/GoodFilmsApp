@@ -45,7 +45,7 @@ namespace GoodFilmsApp
                 btnSearchRight,
                 lblSearchPage,
                 exporter,
-                ref path);
+                path);
             postersRecommend = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbRecommendedFilms,
@@ -53,7 +53,7 @@ namespace GoodFilmsApp
                 btnRecommenRight,
                 lblRecommendPage,
                 exporter,
-                ref path);
+                path);
             postersScheduled = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbScheduledFilms,
@@ -61,7 +61,7 @@ namespace GoodFilmsApp
                 btnScheduleRight,
                 lblScheduledPage,
                 exporter,
-                ref path); ; ;
+                path); ; ;
             updateRecommend();
             updateSearch();
         }

@@ -71,7 +71,7 @@
             // pbPoster
             // 
             this.pbPoster.Location = new System.Drawing.Point(27, 98);
-            this.pbPoster.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbPoster.Margin = new System.Windows.Forms.Padding(4);
             this.pbPoster.Name = "pbPoster";
             this.pbPoster.Size = new System.Drawing.Size(400, 554);
             this.pbPoster.TabIndex = 1;
@@ -87,7 +87,7 @@
             // pbStar1
             // 
             this.pbStar1.Location = new System.Drawing.Point(453, 116);
-            this.pbStar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbStar1.Margin = new System.Windows.Forms.Padding(4);
             this.pbStar1.Name = "pbStar1";
             this.pbStar1.Size = new System.Drawing.Size(67, 62);
             this.pbStar1.TabIndex = 2;
@@ -96,7 +96,7 @@
             // pbStar2
             // 
             this.pbStar2.Location = new System.Drawing.Point(453, 185);
-            this.pbStar2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbStar2.Margin = new System.Windows.Forms.Padding(4);
             this.pbStar2.Name = "pbStar2";
             this.pbStar2.Size = new System.Drawing.Size(67, 62);
             this.pbStar2.TabIndex = 3;
@@ -105,7 +105,7 @@
             // pbStar3
             // 
             this.pbStar3.Location = new System.Drawing.Point(453, 254);
-            this.pbStar3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbStar3.Margin = new System.Windows.Forms.Padding(4);
             this.pbStar3.Name = "pbStar3";
             this.pbStar3.Size = new System.Drawing.Size(67, 62);
             this.pbStar3.TabIndex = 4;
@@ -114,7 +114,7 @@
             // pbStar4
             // 
             this.pbStar4.Location = new System.Drawing.Point(453, 322);
-            this.pbStar4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbStar4.Margin = new System.Windows.Forms.Padding(4);
             this.pbStar4.Name = "pbStar4";
             this.pbStar4.Size = new System.Drawing.Size(67, 62);
             this.pbStar4.TabIndex = 5;
@@ -123,7 +123,7 @@
             // pbStar5
             // 
             this.pbStar5.Location = new System.Drawing.Point(453, 391);
-            this.pbStar5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbStar5.Margin = new System.Windows.Forms.Padding(4);
             this.pbStar5.Name = "pbStar5";
             this.pbStar5.Size = new System.Drawing.Size(67, 62);
             this.pbStar5.TabIndex = 6;
@@ -142,7 +142,7 @@
             // txtMovieInfo
             // 
             this.txtMovieInfo.Location = new System.Drawing.Point(547, 98);
-            this.txtMovieInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMovieInfo.Margin = new System.Windows.Forms.Padding(4);
             this.txtMovieInfo.Multiline = true;
             this.txtMovieInfo.Name = "txtMovieInfo";
             this.txtMovieInfo.ReadOnly = true;
@@ -180,7 +180,7 @@
             // btnSaveComment
             // 
             this.btnSaveComment.Location = new System.Drawing.Point(780, 589);
-            this.btnSaveComment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaveComment.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveComment.Name = "btnSaveComment";
             this.btnSaveComment.Size = new System.Drawing.Size(167, 28);
             this.btnSaveComment.TabIndex = 11;
@@ -192,7 +192,7 @@
             // 
             this.dtpScheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpScheduleTime.Location = new System.Drawing.Point(547, 628);
-            this.dtpScheduleTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpScheduleTime.Margin = new System.Windows.Forms.Padding(4);
             this.dtpScheduleTime.MinDate = new System.DateTime(1920, 1, 1, 0, 0, 0, 0);
             this.dtpScheduleTime.Name = "dtpScheduleTime";
             this.dtpScheduleTime.Size = new System.Drawing.Size(227, 22);
@@ -211,7 +211,7 @@
             // btnAddToSchedule
             // 
             this.btnAddToSchedule.Location = new System.Drawing.Point(780, 625);
-            this.btnAddToSchedule.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAddToSchedule.Margin = new System.Windows.Forms.Padding(4);
             this.btnAddToSchedule.Name = "btnAddToSchedule";
             this.btnAddToSchedule.Size = new System.Drawing.Size(167, 28);
             this.btnAddToSchedule.TabIndex = 14;
@@ -224,7 +224,7 @@
             this.cbFilmWatched.AutoSize = true;
             this.cbFilmWatched.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.cbFilmWatched.Location = new System.Drawing.Point(829, 54);
-            this.cbFilmWatched.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbFilmWatched.Margin = new System.Windows.Forms.Padding(4);
             this.cbFilmWatched.Name = "cbFilmWatched";
             this.cbFilmWatched.Size = new System.Drawing.Size(107, 20);
             this.cbFilmWatched.TabIndex = 15;
@@ -234,12 +234,12 @@
             // 
             // btnSaveAs
             // 
-            this.btnSaveAs.Location = new System.Drawing.Point(721, 49);
-            this.btnSaveAs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaveAs.Location = new System.Drawing.Point(700, 49);
+            this.btnSaveAs.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveAs.Name = "btnSaveAs";
-            this.btnSaveAs.Size = new System.Drawing.Size(100, 28);
+            this.btnSaveAs.Size = new System.Drawing.Size(121, 28);
             this.btnSaveAs.TabIndex = 25;
-            this.btnSaveAs.Text = "Save As";
+            this.btnSaveAs.Text = "Export As CSV";
             this.btnSaveAs.UseVisualStyleBackColor = true;
             this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click_1);
             // 
@@ -265,7 +265,7 @@
             this.Controls.Add(this.pbStar1);
             this.Controls.Add(this.pbPoster);
             this.Controls.Add(this.lblFilmName);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "filmView";
             this.Text = "Movie name";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.filmView_FormClosing);

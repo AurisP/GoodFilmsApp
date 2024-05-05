@@ -36,7 +36,7 @@ namespace GoodFilmsApp
             Button btnRight,
             Label lblStatus,
             IExporter exporter,
-            ref Ref<string> path) : base(controller)
+            Ref<string> path) : base(controller)
         {
             this.size = numOfPictures;
             page = 0;
@@ -97,7 +97,7 @@ namespace GoodFilmsApp
                 var ev = new MouseEventHandler((_, __) =>
                 {
                     if (detailView != null) return;
-                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller, exporter, ref path);
+                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller, exporter, path);
                     detailView.Show();
                 });
                 pb[i].MouseClick += ev;
