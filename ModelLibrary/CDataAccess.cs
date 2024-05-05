@@ -97,20 +97,18 @@ namespace ModelLibrary
             if (query.boolOnlyScheduled)
             {
                 builder = builder.InnerJoin("soon_to_watch_films ON soon_to_watch_films.film_id = films.id");
+                builder = builder.OrderBy("soon_to_watch_films.watch_date");
             }
-            Template template;
-            if (query.boolRandom)
+            if (query.boolRandom || query.strSearch != null)
             {
-                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id ORDER BY RANDOM() LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
-            }
-            else if (query.strSearch != null)
-            {
-                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                builder = builder.OrderBy("RANDOM()");
             }
             else
             {
-                template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id ORDER BY films.title LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+                builder = builder.OrderBy("films.title");
             }
+            Template template;
+            template = builder.AddTemplate("SELECT films.* FROM films /**innerjoin**/ /**where**/ GROUP BY films.id /**orderby**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
             Console.WriteLine(template.RawSql);
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
             return output.ToList();
