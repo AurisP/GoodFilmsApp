@@ -25,7 +25,7 @@ namespace GoodFilmsApp
         private Ref<string> path;
         
         private bool ignoreCheck;
-        public filmView(FilmModel film, Action onCloseCb, IController controller, IExporter exporter, ref Ref<string> path)
+        public filmView(FilmModel film, Action onCloseCb, IController controller, IExporter exporter, Ref<string> path)
         {
             this.film = film;
             // this.controller = rController;
@@ -116,7 +116,7 @@ namespace GoodFilmsApp
 
         private void btnSaveAs_Click_1(object sender, EventArgs e)
         {
-            CSView csview = new CSView(film, exporter, ref path);
+            CSView csview = new CSView(film, exporter, path);
             csview.StartPosition = FormStartPosition.CenterParent;
             csview.ShowDialog(this);
         }
