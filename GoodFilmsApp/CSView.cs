@@ -28,6 +28,8 @@ namespace GoodFilmsApp
             this.exporter = exporter;
             this.path = path;
             if (path.Value != null) { lblPath.Text = path.Value; };
+            txtDelimiter.Text = exporter.delimiter;
+            txtTextQualifier.Text = exporter.textQualifier;
         }
 
         private void btnSaveAs_Click(object sender, EventArgs e)
