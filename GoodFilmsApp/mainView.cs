@@ -57,6 +57,7 @@ namespace GoodFilmsApp
                 path);
             updateRecommend();
             updateSearch();
+            updateScheduled();
         }
         public void updateSearch()
         {
