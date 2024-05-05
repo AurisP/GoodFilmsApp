@@ -94,6 +94,10 @@ namespace ModelLibrary
                 }
                 builder = builder.InnerJoin("studios_films ON studios_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
+            if (query.boolOnlyScheduled)
+            {
+                builder = builder.InnerJoin("soon_to_watch_films ON soon_to_watch_films.film_id = films.id");
+            }
             Template template;
             if (query.boolRandom)
             {

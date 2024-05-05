@@ -18,6 +18,7 @@ namespace ModelLibrary
         public List<int> listIncludeIds;
         public bool boolRandom;
         public bool boolExcludeWatched;
+        public bool boolOnlyScheduled;
         public QueryModel()
         {
             strSearch = null;
@@ -32,6 +33,7 @@ namespace ModelLibrary
             listIncludeIds = new List<int>();
             boolRandom = false;
             boolExcludeWatched = false;
+            boolOnlyScheduled = false;
         }
     }
 }

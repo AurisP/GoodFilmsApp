@@ -49,15 +49,21 @@ namespace GoodFilmsApp
             updateRecommend();
             updateSearch();
         }
-        private void updateSearch()
+        public void updateSearch()
         {
             postersSearch.setFilter(searchFilter);
         }
-        private void updateRecommend()
+        public void updateRecommend()
         {
             CFilter filter = new CFilter();
             filter.boolRandom = true;
             postersRecommend.setFilter(filter);
+        }
+        public void updateScheduled()
+        {
+            CFilter filter = new CFilter();
+            filter.boolOnlyScheduled = true;
+            postersScheduled.setFilter(filter);
         }
         private void btnQuery_Click_1(object sender, EventArgs e)
         {

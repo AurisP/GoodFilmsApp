@@ -19,8 +19,10 @@ namespace GoodFilmsApp
         private FilmModel film;
         private IController controller;
         private bool ignoreCheck;
-        public filmView(FilmModel film, Action onCloseCb, IController controller)
+        private mainView parent;
+        public filmView(mainView parent, FilmModel film, Action onCloseCb, IController controller)
         {
+            this.parent = parent;
             this.film = film;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
@@ -94,7 +96,7 @@ namespace GoodFilmsApp
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            controller.setFilmScheduled(film, dtpScheduleTime.Value, null, (error) => { MessageBox.Show(error); });
+            controller.setFilmScheduled(film, dtpScheduleTime.Value, () => { this.parent.updateScheduled(); }, (error) => { MessageBox.Show(error); });
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
