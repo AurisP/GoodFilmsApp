@@ -15,9 +15,6 @@ namespace GoodFilmsApp
         Action<CFilter> onUpdate;
         CFilter filter;
         mainView _mainView;
-        // Lists to store data fetched from the database
-        private List<int> _hoursMax = new List<int>() { 1, 2, 3, 4, 5 };
-        private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
         public QuerySubWindow(IController controller, CFilter filter, Action<CFilter> onUpdate, mainView mainView)
@@ -29,53 +26,33 @@ namespace GoodFilmsApp
             this.filter = filter;
 
             // Populate combo boxes for duration selection
-            cBoxMaxDuration.DataSource = _hoursMax;
-            cBoxMaxDuration.SelectedItem = null;
-            cBoxMinDuration.DataSource = _hoursMin;
-            cBoxMinDuration.SelectedItem = null;
 
-            if (filter.intMinLenSec != null) cBoxMinDuration.SelectedItem = filter.intMinLenSec;
-            if (filter.intMaxLenSec != null) cBoxMaxDuration.SelectedItem = filter.intMaxLenSec;
-            if (filter.intReleaseYear != null) tBoxReleaseYear.Text = filter.intReleaseYear.ToString();
-        }
-        
-        // Method to handle minimum duration selection
-        private void HandleMinTime()
-        {
-            try
-            {
-                if (cBoxMinDuration.SelectedItem != null) filter.intMinLenSec = Convert.ToInt32(cBoxMinDuration.SelectedItem.ToString());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Please choose min duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            // Initialize text boxes with filter values
+            if (filter.intMinLenSec != null) txtMinDuration.Text = (filter.intMinLenSec / 60).ToString();
+            if (filter.intMaxLenSec != null) txtMaxDuration.Text = (filter.intMaxLenSec / 60).ToString();
+            if (filter.intReleaseYear != null) txtReleaseYear.Text = filter.intReleaseYear.ToString();
         }
 
-        // Method to handle maximum duration selection
-        private void HandleMaxTime()
+        // Clear all filters
+        private void clearFilters()
         {
-            try
-            {
-                if (cBoxMaxDuration.SelectedItem != null) filter.intMaxLenSec = Convert.ToInt32(cBoxMaxDuration.SelectedItem.ToString());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Please choose max duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-        
-        // Method to handle release year selection
-        private void HandleReleaseYear()
-        {
-            try
-            {
-                if (tBoxReleaseYear.Text != null && tBoxReleaseYear.Text != "") filter.intReleaseYear = Convert.ToInt32(tBoxReleaseYear.Text);
-            }
-            catch
-            {
-                filter.intReleaseYear = null;
-            }
+            // Reset all filter properties
+            filter.listAgeRatings = new List<int>();
+            filter.listDirectors = new List<int>();
+            filter.listGenres = new List<int>();
+            filter.listLanguages = new List<int>();
+            filter.listStudios = new List<int>();
+            filter.intMinLenSec = null;
+            filter.intMaxLenSec = null;
+            filter.intReleaseYear = null;
+
+            // Clear text boxes
+            txtMinDuration.Text = "";
+            txtMaxDuration.Text = "";
+            txtReleaseYear.Text = "";
+
+            // Invoke onUpdate action to apply changes
+            this.onUpdate(filter);
         }
 
         // Method to handle studio selection
@@ -83,6 +60,7 @@ namespace GoodFilmsApp
         {
             try
             {
+                // Open data grid window for studio selection
                 var dataGridWindow = new DataGridWindow(controller, filter);
                 dataGridWindow.initForStudios(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
@@ -90,15 +68,18 @@ namespace GoodFilmsApp
             }
             catch (Exception ex)
             {
+                // Show error message if something goes wrong
                 MessageBox.Show("Something gone wrong on studio. " + ex.ToString(), "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
 
         // Method to handle genre selection
         private void HandleGenres()
         {
             try
             {
+                // Open data grid window for genre selection
                 var dataGridWindow = new DataGridWindow(controller, filter);
                 dataGridWindow.initForGenres(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
@@ -106,6 +87,7 @@ namespace GoodFilmsApp
             }
             catch (Exception ex)
             {
+                // Show error message if something goes wrong
                 MessageBox.Show("Something gone wrong on genres.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -115,6 +97,7 @@ namespace GoodFilmsApp
         {
             try
             {
+                // Open data grid window for director selection
                 var dataGridWindow = new DataGridWindow(controller, filter);
                 dataGridWindow.initForDirectors(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
@@ -122,6 +105,7 @@ namespace GoodFilmsApp
             }
             catch (Exception ex)
             {
+                // Show error message if something goes wrong
                 MessageBox.Show("Something gone wrong on directors.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -131,6 +115,7 @@ namespace GoodFilmsApp
         {
             try
             {
+                // Open data grid window for age rating selection
                 var dataGridWindow = new DataGridWindow(controller, filter);
                 dataGridWindow.initForAgeRatings(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
@@ -138,14 +123,17 @@ namespace GoodFilmsApp
             }
             catch (Exception ex)
             {
+                // Show error message if something goes wrong
                 MessageBox.Show("Something gone wrong on age rating.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
+        // Method to handle language selection
         private void HandleLanguages()
         {
             try
             {
+                // Open a data grid window for selecting languages
                 var dataGridWindow = new DataGridWindow(controller, filter);
                 dataGridWindow.initForLanguages(onUpdate);
                 dataGridWindow.StartPosition = FormStartPosition.CenterParent;
@@ -153,17 +141,11 @@ namespace GoodFilmsApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something gone wrong on language part.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Display a warning message if an exception occurs during language selection
+                MessageBox.Show("Something went wrong while selecting languages.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
-        // Method to handle query parameters
-        private void HandleQuery()
-        {
-            HandleMinTime();
-            HandleMaxTime();
-            HandleReleaseYear();
-        }
 
         //Buttons:
         private void btnAddNewStudio_Click(object sender, EventArgs e)
@@ -193,25 +175,70 @@ namespace GoodFilmsApp
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            HandleQuery();
             this.onUpdate(filter);
             this.Close();
         }
 
         private void btnClearFilters_Click(object sender, EventArgs e)
         {
-            filter.listAgeRatings = new List<int>();
-            filter.listDirectors = new List<int>();
-            filter.listGenres = new List<int>();
-            filter.listLanguages = new List<int>();
-            filter.listStudios = new List<int>();
-            cBoxMaxDuration.SelectedItem = null;
-            cBoxMinDuration.SelectedItem = null;
-            cBoxMaxDuration.Text = "";
-            cBoxMinDuration.Text = "";
-            tBoxReleaseYear.Text = "";
-            HandleQuery();
+            clearFilters();
+        }
+
+        private void lblMaxDuration_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Event handler for changes in the minimum duration text box
+        private void txtMinDuration_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Parse the text in the minimum duration text box to an integer and convert to seconds
+                filter.intMinLenSec = Int32.Parse(txtMinDuration.Text) * 60;
+            }
+            catch
+            {
+                // If parsing fails, set the minimum duration to null
+                filter.intMinLenSec = null;
+            }
+            // Call the onUpdate action with the updated filter
             this.onUpdate(filter);
         }
+
+        // Event handler for changes in the maximum duration text box
+        private void txtMaxDuration_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Parse the text in the maximum duration text box to an integer and convert to seconds
+                filter.intMaxLenSec = Int32.Parse(txtMaxDuration.Text) * 60;
+            }
+            catch
+            {
+                // If parsing fails, set the maximum duration to null
+                filter.intMaxLenSec = null;
+            }
+            // Call the onUpdate action with the updated filter
+            this.onUpdate(filter);
+        }
+
+        // Event handler for changes in the release year text box
+        private void txtReleaseYear_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Parse the text in the release year text box to an integer
+                filter.intReleaseYear = Int32.Parse(txtReleaseYear.Text);
+            }
+            catch
+            {
+                // If parsing fails, set the release year to null
+                filter.intReleaseYear = null;
+            }
+            // Call the onUpdate action with the updated filter
+            this.onUpdate(filter);
+        }
+
     }
 }

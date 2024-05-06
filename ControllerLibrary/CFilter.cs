@@ -20,6 +20,7 @@ namespace ControllerLibrary
         public List<int> listIncludeIds;
         public bool boolRandom;
         public bool boolExcludeWatched;
+        public bool boolOnlyScheduled;
 
         public CFilter()
         {
@@ -36,6 +37,7 @@ namespace ControllerLibrary
             listIncludeIds = new List<int>();
             boolRandom = false;
             boolExcludeWatched = false;
+            boolOnlyScheduled = false;
         }
 
         public QueryModel toQuery()
@@ -53,7 +55,8 @@ namespace ControllerLibrary
                 listExcludeIds = this.listExcludeIds,
                 listIncludeIds = this.listIncludeIds,
                 boolRandom = this.boolRandom,
-                boolExcludeWatched = this.boolExcludeWatched
+                boolExcludeWatched = this.boolExcludeWatched,
+                boolOnlyScheduled = this.boolOnlyScheduled
             };
         }
     }

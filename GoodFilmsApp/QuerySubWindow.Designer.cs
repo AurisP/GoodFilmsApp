@@ -32,8 +32,6 @@
             this.lblMinDuration = new System.Windows.Forms.Label();
             this.lblMaxDuration = new System.Windows.Forms.Label();
             this.lblStudios = new System.Windows.Forms.Label();
-            this.cBoxMinDuration = new System.Windows.Forms.ComboBox();
-            this.cBoxMaxDuration = new System.Windows.Forms.ComboBox();
             this.lblAddedStudios = new System.Windows.Forms.Label();
             this.btnAddNewStudio = new System.Windows.Forms.Button();
             this.lblAddedGenres = new System.Windows.Forms.Label();
@@ -43,12 +41,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblDirectors = new System.Windows.Forms.Label();
             this.lblReleaseYear = new System.Windows.Forms.Label();
-            this.tBoxReleaseYear = new System.Windows.Forms.TextBox();
+            this.txtReleaseYear = new System.Windows.Forms.TextBox();
             this.btnAgeRating = new System.Windows.Forms.Button();
             this.lblAgeRating = new System.Windows.Forms.Label();
             this.btnChooseLanguage = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnClearFilters = new System.Windows.Forms.Button();
+            this.txtMinDuration = new System.Windows.Forms.TextBox();
+            this.txtMaxDuration = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnSearch
@@ -66,18 +66,19 @@
             this.lblMinDuration.AutoSize = true;
             this.lblMinDuration.Location = new System.Drawing.Point(13, 49);
             this.lblMinDuration.Name = "lblMinDuration";
-            this.lblMinDuration.Size = new System.Drawing.Size(67, 13);
+            this.lblMinDuration.Size = new System.Drawing.Size(115, 13);
             this.lblMinDuration.TabIndex = 2;
-            this.lblMinDuration.Text = "Min Duration";
+            this.lblMinDuration.Text = "Min Duration (minutes):";
             // 
             // lblMaxDuration
             // 
             this.lblMaxDuration.AutoSize = true;
             this.lblMaxDuration.Location = new System.Drawing.Point(13, 97);
             this.lblMaxDuration.Name = "lblMaxDuration";
-            this.lblMaxDuration.Size = new System.Drawing.Size(70, 13);
+            this.lblMaxDuration.Size = new System.Drawing.Size(118, 13);
             this.lblMaxDuration.TabIndex = 4;
-            this.lblMaxDuration.Text = "Max Duration";
+            this.lblMaxDuration.Text = "Max Duration (minutes):";
+            this.lblMaxDuration.Click += new System.EventHandler(this.lblMaxDuration_Click);
             // 
             // lblStudios
             // 
@@ -87,23 +88,6 @@
             this.lblStudios.Size = new System.Drawing.Size(37, 13);
             this.lblStudios.TabIndex = 6;
             this.lblStudios.Text = "Studio";
-            // 
-            // cBoxMinDuration
-            // 
-            this.cBoxMinDuration.FormattingEnabled = true;
-            this.cBoxMinDuration.Location = new System.Drawing.Point(86, 46);
-            this.cBoxMinDuration.Name = "cBoxMinDuration";
-            this.cBoxMinDuration.Size = new System.Drawing.Size(121, 21);
-            this.cBoxMinDuration.TabIndex = 7;
-            // 
-            // cBoxMaxDuration
-            // 
-            this.cBoxMaxDuration.FormattingEnabled = true;
-            this.cBoxMaxDuration.Location = new System.Drawing.Point(86, 94);
-            this.cBoxMaxDuration.Name = "cBoxMaxDuration";
-            this.cBoxMaxDuration.Size = new System.Drawing.Size(121, 21);
-            this.cBoxMaxDuration.TabIndex = 8;
-            //this.cBoxMaxDuration.SelectedIndexChanged += new System.EventHandler(this.cBoxMaxDuration_SelectedIndexChanged);
             // 
             // lblAddedStudios
             // 
@@ -182,16 +166,17 @@
             this.lblReleaseYear.AutoSize = true;
             this.lblReleaseYear.Location = new System.Drawing.Point(13, 140);
             this.lblReleaseYear.Name = "lblReleaseYear";
-            this.lblReleaseYear.Size = new System.Drawing.Size(71, 13);
+            this.lblReleaseYear.Size = new System.Drawing.Size(74, 13);
             this.lblReleaseYear.TabIndex = 18;
-            this.lblReleaseYear.Text = "Release Year";
+            this.lblReleaseYear.Text = "Release Year:";
             // 
-            // tBoxReleaseYear
+            // txtReleaseYear
             // 
-            this.tBoxReleaseYear.Location = new System.Drawing.Point(86, 138);
-            this.tBoxReleaseYear.Name = "tBoxReleaseYear";
-            this.tBoxReleaseYear.Size = new System.Drawing.Size(121, 20);
-            this.tBoxReleaseYear.TabIndex = 19;
+            this.txtReleaseYear.Location = new System.Drawing.Point(86, 138);
+            this.txtReleaseYear.Name = "txtReleaseYear";
+            this.txtReleaseYear.Size = new System.Drawing.Size(135, 20);
+            this.txtReleaseYear.TabIndex = 19;
+            this.txtReleaseYear.TextChanged += new System.EventHandler(this.txtReleaseYear_TextChanged);
             // 
             // btnAgeRating
             // 
@@ -244,18 +229,36 @@
             this.btnClearFilters.UseVisualStyleBackColor = true;
             this.btnClearFilters.Click += new System.EventHandler(this.btnClearFilters_Click);
             // 
+            // txtMinDuration
+            // 
+            this.txtMinDuration.Location = new System.Drawing.Point(134, 46);
+            this.txtMinDuration.Name = "txtMinDuration";
+            this.txtMinDuration.Size = new System.Drawing.Size(87, 20);
+            this.txtMinDuration.TabIndex = 25;
+            this.txtMinDuration.TextChanged += new System.EventHandler(this.txtMinDuration_TextChanged);
+            // 
+            // txtMaxDuration
+            // 
+            this.txtMaxDuration.Location = new System.Drawing.Point(134, 94);
+            this.txtMaxDuration.Name = "txtMaxDuration";
+            this.txtMaxDuration.Size = new System.Drawing.Size(87, 20);
+            this.txtMaxDuration.TabIndex = 26;
+            this.txtMaxDuration.TextChanged += new System.EventHandler(this.txtMaxDuration_TextChanged);
+            // 
             // QuerySubWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.IndianRed;
             this.ClientSize = new System.Drawing.Size(392, 246);
+            this.Controls.Add(this.txtMaxDuration);
+            this.Controls.Add(this.txtMinDuration);
             this.Controls.Add(this.btnClearFilters);
             this.Controls.Add(this.btnChooseLanguage);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnAgeRating);
             this.Controls.Add(this.lblAgeRating);
-            this.Controls.Add(this.tBoxReleaseYear);
+            this.Controls.Add(this.txtReleaseYear);
             this.Controls.Add(this.lblReleaseYear);
             this.Controls.Add(this.btnChooseDirector);
             this.Controls.Add(this.label1);
@@ -265,8 +268,6 @@
             this.Controls.Add(this.lblGenres);
             this.Controls.Add(this.btnAddNewStudio);
             this.Controls.Add(this.lblAddedStudios);
-            this.Controls.Add(this.cBoxMaxDuration);
-            this.Controls.Add(this.cBoxMinDuration);
             this.Controls.Add(this.lblStudios);
             this.Controls.Add(this.lblMaxDuration);
             this.Controls.Add(this.lblMinDuration);
@@ -284,8 +285,6 @@
         private System.Windows.Forms.Label lblMinDuration;
         private System.Windows.Forms.Label lblMaxDuration;
         private System.Windows.Forms.Label lblStudios;
-        private System.Windows.Forms.ComboBox cBoxMinDuration;
-        private System.Windows.Forms.ComboBox cBoxMaxDuration;
         private System.Windows.Forms.Label lblAddedStudios;
         private System.Windows.Forms.Button btnAddNewStudio;
         private System.Windows.Forms.Label lblAddedGenres;
@@ -295,11 +294,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDirectors;
         private System.Windows.Forms.Label lblReleaseYear;
-        private System.Windows.Forms.TextBox tBoxReleaseYear;
+        private System.Windows.Forms.TextBox txtReleaseYear;
         private System.Windows.Forms.Button btnAgeRating;
         private System.Windows.Forms.Label lblAgeRating;
         private System.Windows.Forms.Button btnChooseLanguage;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnClearFilters;
+        private System.Windows.Forms.TextBox txtMinDuration;
+        private System.Windows.Forms.TextBox txtMaxDuration;
     }
 }

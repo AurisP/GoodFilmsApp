@@ -23,15 +23,17 @@ namespace GoodFilmsApp
         IController controller;
         IExporter exporter;
         private Ref<string> path;
-        mainView mv; // Have to keep track of this to update buttons in the same thread as they were created, god I love C#
-        int size;    // Amount of PictureBoxes
-        int page;    // Current page we're on
+        mainView mv; // Reference to the mainView instance
+        int size;    // Number of PictureBoxes
+        int page;    // Current page index
+
+        // Constructor
         public PosterHandler(
             IController controller,
             mainView mv,
-            int numOfPictures, 
+            int numOfPictures,
             PosterBoxSettings s,
-            GroupBox gb, 
+            GroupBox gb,
             Button btnLeft,
             Button btnRight,
             Label lblStatus,
@@ -39,7 +41,7 @@ namespace GoodFilmsApp
             Ref<string> path) : base(controller)
         {
             this.size = numOfPictures;
-            page = 0;
+            this.page = 0;
             this.btnLeft = btnLeft;
             this.btnRight = btnRight;
             this.lblStatus = lblStatus;
@@ -50,8 +52,12 @@ namespace GoodFilmsApp
             lblStatus.Text = "";
             this.exporter = exporter;
             this.path = path;
+
+            // Subscribe to button click events for navigation
             btnLeft.Click += (_, __) => setPage(this.page - 1);
             btnRight.Click += (_, __) => setPage(this.page + 1);
+
+            // Create PictureBoxes
             for (int i = 0; i < numOfPictures; i++)
             {
                 PictureBox pb = new PictureBox();
@@ -67,26 +73,29 @@ namespace GoodFilmsApp
             }
         }
 
+        // Update controls based on the films received
         private void updateControls(List<FilmModel> films)
         {
             mv.Invoke(new Action(() => {
                 btnLeft.Enabled = page > 0;
-                btnRight.Enabled = btnRight.Enabled = films.Count >= size;
-                if (films.Count < size)
+                btnRight.Enabled = page != (getMaxOffset() - 1) / size;
+                if (getAbsoluteEndKnown())
                 {
-                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + (getMaxOffset() / size + 1).ToString();
+                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + ((getMaxOffset() - 1) / size + 1).ToString();
                 }
                 else
                 {
-                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + (getMaxOffset() / size + 1).ToString() + "...";
+                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + ((getMaxOffset() - 1) / size + 1).ToString() + "...";
                 }
             }));
         }
 
+        // Update the PictureBoxes with the films received
         private void updateView(List<FilmModel> films)
         {
             for (var i = 0; i < pb.Count; i++)
             {
+                pb[i].MouseClick -= events[i];
                 if (i >= films.Count)
                 {
                     pb[i].ImageLocation = "";
@@ -97,7 +106,7 @@ namespace GoodFilmsApp
                 var ev = new MouseEventHandler((_, __) =>
                 {
                     if (detailView != null) return;
-                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller, exporter, path);
+                    detailView = new filmView(mv, films[iCopy], () => { detailView = null; }, controller, exporter, path);
                     detailView.Show();
                 });
                 pb[i].MouseClick += ev;
@@ -113,9 +122,10 @@ namespace GoodFilmsApp
             }
         }
 
+        // Request films based on the current filter and page index
         public void request()
         {
-            requestFilms(filter, page * size, 64, () => // TODO: Change 64 into reasonable parameter
+            requestFilms(filter, page * size, 64, () => // TODO: Change 64 into a meaningful parameter
             {
                 var films = getFilms(page * size, size);
                 updateView(films);
@@ -123,13 +133,16 @@ namespace GoodFilmsApp
             });
         }
 
+        // Set the filter for the PosterHandler and request films based on the new filter
         public void setFilter(CFilter filter)
         {
             clearView();
+            this.page = 0;
             this.filter = filter;
             request();
         }
 
+        // Set the page index for the PosterHandler and request films for the new page
         public void setPage(int page)
         {
             if (page < 0) page = 0;
