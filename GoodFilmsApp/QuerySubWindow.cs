@@ -15,9 +15,6 @@ namespace GoodFilmsApp
         Action<CFilter> onUpdate;
         CFilter filter;
         mainView _mainView;
-        // Lists to store data fetched from the database
-        private List<int> _hoursMax = new List<int>() { 1, 2, 3, 4, 5 };
-        private List<int> _hoursMin = new List<int>() { 1, 2, 3, 4, 5 };
 
         // Constructor
         public QuerySubWindow(IController controller, CFilter filter, Action<CFilter> onUpdate, mainView mainView)
@@ -29,53 +26,25 @@ namespace GoodFilmsApp
             this.filter = filter;
 
             // Populate combo boxes for duration selection
-            cBoxMaxDuration.DataSource = _hoursMax;
-            cBoxMaxDuration.SelectedItem = null;
-            cBoxMinDuration.DataSource = _hoursMin;
-            cBoxMinDuration.SelectedItem = null;
 
-            if (filter.intMinLenSec != null) cBoxMinDuration.SelectedItem = filter.intMinLenSec;
-            if (filter.intMaxLenSec != null) cBoxMaxDuration.SelectedItem = filter.intMaxLenSec;
-            if (filter.intReleaseYear != null) tBoxReleaseYear.Text = filter.intReleaseYear.ToString();
+            if (filter.intMinLenSec != null) txtMinDuration.Text = (filter.intMinLenSec/60).ToString();
+            if (filter.intMaxLenSec != null) txtMaxDuration.Text = (filter.intMaxLenSec/60).ToString();
+            if (filter.intReleaseYear != null) txtReleaseYear.Text = filter.intReleaseYear.ToString();
         }
-        
-        // Method to handle minimum duration selection
-        private void HandleMinTime()
+        private void clearFilters()
         {
-            try
-            {
-                if (cBoxMinDuration.SelectedItem != null) filter.intMinLenSec = Convert.ToInt32(cBoxMinDuration.SelectedItem.ToString());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Please choose min duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        // Method to handle maximum duration selection
-        private void HandleMaxTime()
-        {
-            try
-            {
-                if (cBoxMaxDuration.SelectedItem != null) filter.intMaxLenSec = Convert.ToInt32(cBoxMaxDuration.SelectedItem.ToString());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Please choose max duration.", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-        
-        // Method to handle release year selection
-        private void HandleReleaseYear()
-        {
-            try
-            {
-                if (tBoxReleaseYear.Text != null && tBoxReleaseYear.Text != "") filter.intReleaseYear = Convert.ToInt32(tBoxReleaseYear.Text);
-            }
-            catch
-            {
-                filter.intReleaseYear = null;
-            }
+            filter.listAgeRatings = new List<int>();
+            filter.listDirectors = new List<int>();
+            filter.listGenres = new List<int>();
+            filter.listLanguages = new List<int>();
+            filter.listStudios = new List<int>();
+            filter.intMinLenSec = null;
+            filter.intMaxLenSec = null;
+            filter.intReleaseYear = null;
+            txtMinDuration.Text = "";
+            txtMaxDuration.Text = "";
+            txtReleaseYear.Text = "";
+            this.onUpdate(filter);
         }
 
         // Method to handle studio selection
@@ -157,14 +126,6 @@ namespace GoodFilmsApp
             }
         }
 
-        // Method to handle query parameters
-        private void HandleQuery()
-        {
-            HandleMinTime();
-            HandleMaxTime();
-            HandleReleaseYear();
-        }
-
         //Buttons:
         private void btnAddNewStudio_Click(object sender, EventArgs e)
         {
@@ -193,24 +154,56 @@ namespace GoodFilmsApp
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            HandleQuery();
             this.onUpdate(filter);
             this.Close();
         }
 
         private void btnClearFilters_Click(object sender, EventArgs e)
         {
-            filter.listAgeRatings = new List<int>();
-            filter.listDirectors = new List<int>();
-            filter.listGenres = new List<int>();
-            filter.listLanguages = new List<int>();
-            filter.listStudios = new List<int>();
-            cBoxMaxDuration.SelectedItem = null;
-            cBoxMinDuration.SelectedItem = null;
-            cBoxMaxDuration.Text = "";
-            cBoxMinDuration.Text = "";
-            tBoxReleaseYear.Text = "";
-            HandleQuery();
+            clearFilters();
+        }
+
+        private void lblMaxDuration_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtMinDuration_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                filter.intMinLenSec = Int32.Parse(txtMinDuration.Text) * 60;
+            }
+            catch
+            {
+                filter.intMinLenSec = null;
+            }
+            this.onUpdate(filter);
+        }
+
+        private void txtMaxDuration_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                filter.intMaxLenSec = Int32.Parse(txtMaxDuration.Text) * 60;
+            }
+            catch
+            {
+                filter.intMaxLenSec = null;
+            }
+            this.onUpdate(filter);
+        }
+
+        private void txtReleaseYear_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                filter.intReleaseYear = Int32.Parse(txtReleaseYear.Text);
+            }
+            catch
+            {
+                filter.intReleaseYear = null;
+            }
             this.onUpdate(filter);
         }
     }
