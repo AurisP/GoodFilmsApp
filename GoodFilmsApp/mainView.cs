@@ -31,7 +31,6 @@ namespace GoodFilmsApp
             InitializeComponent();
             searchFilter = new CFilter();
             controller = new CController();
-            metadataCache = null;
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
@@ -55,19 +54,26 @@ namespace GoodFilmsApp
                 btnScheduleRight,
                 lblScheduledPage,
                 exporter,
-                path); ; ;
+                path);
             updateRecommend();
             updateSearch();
+            updateScheduled();
         }
-        private void updateSearch()
+        public void updateSearch()
         {
             postersSearch.setFilter(searchFilter);
         }
-        private void updateRecommend()
+        public void updateRecommend()
         {
             CFilter filter = new CFilter();
             filter.boolRandom = true;
             postersRecommend.setFilter(filter);
+        }
+        public void updateScheduled()
+        {
+            CFilter filter = new CFilter();
+            filter.boolOnlyScheduled = true;
+            postersScheduled.setFilter(filter);
         }
         private void btnQuery_Click_1(object sender, EventArgs e)
         {

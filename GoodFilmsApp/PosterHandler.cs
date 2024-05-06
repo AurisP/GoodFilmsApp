@@ -98,7 +98,7 @@ namespace GoodFilmsApp
                 var ev = new MouseEventHandler((_, __) =>
                 {
                     if (detailView != null) return;
-                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller, exporter, path);
+                    detailView = new filmView(mv, films[iCopy], () => { detailView = null; }, controller, exporter, path);
                     detailView.Show();
                 });
                 pb[i].MouseClick += ev;

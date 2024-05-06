@@ -25,16 +25,17 @@ namespace GoodFilmsApp
         private Ref<string> path;
         
         private bool ignoreCheck;
-        public filmView(FilmModel film, Action onCloseCb, IController controller, IExporter exporter, Ref<string> path)
+
+        private mainView parent;
+        public filmView(mainView parent, FilmModel film, Action onCloseCb, IController controller, IExporter exporter, Ref<string> path)
         {
+            this.parent = parent;
             this.film = film;
-            // this.controller = rController;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
             this.exporter = exporter;
             this.path = path;
             InitializeComponent();
-            
     }
 
         private void updateStars()
@@ -104,7 +105,7 @@ namespace GoodFilmsApp
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            controller.setFilmScheduled(film, dtpScheduleTime.Value, null, (error) => { MessageBox.Show(error); });
+            controller.setFilmScheduled(film, dtpScheduleTime.Value, () => { this.parent.updateScheduled(); }, (error) => { MessageBox.Show(error); });
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
