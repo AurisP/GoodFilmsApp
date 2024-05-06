@@ -98,10 +98,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataGridWindow.cs" />
+    <Compile Include="DataGridWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DataGridWindow.designer.cs">
       <DependentUpon>DataGridWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataGridWindowHelpers.cs" />
     <Compile Include="filmView.cs">
       <SubType>Form</SubType>
     </Compile>

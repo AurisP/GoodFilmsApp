@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CFilmsMetadataCache.cs" />
     <Compile Include="CFilter.cs" />
     <Compile Include="CController.cs" />
     <Compile Include="ConstRef.cs" />
