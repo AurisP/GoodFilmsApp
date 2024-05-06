@@ -98,10 +98,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataGridWindow.cs" />
+    <Compile Include="DataGridWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DataGridWindow.designer.cs">
       <DependentUpon>DataGridWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataGridWindowHelpers.cs" />
     <Compile Include="filmView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +178,10 @@
     <ProjectReference Include="..\ControllerLibrary\ControllerLibrary.csproj">
       <Project>{29b321f4-9809-413f-8188-ea8340cec840}</Project>
       <Name>ControllerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
+      <Project>{ebd7a118-dfa8-4ae0-a69d-3fb58bef958d}</Project>
+      <Name>ModelLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\ViewHandler\ViewHandler.csproj">
       <Project>{f6cfce5a-0bbb-49a8-b4d0-4751992a92a2}</Project>

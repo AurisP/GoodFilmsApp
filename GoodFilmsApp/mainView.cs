@@ -21,12 +21,12 @@ namespace GoodFilmsApp
         IExporter exporter;
         CFilter searchFilter;
         IController controller;
-        CFilmsMetadataCache metadataCache;
         PosterHandler postersSearch;
         PosterHandler postersRecommend;
         PosterHandler postersScheduled;
         internal bool _isFirstLoad = true;
         Ref<string> path;
+
         public mainView()
         {
             InitializeComponent();
@@ -35,9 +35,6 @@ namespace GoodFilmsApp
             string myValue = null;
             path = new Ref<string>(() => myValue, value => myValue = value);
             exporter = new CExporter();
-            
-            metadataCache = null;
-            controller.requestMeta((metadata) => { metadataCache = metadata; }, (error) => { MessageBox.Show(error); });
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
@@ -77,8 +74,7 @@ namespace GoodFilmsApp
         }
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
-            if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?
-            QuerySubWindow querySubWindow = new QuerySubWindow(metadataCache, searchFilter, (filter) => {
+            QuerySubWindow querySubWindow = new QuerySubWindow(controller, searchFilter, (filter) => {
                 searchFilter = filter;
                 updateSearch();
             }, this);

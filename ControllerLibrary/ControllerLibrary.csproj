@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CFilmsMetadataCache.cs" />
     <Compile Include="CFilter.cs" />
     <Compile Include="CController.cs" />
     <Compile Include="ConstRef.cs" />
@@ -58,6 +57,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
+      <Project>{ebd7a118-dfa8-4ae0-a69d-3fb58bef958d}</Project>
+      <Name>ModelLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -17,7 +17,6 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
-        private Action onCloseCb;
         private FilmModel film;
         private IController controller;
         private IExporter exporter;

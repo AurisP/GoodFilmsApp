@@ -24,26 +24,12 @@ namespace ModelLibrary
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
-
         private IDbConnection cnn;
-
         public CDataAccess()
         {
             this.cnn = new SQLiteConnection(LoadConnectionString());
             this.cnn.Open();
         }
-
-        MetadataModel IDataAccess.requestMetadata()
-        {
-            return new MetadataModel( // TODO: any way to do this in 1 request?
-                cnn.Query<DirectorModel>((new SqlBuilder()).AddTemplate("SELECT * FROM directors").RawSql).ToList(),
-                cnn.Query<GenreModel>((new SqlBuilder()).AddTemplate("SELECT * FROM genres").RawSql).ToList(),
-                cnn.Query<StudioModel>((new SqlBuilder()).AddTemplate("SELECT * FROM studios").RawSql).ToList(),
-                cnn.Query<LanguageModel>((new SqlBuilder()).AddTemplate("SELECT * FROM languages").RawSql).ToList(),
-                cnn.Query<AgeRatingModel>((new SqlBuilder()).AddTemplate("SELECT * FROM age_ratings").RawSql).ToList()
-            );
-        }
-
         List<FilmModel> IDataAccess.requestFilms(int offset, int amount, QueryModel query)
         {
             SqlBuilder builder = new SqlBuilder();
@@ -125,7 +111,116 @@ namespace ModelLibrary
             var output = cnn.Query<FilmModel>(template.RawSql, template.Parameters);
             return output.ToList();
         }
-
+        List<DirectorModel> IDataAccess.requestDirectors(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.listIncludeIds != null && query.listIncludeIds.Count > 0)
+            {
+                builder = builder.OrderBy("directors.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ") DESC");
+                builder = builder.OrWhere("directors.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ")");
+            }
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("directors.name LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            builder = builder.OrderBy("directors.name");
+            if (query.listExcludeIds != null && query.listExcludeIds.Count > 0)
+            {
+                builder = builder.Where("directors.id NOT IN (" + String.Join(",", query.listExcludeIds.ToArray()) + ")");
+            }
+            Template template;
+            template = builder.AddTemplate("SELECT directors.* FROM directors /**innerjoin**/ /**where**/ GROUP BY directors.id /**orderby**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            var output = cnn.Query<DirectorModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<GenreModel> IDataAccess.requestGenres(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.listIncludeIds != null && query.listIncludeIds.Count > 0)
+            {
+                builder = builder.OrderBy("genres.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ") DESC");
+                builder = builder.OrWhere("genres.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ")");
+            }
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("genres.genre LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            builder = builder.OrderBy("genres.genre");
+            if (query.listExcludeIds != null && query.listExcludeIds.Count > 0)
+            {
+                builder = builder.Where("genres.id NOT IN (" + String.Join(",", query.listExcludeIds.ToArray()) + ")");
+            }
+            Template template;
+            template = builder.AddTemplate("SELECT genres.* FROM genres /**innerjoin**/ /**where**/ GROUP BY genres.id /**orderby**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            var output = cnn.Query<GenreModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<LanguageModel> IDataAccess.requestLanguages(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.listIncludeIds != null && query.listIncludeIds.Count > 0)
+            {
+                builder = builder.OrderBy("languages.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ") DESC");
+                builder = builder.OrWhere("languages.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ")");
+            }
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("languages.language LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            builder = builder.OrderBy("languages.language");
+            if (query.listExcludeIds != null && query.listExcludeIds.Count > 0)
+            {
+                builder = builder.Where("languages.id NOT IN (" + String.Join(",", query.listExcludeIds.ToArray()) + ")");
+            }
+            Template template;
+            template = builder.AddTemplate("SELECT languages.* FROM languages /**innerjoin**/ /**where**/ GROUP BY languages.id /**orderby**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            var output = cnn.Query<LanguageModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<StudioModel> IDataAccess.requestStudios(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.listIncludeIds != null && query.listIncludeIds.Count > 0)
+            {
+                builder = builder.OrderBy("studios.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ") DESC");
+                builder = builder.OrWhere("studios.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ")");
+            }
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("studios.studio LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            builder = builder.OrderBy("studios.studio");
+            if (query.listExcludeIds != null && query.listExcludeIds.Count > 0)
+            {
+                builder = builder.Where("studios.id NOT IN (" + String.Join(",", query.listExcludeIds.ToArray()) + ")");
+            }
+            Template template;
+            template = builder.AddTemplate("SELECT studios.* FROM studios /**innerjoin**/ /**where**/ GROUP BY studios.id /**orderby**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            var output = cnn.Query<StudioModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
+        List<AgeRatingModel> IDataAccess.requestAgeRatings(int offset, int amount, QueryModel query)
+        {
+            SqlBuilder builder = new SqlBuilder();
+            if (query.listIncludeIds != null && query.listIncludeIds.Count > 0)
+            {
+                builder = builder.OrderBy("age_ratings.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ") DESC");
+                builder = builder.OrWhere("age_ratings.id IN (" + String.Join(",", query.listIncludeIds.ToArray()) + ")");
+            }
+            if (query.strSearch != null)
+            {
+                builder = builder.Where("age_ratings.rating LIKE @Query", new { Query = "%" + query.strSearch + "%" });
+            }
+            builder = builder.OrderBy("age_ratings.rating");
+            if (query.listExcludeIds != null && query.listExcludeIds.Count > 0)
+            {
+                builder = builder.Where("age_ratings.id NOT IN (" + String.Join(",", query.listExcludeIds.ToArray()) + ")");
+            }
+            Template template;
+            template = builder.AddTemplate("SELECT age_ratings.* FROM age_ratings /**innerjoin**/ /**where**/ GROUP BY age_ratings.id /**orderby**/ LIMIT @Amount OFFSET @Offset", new { Amount = amount, Offset = offset });
+            var output = cnn.Query<AgeRatingModel>(template.RawSql, template.Parameters);
+            return output.ToList();
+        }
         void IDataAccess.setFilmWatched(int filmId, bool watched)
         {
             SqlBuilder builder = new SqlBuilder();

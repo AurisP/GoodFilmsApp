@@ -139,18 +139,78 @@ namespace ControllerLibrary
                 }
             });
         }
-        void IController.requestMeta(Action<CFilmsMetadataCache> on_success, Action<String> on_error)
+        void IController.requestDirectors(CFilter filter, int offset, int count, Action<List<DirectorModel>> on_success, Action<String> on_error)
         {
             runAsync(() =>
             {
                 try
                 {
-                    var meta = access.requestMetadata();
-                    on_success?.Invoke(new CFilmsMetadataCache(meta.directors, meta.genres, meta.studios, meta.languages, meta.ageRatings));
+                    var directors = access.requestDirectors(offset, count, filter.toQuery());
+                    on_success?.Invoke(directors);
                 }
                 catch (Exception ex)
                 {
-                    on_error?.Invoke("Error while requesting metadata: " + ex.ToString());
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestGenres(CFilter filter, int offset, int count, Action<List<GenreModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var genres = access.requestGenres(offset, count, filter.toQuery());
+                    on_success?.Invoke(genres);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestLanguages(CFilter filter, int offset, int count, Action<List<LanguageModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var languages = access.requestLanguages(offset, count, filter.toQuery());
+                    on_success?.Invoke(languages);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestStudios(CFilter filter, int offset, int count, Action<List<StudioModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var studios = access.requestStudios(offset, count, filter.toQuery());
+                    on_success?.Invoke(studios);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestAgeRatings(CFilter filter, int offset, int count, Action<List<AgeRatingModel>> on_success, Action<String> on_error = null)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var ageRatings = access.requestAgeRatings(offset, count, filter.toQuery());
+                    on_success?.Invoke(ageRatings);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting directors: " + ex.ToString());
                 }
             });
         }

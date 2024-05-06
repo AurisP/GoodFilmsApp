@@ -8,286 +8,123 @@ using ControllerLibrary;
 
 namespace GoodFilmsApp
 {
-    public class CStudioData
-    {
-        public int Id { get; set; }
-        public string Studio { get; set; }
-        public bool Chosen { get; set; }
-    }
-    public class CGenreData
-    {
-        public int Id { get; set; }
-        public string Genre { get; set; }
-        public bool Chosen { get; set; }
-    }
-    public class CDirectorData
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public bool Chosen { get; set; }
-    }
-    public class CAgeRatingData
-    {
-        public int Id { get; set; }
-        public string Rating { get; set; }
-        public bool Chosen { get; set; }
-    }
-    public class CLanguageData
-    {
-        public int Id { get; set; }
-        public string Language { get; set; }
-        public bool Chosen { get; set; }
-    }
     public partial class DataGridWindow : Form
     {
         //// Lists to store different models
+        private IController controller;
+        private CFilter filter;
         private Action onSave;
-        private List<CStudioData> studioData;
-        private List<CGenreData> genreData;
-        private List<CDirectorData> directorData;
-        private List<CAgeRatingData> ageRatingData;
-        private List<CLanguageData> languageData;
+        private Action onType;
 
-        public DataGridWindow()
+        public DataGridWindow(IController controller, CFilter filter)
         {
             InitializeComponent(); // Form components
+            this.controller = controller;
+            this.filter = filter;
             onSave = () => { };
+            onType = () => { };
         }
 
-        // Constructors to populate the data grid with a list of ...
-        #region data grid
-        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<StudioModel> studioModels)
+        private void initGeneric<T>(Action<CFilter, int, int, Action<List<T>>, Action<String>> request, Func<T, int> getTId, Func<T, string> getTName, Ref<List<int>> list, Action<CFilter> onChange)
         {
-            InitializeComponent();
-            studioData = studioModels
-                            .OrderByDescending(x => filter.listStudios.Contains(x.Id))
-                            .Select(x => new CStudioData { Id = x.Id, Studio = x.Studio, Chosen = false })
+            this.onSave = () =>
+            {
+                var includeList = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                var excludeList = dgwMain.Rows.Cast<DataGridViewRow>()
+                    .Where(x => (bool)x.Cells["Chosen"].Value == false)
+                    .Select(x => (int)x.Cells["Id"].Value)
+                    .ToList();
+                list.Value = list.Value
+                                .Union(includeList)
+                                .Where(x => !excludeList.Contains(x))
+                                .ToList();
+                onChange(filter);
+            };
+            this.onType = () =>
+            {
+                CFilter dataFilter = new CFilter();
+                dataFilter.strSearch = tBox.Text;
+                dataFilter.listIncludeIds = list.Value;
+                request(dataFilter, 0, 100, (data) =>
+                {
+                    List<CDisplayData> displayData = data
+                            .OrderByDescending(x => list.Value.Contains(getTId(x)))
+                            .Select(x => new CDisplayData(getTId(x), getTName(x), false))
                             .ToList();
-            for (var i = 0; i < studioModels.Count; i++)
-            {
-                if (!filter.listStudios.Contains(studioData[i].Id)) break;
-                studioData[i].Chosen = true;
-            }
-            dgwMain.DataSource = studioData;
-            dgwMain.Columns["Id"].Visible = false;
-            dgwMain.Columns["Chosen"].HeaderText = "";
-            this.onSave = () => {
-                filter.listStudios = dgwMain.Rows.Cast<DataGridViewRow>()
-                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
-                    .Select(x => (int)x.Cells["Id"].Value)
-                    .ToList();
-                onChange(filter);
+                    for (var i = 0; i < data.Count; i++)
+                    {
+                        if (!list.Value.Contains(displayData[i].Id)) break;
+                        displayData[i].Chosen = true;
+                    }
+                    Invoke(new Action(() =>
+                    {
+                        dgwMain.DataSource = displayData;
+                        dgwMain.Columns["Id"].Visible = false;
+                        dgwMain.Columns["Chosen"].HeaderText = "";
+                    }));
+                }, (error) =>
+                {
+                    MessageBox.Show(error);
+                });
             };
+            this.onType();
         }
-
-        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<LanguageModel> languageModels)
+        public void initForAgeRatings(Action<CFilter> onChange)
         {
-            InitializeComponent();
-            languageData = languageModels
-                             .OrderByDescending(x => filter.listLanguages.Contains(x.Id))
-                             .Select(x => new CLanguageData { Id = x.Id, Language = x.Language, Chosen = false })
-                             .ToList();
-            for (var i = 0; i < languageModels.Count; i++)
-            {
-                if (!filter.listLanguages.Contains(languageData[i].Id)) break;
-                languageData[i].Chosen = true;
-            }
-            dgwMain.DataSource = languageData;
-            dgwMain.Columns["Id"].Visible = false;
-            dgwMain.Columns["Chosen"].HeaderText = "";
-            this.onSave = () => {
-                filter.listLanguages = dgwMain.Rows.Cast<DataGridViewRow>()
-                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
-                    .Select(x => (int)x.Cells["Id"].Value)
-                    .ToList();
-                onChange(filter);
-            };
+            initGeneric<AgeRatingModel>(
+                (a, b, c, d, e) => controller.requestAgeRatings(a, b, c, d, e),
+                (a) => a.Id,
+                (a) => a.Rating,
+                new Ref<List<int>>(() => filter.listAgeRatings, (x) => { filter.listAgeRatings = x; }),
+                onChange);
         }
-
-        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<GenreModel> genreModels)
+        public void initForDirectors(Action<CFilter> onChange)
         {
-            InitializeComponent();
-            genreData = genreModels
-                              .OrderByDescending(x => filter.listGenres.Contains(x.Id))
-                              .Select(x => new CGenreData { Id = x.Id, Genre = x.Genre, Chosen = false })
-                              .ToList();
-            for (var i = 0; i < genreModels.Count; i++)
-            {
-                if (!filter.listGenres.Contains(genreData[i].Id)) break;
-                genreData[i].Chosen = true;
-            }
-            dgwMain.DataSource = genreData;
-            dgwMain.Columns["Id"].Visible = false;
-            dgwMain.Columns["Chosen"].HeaderText = "";
-            this.onSave = () => {
-                filter.listGenres = dgwMain.Rows.Cast<DataGridViewRow>()
-                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
-                    .Select(x => (int)x.Cells["Id"].Value)
-                    .ToList();
-                onChange(filter);
-            };
+            initGeneric<DirectorModel>(
+                (a, b, c, d, e) => controller.requestDirectors(a, b, c, d, e),
+                (a) => a.Id,
+                (a) => a.Name,
+                new Ref<List<int>>(() => filter.listDirectors, (x) => { filter.listDirectors = x; }),
+                onChange);
         }
-
-        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<DirectorModel> directorModels)
+        public void initForGenres(Action<CFilter> onChange)
         {
-            InitializeComponent();
-            directorData = directorModels
-                              .OrderByDescending(x => filter.listDirectors.Contains(x.Id))
-                              .Select(x => new CDirectorData { Id = x.Id, Name = x.Name, Chosen = false })
-                              .ToList();
-            for (var i = 0; i < directorModels.Count; i++)
-            {
-                if (!filter.listDirectors.Contains(directorData[i].Id)) break;
-                directorData[i].Chosen = true;
-            }
-            dgwMain.DataSource = directorData;
-            dgwMain.Columns["Id"].Visible = false;
-            dgwMain.Columns["Chosen"].HeaderText = "";
-            this.onSave = () => {
-                filter.listDirectors = dgwMain.Rows.Cast<DataGridViewRow>()
-                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
-                    .Select(x => (int)x.Cells["Id"].Value)
-                    .ToList();
-                onChange(filter);
-            };
+            initGeneric<GenreModel>(
+                (a, b, c, d, e) => controller.requestGenres(a, b, c, d, e),
+                (a) => a.Id,
+                (a) => a.Genre,
+                new Ref<List<int>>(() => filter.listGenres, (x) => { filter.listGenres = x; }),
+                onChange);
         }
-        public DataGridWindow(CFilter filter, Action<CFilter> onChange, List<AgeRatingModel> ageRatingModels)
+        public void initForLanguages(Action<CFilter> onChange)
         {
-            InitializeComponent();
-            ageRatingData = ageRatingModels
-                              .OrderByDescending(x => filter.listAgeRatings.Contains(x.Id))
-                              .Select(x => new CAgeRatingData { Id = x.Id, Rating = x.Rating, Chosen = false })
-                              .ToList();
-            for (var i = 0; i < ageRatingModels.Count; i++)
-            {
-                if (!filter.listAgeRatings.Contains(ageRatingData[i].Id)) break;
-                ageRatingData[i].Chosen = true;
-            }
-            dgwMain.DataSource = ageRatingData;
-            dgwMain.Columns["Id"].Visible = false;
-            dgwMain.Columns["Chosen"].HeaderText = "";
-            this.onSave = () => {
-                filter.listAgeRatings = dgwMain.Rows.Cast<DataGridViewRow>()
-                    .Where(x => (bool)x.Cells["Chosen"].Value == true)
-                    .Select(x => (int)x.Cells["Id"].Value)
-                    .ToList();
-                onChange(filter);
-            };
+            initGeneric<LanguageModel>(
+                (a, b, c, d, e) => controller.requestLanguages(a, b, c, d, e),
+                (a) => a.Id,
+                (a) => a.Language,
+                new Ref<List<int>>(() => filter.listLanguages, (x) => { filter.listLanguages = x; }),
+                onChange);
         }
-        #endregion
-        //---
-
+        public void initForStudios(Action<CFilter> onChange)
+        {
+            initGeneric<StudioModel>(
+                (a, b, c, d, e) => controller.requestStudios(a, b, c, d, e),
+                (a) => a.Id,
+                (a) => a.Studio,
+                new Ref<List<int>>(() => filter.listStudios, (x) => { filter.listStudios = x; }),
+                onChange);
+        }
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             this.onSave(); // Perform save action defined in constructor
             this.Close();  // Close the form
         }
-
-        private void tBoxDirectorSearch_TextChanged(object sender, System.EventArgs e)
+        private void tBox_TextChanged(object sender, EventArgs e)
         {
-            /*string input = tBoxDirectorSearch.Text;
-
-            if (string.IsNullOrEmpty(input))
-            {
-                dgwMain.DataSource = directorModel;
-                return;
-            }
-
-            #region dataTable
-            DataTable dataTable = new DataTable();
-            var rows = dgwMain.Rows;
-
-            if (dgwMain.Rows.Count == 0)
-            {
-                dgwMain.DataSource = directorModel;
-            }
-            foreach (DataGridViewColumn col in dgwMain.Columns)
-            {
-                dataTable.Columns.Add(col.Name);
-            }
-
-            foreach (DataGridViewRow row in dgwMain.Rows)
-            {
-                DataRow dRow = dataTable.NewRow();
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    dRow[cell.ColumnIndex] = cell.Value;
-                }
-                dataTable.Rows.Add(dRow);
-            }
-
-            dataTable.DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", input);
-
-            dgwMain.DataSource = dataTable;
-            #endregion
-
-            HandleValueChnge();*/
-
-        }
-
-        private void dgwMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            /*if (_directorModel != null)
-            {
-
-                if (_canCellChangeEventFire == false)
-                {
-                    _canCellChangeEventFire = true;
-                    return;
-                }
-                HandleValueChnge();
-            }*/
-
-        }
-
-        private void HandleValueChnge()
-        {
-            /*List<DirectorModel> chosenValues = new List<DirectorModel>();
-
-            foreach (DataGridViewRow row in dgwMain.Rows)
-            {
-                if (
-                    row.Cells[0].Value != null
-                    //&& row.Cells[1].Value != null
-                    //&& row.Cells[2].Value != null
-                    )
-                {
-                    var model = new DirectorModel()
-                    {
-                        Id = Convert.ToInt32(row.Cells[0].Value.ToString()),
-                        Name = row.Cells[1].Value.ToString(),
-                    };
-                    if (row.Cells[2].Value == null || row.Cells[2].Value == DBNull.Value)
-                    {
-                        model.Chosen = false;
-
-                    }
-                    else
-                    {
-                        model.Chosen = Convert.ToBoolean(row.Cells[2].Value);
-                    }
-
-                    chosenValues.Add(model);
-
-                }
-
-            }
-
-            var unChosenValues = chosenValues.Where(x => x.Chosen == false).ToList();
-            chosenValues = chosenValues.Where(x => x.Chosen == true).ToList();
-
-
-            for (int i = 0; i < chosenValues.Count; i++)
-                _directorModel.Where(x => x.Id == chosenValues[i].Id).FirstOrDefault().Chosen = true;
-            for (int i = 0; i < unChosenValues.Count; i++)
-                _directorModel.Where(x => x.Id == unChosenValues[i].Id).FirstOrDefault().Chosen = false;*/
-        }
-
-
-        private void dgwMain_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //if (_directorModel != null)
-            //    dgwMain.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            this.onType();
         }
     }
 }
