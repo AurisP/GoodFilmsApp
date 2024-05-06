@@ -80,6 +80,7 @@ namespace GoodFilmsApp
         {
             for (var i = 0; i < pb.Count; i++)
             {
+                pb[i].MouseClick -= events[i];
                 if (i >= films.Count)
                 {
                     pb[i].ImageLocation = "";
