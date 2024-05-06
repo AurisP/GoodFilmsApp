@@ -71,14 +71,14 @@ namespace GoodFilmsApp
         {
             mv.Invoke(new Action(() => {
                 btnLeft.Enabled = page > 0;
-                btnRight.Enabled = btnRight.Enabled = films.Count >= size;
-                if (films.Count < size)
+                btnRight.Enabled = page != (getMaxOffset() - 1) / size;
+                if (getAbsoluteEndKnown())
                 {
-                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + (getMaxOffset() / size + 1).ToString();
+                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + ((getMaxOffset()-1) / size + 1).ToString();
                 }
                 else
                 {
-                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + (getMaxOffset() / size + 1).ToString() + "...";
+                    lblStatus.Text = "page " + (page + 1).ToString() + " / " + ((getMaxOffset()-1) / size + 1).ToString() + "...";
                 }
             }));
         }
@@ -87,6 +87,7 @@ namespace GoodFilmsApp
         {
             for (var i = 0; i < pb.Count; i++)
             {
+                pb[i].MouseClick -= events[i];
                 if (i >= films.Count)
                 {
                     pb[i].ImageLocation = "";
@@ -126,6 +127,7 @@ namespace GoodFilmsApp
         public void setFilter(CFilter filter)
         {
             clearView();
+            this.page = 0;
             this.filter = filter;
             request();
         }
