@@ -1,104 +1,158 @@
 ﻿using ModelLibrary;
 using ModelLibrary.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace ControllerLibrary
 {
     public class CController : IController
     {
         private IDataAccess access;
-        private CFilter filter;
-        private CCallback<List<FilmModel>> filmsRxCb;
-        private CCallback<CFilmsMetadataCache> metadataRxCb;
-        private CCallback<List<ScheduledFilmModel>> scheduledFilmsRxCb;
-        private CCallback<CommentModel> commentRxCb;
-        private CCallback<string> errorRxCb;
-        private int globalId;
-        public CController(
-            Action<int, List<FilmModel>> filmsRxCb,
-            Action<int, CFilmsMetadataCache> metadataRxCb,
-            Action<int, List<ScheduledFilmModel>> scheduledFilmsRxCb,
-            Action<int, CommentModel> commentRxCb,
-            Action<int, string> errorRxCb)
+        public CController()
         {
-            this.access = new CDataAccess();
-            this.filmsRxCb = new CCallback<List<FilmModel>>(filmsRxCb);
-            this.metadataRxCb = new CCallback<CFilmsMetadataCache>(metadataRxCb);
-            this.scheduledFilmsRxCb = new CCallback<List<ScheduledFilmModel>>(scheduledFilmsRxCb);
-            this.commentRxCb = new CCallback<CommentModel>(commentRxCb);
-            this.errorRxCb = new CCallback<string>(errorRxCb);
-            globalId = 0;
+            access = new CDataAccess();
         }
-        void IController.addFilter(CFilter filter)
+        private static void runAsync(Action cb)
         {
-            this.filter = filter;
+            BackgroundWorker w = new BackgroundWorker();
+            w.DoWork += (sender, args) => ((Action)args.Argument)();
+            w.RunWorkerAsync(cb);
         }
-        void IController.clearFilters()
-        {
-            this.filter = null;
-        }
-        int IController.addComment(FilmModel model, string comment)
-        {
-            int film_id = model.Id;
-            string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            errorRxCb.call(globalId, () => access.updateComment(film_id, comment, commentDate));
-            return globalId++;
-        }
-        int IController.requestFilms(int offset, int count, Action<List<FilmModel>> cb)
+        void IController.setFilmWatched(FilmModel model, bool watched, Action on_success, Action<String> on_error)
         {
-            QueryModel queryModel = new QueryModel();
-            if (this.filter != null)
+            runAsync(() =>
             {
-                queryModel.Query = filter.strSearch;
-                queryModel.Random = filter.boolRandom;
-            }
-            filmsRxCb.call(globalId, () => {
-                List<FilmModel> models = access.requestFilms(offset, count, queryModel);
-                cb(models);
-                return models;
-                });
-            return globalId++;
-        }
-
-        int IController.requestComments(FilmModel model)
-        {
-            int film_id = model.Id;
-            commentRxCb.call(globalId, () => {
-                var data = access.requestComments(film_id);
-                return data;
+                try
+                {
+                    access.setFilmWatched(model.Id, watched);
+                    on_success?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while setting 'watched' property: " + ex.ToString());
+                }
             });
-            return globalId++;
         }
-        int IController.rmComment(FilmModel model, int id)
+        void IController.setFilmScheduled(FilmModel model, DateTime date, Action on_success, Action<String> on_error)
         {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
-            return globalId++;
-        }
-        int IController.setFilmScheduled(FilmModel model, DateTime date)
-        {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
-            return globalId++;
-        }
-        int IController.setFilmWatched(FilmModel model, bool watched)
-        {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
-            return globalId++;
-        }
-        int IController.setUserRating(FilmModel mode, int stars)
-        {
-            errorRxCb.call(globalId, () => "This functionality is unimplemented");
-            return globalId++;
-        }
-        int IController.requestMeta()
-        {
-            metadataRxCb.call(globalId, () => {
-                var data = access.requestMetadata();
-                return new CFilmsMetadataCache(data.directors, data.genres, data.studios, data.languages, data.ageRatings);
+            runAsync(() =>
+            {
+                try
+                {
+                    access.setFilmScheduled(model.Id, date);
+                    on_success?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while setting schedule: " + ex.ToString());
+                }
             });
-            return globalId++;
+        }
+        void IController.setFilmRating(FilmModel model, int stars, Action on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    access.setFilmRating(model.Id, stars);
+                    on_success?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while setting rating: " + ex.ToString());
+                }
+            });
+        }
+        void IController.addComment(FilmModel model, string comment, Action on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    if (comment == null && comment == "")
+                    {
+                        on_success?.Invoke();
+                        return;
+                    }
+                    if (comment.Length > 4000)
+                    {
+                        comment = comment.Substring(0, 4000);
+                    }
+                    string commentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    access.setComment(model.Id, comment, commentDate);
+                    on_success?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while adding comment: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestComment(FilmModel model, Action<CommentModel> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var comment = access.requestComment(model.Id);
+                    on_success?.Invoke(comment);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting comment: " + ex.ToString());
+                }
+            });
+        }
+        void IController.removeComment(FilmModel model, int comment_id, Action on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    access.removeComment(comment_id);
+                    on_success?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while removing comment: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestFilms(CFilter filter, int offset, int count, Action<List<FilmModel>> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var films = access.requestFilms(offset, count, filter.toQuery());
+                    on_success?.Invoke(films);
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting films: " + ex.ToString());
+                }
+            });
+        }
+        void IController.requestMeta(Action<CFilmsMetadataCache> on_success, Action<String> on_error)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    var meta = access.requestMetadata();
+                    on_success?.Invoke(new CFilmsMetadataCache(meta.directors, meta.genres, meta.studios, meta.languages, meta.ageRatings));
+                }
+                catch (Exception ex)
+                {
+                    on_error?.Invoke("Error while requesting metadata: " + ex.ToString());
+                }
+            });
         }
     }
 }

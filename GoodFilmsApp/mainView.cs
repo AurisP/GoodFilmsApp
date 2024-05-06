@@ -12,64 +12,62 @@ using System.Windows.Forms;
 using ViewHandler;
 using ControllerLibrary;
 using System.Xml.Linq;
+using CSVExporterDNF;
 
 namespace GoodFilmsApp
 {
     public partial class mainView : Form
     {
+        IExporter exporter;
+        CFilter searchFilter;
         IController controller;
-        int metadataId;
         CFilmsMetadataCache metadataCache;
         PosterHandler postersSearch;
         PosterHandler postersRecommend;
         PosterHandler postersScheduled;
         internal bool _isFirstLoad = true;
+        Ref<string> path;
         public mainView()
         {
             InitializeComponent();
-            controller = new CController(
-                (id, films) => { },
-                (id, cache) =>
-                {
-                    if (id != metadataId)
-                    {
-                        Console.WriteLine("Controller Error: Incorrect ID ", id, " in metadata rx, expected ", metadataId);
-                        return;
-                    }
-                    metadataCache = cache;
-                },
-                (id, _) => { },
-                (id, comment) => { PosterHandler.rxComment(comment, id); },
-                (id, err) => Console.WriteLine("Controller Error: " + err));
-            metadataId = controller.requestMeta();
+            searchFilter = new CFilter();
+            controller = new CController();
+            string myValue = null;
+            path = new Ref<string>(() => myValue, value => myValue = value);
+            exporter = new CExporter();
+            
             metadataCache = null;
+            controller.requestMeta((metadata) => { metadataCache = metadata; }, (error) => { MessageBox.Show(error); });
             postersSearch = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(), 
                 gbSearchResults,
                 btnSearchLeft,
                 btnSearchRight,
-                lblSearchPage);
+                lblSearchPage,
+                exporter,
+                path);
             postersRecommend = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbRecommendedFilms,
                 btnRecommendLeft,
                 btnRecommenRight,
-                lblRecommendPage);
+                lblRecommendPage,
+                exporter,
+                path);
             postersScheduled = new PosterHandler(controller, this,
                 7, new PosterBoxSettings(),
                 gbScheduledFilms,
                 btnScheduleLeft,
                 btnScheduleRight,
-                lblScheduledPage);
+                lblScheduledPage,
+                exporter,
+                path); ; ;
             updateRecommend();
             updateSearch();
-
         }
-        internal void updateSearch()
+        private void updateSearch()
         {
-            CFilter filter = new CFilter();
-            filter.strSearch = txtSearch.Text;
-            postersSearch.setFilter(filter);
+            postersSearch.setFilter(searchFilter);
         }
         private void updateRecommend()
         {
@@ -77,27 +75,21 @@ namespace GoodFilmsApp
             filter.boolRandom = true;
             postersRecommend.setFilter(filter);
         }
-
-        //##
         private void btnQuery_Click_1(object sender, EventArgs e)
         {
             if (metadataCache == null) return; // TODO: Delay window instead of rejecting perhaps?
-            QuerySubWindow querySubWindow = new QuerySubWindow(new ConstRef<CFilmsMetadataCache>(() => metadataCache), false, this);
-
+            QuerySubWindow querySubWindow = new QuerySubWindow(metadataCache, searchFilter, (filter) => {
+                searchFilter = filter;
+                updateSearch();
+            }, this);
             querySubWindow.StartPosition = FormStartPosition.CenterParent;
             querySubWindow.ShowDialog(this);
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSearch.Text))
-                Helpers.QueryModel.Query = null;
-            else
-                Helpers.QueryModel.Query = txtSearch.Text;
-
+            searchFilter.strSearch = txtSearch.Text;
             updateSearch();
         }
-
-
     }
 }

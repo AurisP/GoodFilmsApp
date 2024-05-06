@@ -1,10 +1,13 @@
 ﻿using ControllerLibrary;
+using CSVExporterDNF;
+using ModelLibrary;
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,28 +17,26 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
-        private FilmModel film;
-        private IController controller;
         private Action onCloseCb;
         private FilmModel film;
         private IController controller;
+        private IExporter exporter;
+        private Action onCloseCb;
         private int commentId;
-        public filmView(FilmModel film, Action onCloseCb, IController controller)
+        private Ref<string> path;
+        
+        private bool ignoreCheck;
+        public filmView(FilmModel film, Action onCloseCb, IController controller, IExporter exporter, Ref<string> path)
         {
             this.film = film;
+            // this.controller = rController;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
+            this.exporter = exporter;
+            this.path = path;
             InitializeComponent();
-        }
-
-        public void rxComment(CommentModel comment, int id)
-        {
-            if (id != commentId) return;
-            if (comment == null) return;
-            this.Invoke(new Action(() => {
-                txtUserComment.Text = comment.Comment_Text.ToString();
-            }));
-        }
+            
+    }
 
         private void updateStars()
         {
@@ -44,6 +45,7 @@ namespace GoodFilmsApp
             pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
             pbStar4.Image = imgStar.Images[(film.User_Rating >= 4) ? 1 : 0];
             pbStar5.Image = imgStar.Images[(film.User_Rating >= 5) ? 1 : 0];
+            controller.setFilmRating(film, film.User_Rating, null, (error) => { MessageBox.Show(error); });
         }
 
         private void filmView_Load(object sender, EventArgs e)
@@ -62,20 +64,28 @@ namespace GoodFilmsApp
             // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
-            commentId = controller.requestComments(film);
+            controller.requestComment(film, (comment) =>
+            {
+                if (comment == null) return;
+                this.Invoke(new Action(() => {
+                    txtUserComment.Text = comment.Comment_Text.ToString();
+                }));
+            }, 
+            (error) => { MessageBox.Show(error); });
+            ignoreCheck = true;
+            cbFilmWatched.Checked = film.Watched;
+            ignoreCheck = false;
         }
 
         private void addComment()
         {
-            if ((txtUserComment).Tag != null)
-            {
-                controller.addComment(film, txtUserComment.Text);
-            }        
+            if (txtUserComment.Text == null) return;
+            controller.addComment(film, txtUserComment.Text, null, (error) => { MessageBox.Show(error); });
         }
 
         private void txtUserComments_TextChanged(object sender, EventArgs e)
         {
-            ((txtUserComment).Tag) = true;
+            txtUserComment.Tag = true;
         }
 
         private void filmView_FormClosing(object sender, FormClosingEventArgs e)
@@ -90,18 +100,26 @@ namespace GoodFilmsApp
 
         private void btnSaveComment_Click(object sender, EventArgs e)
         {
-            controller.addComment(film, txtUserComment.Text);
+            addComment();
         }
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
-            controller.setFilmScheduled(film, dtpScheduleTime.Value);
+            controller.setFilmScheduled(film, dtpScheduleTime.Value, null, (error) => { MessageBox.Show(error); });
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
-            controller.setFilmWatched(film, cbFilmWatched.Checked);
+            if (ignoreCheck) return;
+            controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
+            film.Watched = cbFilmWatched.Checked;
         }
 
+        private void btnSaveAs_Click_1(object sender, EventArgs e)
+        {
+            CSView csview = new CSView(film, exporter, path);
+            csview.StartPosition = FormStartPosition.CenterParent;
+            csview.ShowDialog(this);
+        }
     }
 }

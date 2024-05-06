@@ -7,6 +7,7 @@ using ModelLibrary.Models;
 using ControllerLibrary;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using CSVExporterDNF;
 
 namespace GoodFilmsApp
 {
@@ -20,6 +21,8 @@ namespace GoodFilmsApp
         Button btnRight;
         Label lblStatus;
         IController controller;
+        IExporter exporter;
+        private Ref<string> path;
         mainView mv; // Have to keep track of this to update buttons in the same thread as they were created, god I love C#
         int size;    // Amount of PictureBoxes
         int page;    // Current page we're on
@@ -31,7 +34,9 @@ namespace GoodFilmsApp
             GroupBox gb, 
             Button btnLeft,
             Button btnRight,
-            Label lblStatus) : base(controller)
+            Label lblStatus,
+            IExporter exporter,
+            Ref<string> path) : base(controller)
         {
             this.size = numOfPictures;
             page = 0;
@@ -40,9 +45,11 @@ namespace GoodFilmsApp
             this.lblStatus = lblStatus;
             this.mv = mv;
             this.controller = controller;
-            btnLeft.Enabled = true;
-            btnRight.Enabled = true;
+            btnLeft.Enabled = false;
+            btnRight.Enabled = false;
             lblStatus.Text = "";
+            this.exporter = exporter;
+            this.path = path;
             btnLeft.Click += (_, __) => setPage(this.page - 1);
             btnRight.Click += (_, __) => setPage(this.page + 1);
             for (int i = 0; i < numOfPictures; i++)
@@ -90,7 +97,7 @@ namespace GoodFilmsApp
                 var ev = new MouseEventHandler((_, __) =>
                 {
                     if (detailView != null) return;
-                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller);
+                    detailView = new filmView(films[iCopy], () => { detailView = null; }, controller, exporter, path);
                     detailView.Show();
                 });
                 pb[i].MouseClick += ev;
@@ -108,9 +115,7 @@ namespace GoodFilmsApp
 
         public void request()
         {
-            controller.clearFilters();
-            controller.addFilter(filter);
-            requestFilms(page * size, 64, () => // TODO: Change 64 into reasonable parameter
+            requestFilms(filter, page * size, 64, () => // TODO: Change 64 into reasonable parameter
             {
                 var films = getFilms(page * size, size);
                 updateView(films);
@@ -136,11 +141,6 @@ namespace GoodFilmsApp
             {
                 request();
             }
-        }
-
-        public static void rxComment(CommentModel comment, int id)
-        {
-            detailView?.rxComment(comment, id);
         }
     }
 }

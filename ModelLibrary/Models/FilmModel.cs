@@ -24,8 +24,6 @@ namespace ModelLibrary.Models
 
         public bool Watched { get; set; }
 
-        public string Comment { get; set; }
-
         public List<DirectorFilmModel> DirectorFilms { get; set; } = new List<DirectorFilmModel>();
 
         public List<GenreFilmModel> GenreFilms { get; set; } = new List<GenreFilmModel>();
