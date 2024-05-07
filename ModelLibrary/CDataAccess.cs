@@ -71,13 +71,13 @@ namespace ModelLibrary
             // Maximum duration condition.
             if (query.intMaxLenSec != null)
             {
-                builder = builder.Where("films.duration_sec <= @Seconds", new { Seconds = query.intMaxLenSec });
+                builder = builder.Where("films.duration_sec <= @Seconds1", new { Seconds1 = query.intMaxLenSec });
             }
 
             // Minimum duration condition.
             if (query.intMinLenSec != null)
             {
-                builder = builder.Where("films.duration_sec >= @Seconds", new { Seconds = query.intMinLenSec });
+                builder = builder.Where("films.duration_sec >= @Seconds2", new { Seconds2 = query.intMinLenSec });
             }
 
             // Age ratings condition.
