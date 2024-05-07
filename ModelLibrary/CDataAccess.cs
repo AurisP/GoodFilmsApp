@@ -106,15 +106,6 @@ namespace ModelLibrary
                 builder = builder.InnerJoin("genres_films ON genres_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
 
-            // Inner join with directors condition.
-            // (Similar logic as above for other conditions)
-
-            // Inner join with languages condition.
-            // (Similar logic as above for other conditions)
-
-            // Inner join with studios condition.
-            // (Similar logic as above for other conditions)
-
             // Inner join with soon_to_watch_films condition.
             if (query.boolOnlyScheduled)
             {
