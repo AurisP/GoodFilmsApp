@@ -55,14 +55,14 @@
     <Compile Include="Ref.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
       <Project>{ebd7a118-dfa8-4ae0-a69d-3fb58bef958d}</Project>
       <Name>ModelLibrary</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

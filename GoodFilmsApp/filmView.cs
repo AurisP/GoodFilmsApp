@@ -1,8 +1,13 @@
 ﻿using ControllerLibrary;
+using CSVExporterDNF;
 using ModelLibrary;
 using ModelLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -11,69 +16,30 @@ namespace GoodFilmsApp
 {
     public partial class filmView : Form
     {
-        private Action onCloseCb;
         private FilmModel film;
-        IController controller;
-        IDataAccess access;
-
-        List<LanguageModel> _languages;
-        List<StudioModel> _studios;
-        List<GenreModel> _genres;
-        string _director;
-        int _releaseYear;
-        double _durationHour;
-        string _ageRating;
- 
+        private IController controller;
+        private IExporter exporter;
+        private Action onCloseCb;
+        private int commentId;
+        private Ref<string> path;
         private bool ignoreCheck;
         private mainView parent;
-        public filmView(mainView parent, FilmModel film, Action onCloseCb, IController controller)
+
+        public filmView(mainView parent, FilmModel film, Action onCloseCb, IController controller, IExporter exporter, Ref<string> path)
         {
             this.parent = parent;
             this.film = film;
             this.onCloseCb = onCloseCb;
             this.controller = controller;
+            this.exporter = exporter;
+            this.path = path;
             InitializeComponent();
-
-
-            _languages = CDataAccess.LoadLanguages()
-                .Where(
-                d => CDataAccess.LoadLanguagesFilms()
-                .Where(x => x.film_id == film.Id)
-                .Select(s => (int)s.language_id)
-                .Contains(d.Id)).ToList();
-            _studios = CDataAccess.LoadStudios()
-                .Where(
-                d => CDataAccess.LoadStudioFilms()
-                .Where(x => x.film_id == film.Id)
-                .Select(s => (int)s.studio_id)
-                .Contains(d.Id)).ToList();
-            _genres = CDataAccess.LoadGenres()
-                .Where(
-                d => CDataAccess.LoadGenresFilms()
-                .Where(x => x.film_id == film.Id)
-                .Select(s => (int)s.genre_id)
-                .Contains(d.Id)).ToList();
-
-            _director = CDataAccess.LoadDirectors().Where(d => d.Id == CDataAccess.LoadDirectorFilms().Where(x => x.Id == film.Id).FirstOrDefault().director_id).FirstOrDefault().Name;
-            _releaseYear = film.Release_Year;
-            // Convert the duration in seconds to a TimeSpan object
-            TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
-            // Calculate hours and minutes separately
-            int hours = duration.Hours;
-            int minutes = duration.Minutes;
-            // Display the duration in hours and minutes
-            lblDurationResult.Text = $"{hours}h {minutes}min";
-            _ageRating = CDataAccess.LoadAgeRatings().Where(x => x.Id == film.age_rating_id).FirstOrDefault().Rating.ToString();
-
-            lblDirectorResult.Text = _director;
-            lblReleaseYearResult.Text = _releaseYear.ToString();
-            lblAgeRatingResult.Text = _ageRating;
-
 
         }
 
         private void updateStars()
         {
+            // Updates the star images based on the film's user rating and sends the updated rating to the controller
             pbStar1.Image = imgStar.Images[(film.User_Rating >= 1) ? 1 : 0];
             pbStar2.Image = imgStar.Images[(film.User_Rating >= 2) ? 1 : 0];
             pbStar3.Image = imgStar.Images[(film.User_Rating >= 3) ? 1 : 0];
@@ -84,35 +50,46 @@ namespace GoodFilmsApp
 
         private void filmView_Load(object sender, EventArgs e)
         {
+            // Sets the film name and poster image location
             lblFilmName.Text = film.Title;
             pbPoster.ImageLocation = "../../" + film.Poster_Url;
+            // Updates the star images
             updateStars();
-            pbStar1.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = film.User_Rating != 1 ? 1 : 0; updateStars(); }); // TOOD: Update database
+
+            // Event handlers for updating the film's user rating
+            pbStar1.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = film.User_Rating != 1 ? 1 : 0; updateStars(); });
             pbStar2.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 2; updateStars(); });
             pbStar3.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 3; updateStars(); });
             pbStar4.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 4; updateStars(); });
             pbStar5.MouseClick += new MouseEventHandler((a, b) => { film.User_Rating = 5; updateStars(); });
+
+            // Displays the movie description and duration
             txtMovieInfo.Text = film.Description;
-            // Convert the duration in seconds to a TimeSpan object
             TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
-            // Display the duration in hours, minutes, and seconds
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
+            // Requests and displays the user comment for the film
             controller.requestComment(film, (comment) =>
             {
                 if (comment == null) return;
-                this.Invoke(new Action(() => {
+                this.Invoke(new Action(() =>
+                {
                     txtUserComment.Text = comment.Comment_Text.ToString();
                 }));
-            }, 
+            },
             (error) => { MessageBox.Show(error); });
+
+            // Sets the checkbox state for whether the film is watched
             ignoreCheck = true;
             cbFilmWatched.Checked = film.Watched;
             ignoreCheck = false;
         }
 
+
+
         private void addComment()
         {
+            // Adds the user comment for the film
             if (txtUserComment.Text == null) return;
             controller.addComment(film, txtUserComment.Text, null, (error) => { MessageBox.Show(error); });
         }
@@ -124,52 +101,64 @@ namespace GoodFilmsApp
 
         private void filmView_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Adds the comment when the form is closing
             addComment();
         }
 
         private void filmView_Closed(object sender, FormClosedEventArgs e)
         {
+            // Invokes the onCloseCb action when the form is closed
             onCloseCb();
         }
 
         private void btnSaveComment_Click(object sender, EventArgs e)
         {
+            // Saves the comment when the Save button is clicked
             addComment();
         }
 
         private void btnAddToSchedule_Click(object sender, EventArgs e)
         {
+            // Adds the film to the schedule when the Add to Schedule button is clicked
             controller.setFilmScheduled(film, dtpScheduleTime.Value, () => { this.parent.updateScheduled(); }, (error) => { MessageBox.Show(error); });
         }
 
         private void cbFilmWatched_CheckedChanged(object sender, EventArgs e)
         {
+            // Sets the film watched status when the checkbox state changes
             if (ignoreCheck) return;
             controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
             film.Watched = cbFilmWatched.Checked;
         }
 
-        private void lblLanguageResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //private void lblLanguageResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_languages);
+        //    informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
+        //    informationDataGridWİndow.ShowDialog(this);
+        //}
+
+        //private void lblStudioResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_studios);
+        //    informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
+        //    informationDataGridWİndow.ShowDialog(this);
+        //}
+
+        //private void lblGenreResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    InformationDataGridWindow informationDataGridWindow = new InformationDataGridWindow(_genres);
+        //    informationDataGridWindow.StartPosition = FormStartPosition.CenterParent;
+        //    informationDataGridWindow.ShowDialog(this);
+        //}
+
+        private void btnSaveAs_Click_1(object sender, EventArgs e)
         {
-            InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_languages);
-            informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
-            informationDataGridWİndow.ShowDialog(this);
+            // Opens the CSView form to save the film details
+            CSView csview = new CSView(film, exporter, path);
+            csview.StartPosition = FormStartPosition.CenterParent;
+            csview.ShowDialog(this);
         }
 
-        private void lblStudioResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_studios);
-            informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
-            informationDataGridWİndow.ShowDialog(this);
-        }
-
-        private void lblGenreResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            InformationDataGridWindow informationDataGridWindow = new InformationDataGridWindow(_genres);
-            informationDataGridWindow.StartPosition = FormStartPosition.CenterParent;
-            informationDataGridWindow.ShowDialog(this);
-        }
-
-       
     }
 }

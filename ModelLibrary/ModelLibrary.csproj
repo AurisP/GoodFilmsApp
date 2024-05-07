@@ -92,6 +92,9 @@
     <Compile Include="IDataAccess.cs" />
     <Compile Include="CDataAccess.cs" />
     <Compile Include="Models\AgeRatingModel.cs" />
+    <Compile Include="Models\CAgeRatingModel.cs" />
+    <Compile Include="Models\CCommentModel.cs" />
+    <Compile Include="Models\CDirectorFilmModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DirectorFilmModel.cs" />
     <Compile Include="Models\DirectorModel.cs" />
@@ -100,7 +103,6 @@
     <Compile Include="Models\GenreModel.cs" />
     <Compile Include="Models\LanguageFilmModel.cs" />
     <Compile Include="Models\LanguageModel.cs" />
-    <Compile Include="Models\MetadataModel.cs" />
     <Compile Include="Models\ScheduledFilmModel.cs" />
     <Compile Include="Models\StudioFilmModel.cs" />
     <Compile Include="Models\StudioModel.cs" />
