@@ -71,13 +71,13 @@ namespace ModelLibrary
             // Maximum duration condition.
             if (query.intMaxLenSec != null)
             {
-                builder = builder.Where("films.duration_sec <= @Seconds", new { Seconds = query.intMaxLenSec });
+                builder = builder.Where("films.duration_sec <= @Seconds1", new { Seconds1 = query.intMaxLenSec });
             }
 
             // Minimum duration condition.
             if (query.intMinLenSec != null)
             {
-                builder = builder.Where("films.duration_sec >= @Seconds", new { Seconds = query.intMinLenSec });
+                builder = builder.Where("films.duration_sec >= @Seconds2", new { Seconds2 = query.intMinLenSec });
             }
 
             // Age ratings condition.
@@ -105,15 +105,6 @@ namespace ModelLibrary
                 // Combine OR conditions into a single INNER JOIN clause.
                 builder = builder.InnerJoin("genres_films ON genres_films.film_id = films.id AND (" + String.Join(" OR ", queries.ToArray()) + ")");
             }
-
-            // Inner join with directors condition.
-            // (Similar logic as above for other conditions)
-
-            // Inner join with languages condition.
-            // (Similar logic as above for other conditions)
-
-            // Inner join with studios condition.
-            // (Similar logic as above for other conditions)
 
             // Inner join with soon_to_watch_films condition.
             if (query.boolOnlyScheduled)

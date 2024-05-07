@@ -111,6 +111,12 @@
     <Compile Include="filmView.Designer.cs">
       <DependentUpon>filmView.cs</DependentUpon>
     </Compile>
+    <Compile Include="InformationDataGridWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InformationDataGridWindow.Designer.cs">
+      <DependentUpon>InformationDataGridWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="mainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="filmView.resx">
       <DependentUpon>filmView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InformationDataGridWindow.resx">
+      <DependentUpon>InformationDataGridWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="mainView.resx">
       <DependentUpon>mainView.cs</DependentUpon>

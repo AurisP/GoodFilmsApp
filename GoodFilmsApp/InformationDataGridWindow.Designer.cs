@@ -1,6 +1,6 @@
 ﻿namespace GoodFilmsApp
 {
-    partial class DataGridWindow
+    partial class InformationDataGridWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,62 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnSave = new System.Windows.Forms.Button();
             this.dgwMain = new System.Windows.Forms.DataGridView();
-            this.tBox = new System.Windows.Forms.TextBox();
+            this.btnSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgwMain)).BeginInit();
             this.SuspendLayout();
             // 
+            // dgwMain
+            // 
+            this.dgwMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwMain.Location = new System.Drawing.Point(0, 56);
+            this.dgwMain.Name = "dgwMain";
+            this.dgwMain.ReadOnly = true;
+            this.dgwMain.RowHeadersVisible = false;
+            this.dgwMain.Size = new System.Drawing.Size(300, 244);
+            this.dgwMain.TabIndex = 0;
+            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(382, 22);
+            this.btnSave.Location = new System.Drawing.Point(230, 12);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(71, 20);
-            this.btnSave.TabIndex = 0;
+            this.btnSave.Size = new System.Drawing.Size(58, 26);
+            this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Okay";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // dgwMain
-            // 
-            this.dgwMain.AllowUserToAddRows = false;
-            this.dgwMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwMain.Location = new System.Drawing.Point(12, 58);
-            this.dgwMain.Name = "dgwMain";
-            this.dgwMain.RowHeadersVisible = false;
-            this.dgwMain.Size = new System.Drawing.Size(441, 345);
-            this.dgwMain.TabIndex = 1;
-            // 
-            // tBox
-            // 
-            this.tBox.Location = new System.Drawing.Point(12, 22);
-            this.tBox.Name = "tBox";
-            this.tBox.Size = new System.Drawing.Size(349, 20);
-            this.tBox.TabIndex = 2;
-            this.tBox.TextChanged += new System.EventHandler(this.tBox_TextChanged);
-            // 
-            // DataGridWindow
+            // InformationDataGridWİndow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(465, 415);
-            this.Controls.Add(this.tBox);
-            this.Controls.Add(this.dgwMain);
+            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ClientSize = new System.Drawing.Size(300, 300);
             this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.dgwMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "DataGridWindow";
-            this.Text = "DataGridWindow";
+            this.Name = "InformationDataGridWİndow";
+            this.Text = "InformationDataGridWİndow";
+            this.Load += new System.EventHandler(this.InformationDataGridWİndow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgwMain)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.DataGridView dgwMain;
-        private System.Windows.Forms.TextBox tBox;
+        private System.Windows.Forms.Button btnSave;
     }
 }

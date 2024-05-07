@@ -9,9 +9,8 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace GoodFilmsApp
 {
@@ -35,6 +34,7 @@ namespace GoodFilmsApp
             this.exporter = exporter;
             this.path = path;
             InitializeComponent();
+
         }
 
         private void updateStars()
@@ -130,6 +130,27 @@ namespace GoodFilmsApp
             controller.setFilmWatched(film, cbFilmWatched.Checked, null, (error) => { MessageBox.Show(error); });
             film.Watched = cbFilmWatched.Checked;
         }
+
+        //private void lblLanguageResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_languages);
+        //    informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
+        //    informationDataGridWİndow.ShowDialog(this);
+        //}
+
+        //private void lblStudioResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    InformationDataGridWindow informationDataGridWİndow = new InformationDataGridWindow(_studios);
+        //    informationDataGridWİndow.StartPosition = FormStartPosition.CenterParent;
+        //    informationDataGridWİndow.ShowDialog(this);
+        //}
+
+        //private void lblGenreResult_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        //{
+        //    InformationDataGridWindow informationDataGridWindow = new InformationDataGridWindow(_genres);
+        //    informationDataGridWindow.StartPosition = FormStartPosition.CenterParent;
+        //    informationDataGridWindow.ShowDialog(this);
+        //}
 
         private void btnSaveAs_Click_1(object sender, EventArgs e)
         {

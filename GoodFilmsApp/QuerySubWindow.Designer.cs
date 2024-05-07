@@ -53,9 +53,9 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(16, 184);
+            this.btnSearch.Location = new System.Drawing.Point(20, 181);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(105, 50);
+            this.btnSearch.Size = new System.Drawing.Size(105, 40);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Close";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -64,7 +64,7 @@
             // lblMinDuration
             // 
             this.lblMinDuration.AutoSize = true;
-            this.lblMinDuration.Location = new System.Drawing.Point(13, 49);
+            this.lblMinDuration.Location = new System.Drawing.Point(17, 35);
             this.lblMinDuration.Name = "lblMinDuration";
             this.lblMinDuration.Size = new System.Drawing.Size(115, 13);
             this.lblMinDuration.TabIndex = 2;
@@ -73,7 +73,7 @@
             // lblMaxDuration
             // 
             this.lblMaxDuration.AutoSize = true;
-            this.lblMaxDuration.Location = new System.Drawing.Point(13, 97);
+            this.lblMaxDuration.Location = new System.Drawing.Point(17, 78);
             this.lblMaxDuration.Name = "lblMaxDuration";
             this.lblMaxDuration.Size = new System.Drawing.Size(118, 13);
             this.lblMaxDuration.TabIndex = 4;
@@ -83,7 +83,7 @@
             // lblStudios
             // 
             this.lblStudios.AutoSize = true;
-            this.lblStudios.Location = new System.Drawing.Point(227, 53);
+            this.lblStudios.Location = new System.Drawing.Point(248, 75);
             this.lblStudios.Name = "lblStudios";
             this.lblStudios.Size = new System.Drawing.Size(37, 13);
             this.lblStudios.TabIndex = 6;
@@ -92,14 +92,14 @@
             // lblAddedStudios
             // 
             this.lblAddedStudios.AutoSize = true;
-            this.lblAddedStudios.Location = new System.Drawing.Point(382, 101);
+            this.lblAddedStudios.Location = new System.Drawing.Point(386, 87);
             this.lblAddedStudios.Name = "lblAddedStudios";
             this.lblAddedStudios.Size = new System.Drawing.Size(0, 13);
             this.lblAddedStudios.TabIndex = 9;
             // 
             // btnAddNewStudio
             // 
-            this.btnAddNewStudio.Location = new System.Drawing.Point(282, 49);
+            this.btnAddNewStudio.Location = new System.Drawing.Point(323, 67);
             this.btnAddNewStudio.Name = "btnAddNewStudio";
             this.btnAddNewStudio.Size = new System.Drawing.Size(94, 21);
             this.btnAddNewStudio.TabIndex = 10;
@@ -110,7 +110,7 @@
             // lblAddedGenres
             // 
             this.lblAddedGenres.AutoSize = true;
-            this.lblAddedGenres.Location = new System.Drawing.Point(383, 139);
+            this.lblAddedGenres.Location = new System.Drawing.Point(387, 125);
             this.lblAddedGenres.Name = "lblAddedGenres";
             this.lblAddedGenres.Size = new System.Drawing.Size(0, 13);
             this.lblAddedGenres.TabIndex = 13;
@@ -118,7 +118,7 @@
             // lblGenres
             // 
             this.lblGenres.AutoSize = true;
-            this.lblGenres.Location = new System.Drawing.Point(228, 97);
+            this.lblGenres.Location = new System.Drawing.Point(248, 109);
             this.lblGenres.Name = "lblGenres";
             this.lblGenres.Size = new System.Drawing.Size(41, 13);
             this.lblGenres.TabIndex = 12;
@@ -126,7 +126,7 @@
             // 
             // btnAddNewGenre
             // 
-            this.btnAddNewGenre.Location = new System.Drawing.Point(282, 93);
+            this.btnAddNewGenre.Location = new System.Drawing.Point(323, 101);
             this.btnAddNewGenre.Name = "btnAddNewGenre";
             this.btnAddNewGenre.Size = new System.Drawing.Size(94, 21);
             this.btnAddNewGenre.TabIndex = 14;
@@ -136,7 +136,7 @@
             // 
             // btnChooseDirector
             // 
-            this.btnChooseDirector.Location = new System.Drawing.Point(282, 137);
+            this.btnChooseDirector.Location = new System.Drawing.Point(323, 137);
             this.btnChooseDirector.Name = "btnChooseDirector";
             this.btnChooseDirector.Size = new System.Drawing.Size(94, 21);
             this.btnChooseDirector.TabIndex = 17;
@@ -155,7 +155,7 @@
             // lblDirectors
             // 
             this.lblDirectors.AutoSize = true;
-            this.lblDirectors.Location = new System.Drawing.Point(227, 140);
+            this.lblDirectors.Location = new System.Drawing.Point(248, 145);
             this.lblDirectors.Name = "lblDirectors";
             this.lblDirectors.Size = new System.Drawing.Size(49, 13);
             this.lblDirectors.TabIndex = 15;
@@ -164,7 +164,7 @@
             // lblReleaseYear
             // 
             this.lblReleaseYear.AutoSize = true;
-            this.lblReleaseYear.Location = new System.Drawing.Point(13, 140);
+            this.lblReleaseYear.Location = new System.Drawing.Point(17, 126);
             this.lblReleaseYear.Name = "lblReleaseYear";
             this.lblReleaseYear.Size = new System.Drawing.Size(74, 13);
             this.lblReleaseYear.TabIndex = 18;
@@ -180,9 +180,9 @@
             // 
             // btnAgeRating
             // 
-            this.btnAgeRating.Location = new System.Drawing.Point(293, 181);
+            this.btnAgeRating.Location = new System.Drawing.Point(324, 181);
             this.btnAgeRating.Name = "btnAgeRating";
-            this.btnAgeRating.Size = new System.Drawing.Size(83, 40);
+            this.btnAgeRating.Size = new System.Drawing.Size(93, 40);
             this.btnAgeRating.TabIndex = 21;
             this.btnAgeRating.Text = "Choose age rating";
             this.btnAgeRating.UseVisualStyleBackColor = true;
@@ -192,7 +192,7 @@
             // 
             this.lblAgeRating.AutoSize = true;
             this.lblAgeRating.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAgeRating.Location = new System.Drawing.Point(227, 183);
+            this.lblAgeRating.Location = new System.Drawing.Point(248, 195);
             this.lblAgeRating.Name = "lblAgeRating";
             this.lblAgeRating.Size = new System.Drawing.Size(65, 13);
             this.lblAgeRating.TabIndex = 20;
@@ -201,7 +201,7 @@
             // btnChooseLanguage
             // 
             this.btnChooseLanguage.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnChooseLanguage.Location = new System.Drawing.Point(282, 12);
+            this.btnChooseLanguage.Location = new System.Drawing.Point(323, 32);
             this.btnChooseLanguage.Name = "btnChooseLanguage";
             this.btnChooseLanguage.Size = new System.Drawing.Size(94, 21);
             this.btnChooseLanguage.TabIndex = 23;
@@ -212,7 +212,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(227, 16);
+            this.label2.Location = new System.Drawing.Point(248, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 22;
@@ -221,9 +221,9 @@
             // btnClearFilters
             // 
             this.btnClearFilters.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearFilters.Location = new System.Drawing.Point(16, 8);
+            this.btnClearFilters.Location = new System.Drawing.Point(131, 181);
             this.btnClearFilters.Name = "btnClearFilters";
-            this.btnClearFilters.Size = new System.Drawing.Size(94, 21);
+            this.btnClearFilters.Size = new System.Drawing.Size(94, 40);
             this.btnClearFilters.TabIndex = 24;
             this.btnClearFilters.Text = "Clear filters";
             this.btnClearFilters.UseVisualStyleBackColor = true;
@@ -250,7 +250,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.IndianRed;
-            this.ClientSize = new System.Drawing.Size(392, 246);
+            this.ClientSize = new System.Drawing.Size(439, 246);
             this.Controls.Add(this.txtMaxDuration);
             this.Controls.Add(this.txtMinDuration);
             this.Controls.Add(this.btnClearFilters);
