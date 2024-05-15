@@ -68,6 +68,22 @@ namespace GoodFilmsApp
             TimeSpan duration = TimeSpan.FromSeconds(film.Duration_Sec);
             txtMovieInfo.Text += $"Duration: {duration.Hours}h, {duration.Minutes}min";
 
+            // Displays the age rating
+            controller.requestAgeRating(film, (rating) =>
+            {
+                if (rating == null) return;
+                this.Invoke(new Action(() =>
+                {
+                    txtAgeRating.Text = rating.Rating.ToString();
+                }));
+            },
+            (error) => { MessageBox.Show(error); });
+
+            //controller.requestAgeRatings[film.age_rating_id]
+            //txtAgeRating.Text = film.age_rating_id.ToString();
+
+
+
             // Requests and displays the user comment for the film
             controller.requestComment(film, (comment) =>
             {

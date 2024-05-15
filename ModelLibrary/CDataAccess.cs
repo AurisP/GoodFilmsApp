@@ -471,6 +471,21 @@ namespace ModelLibrary
             return output;
         }
 
+        CAgeRatingModel IDataAccess.requestAgeRating(int ratingId)
+        {
+            // Initialize a SqlBuilder instance to dynamically construct SQL queries.
+            SqlBuilder builder = new SqlBuilder();
+
+            // Generate SQL query template for selecting a comment for the specified film.
+            Template template = builder.AddTemplate("SELECT * FROM user_rating WHERE ratingId = @whereRatingId", new { whereRatingId = ratingId });
+
+            // Execute the SQL query to retrieve the comment from the database.
+            var output = cnn.QueryFirstOrDefault<CAgeRatingModel>(template.RawSql, template.Parameters);
+
+            // Return the retrieved comment model.
+            return output;
+        }
+
         // Method to remove a comment from the database.
         // Arguments:
         //   - commentId: The ID of the comment to remove.

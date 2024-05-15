@@ -22,6 +22,9 @@ namespace ControllerLibrary
         // Requests the comment associated with a film.
         void requestComment(FilmModel model, Action<CommentModel> on_success, Action<string> on_error = null);
 
+        // Requests the rating associated with a film.
+        void requestAgeRating(FilmModel model, Action<CAgeRatingModel> on_success, Action<string> on_error = null);
+
         // Removes a comment associated with a film.
         void removeComment(FilmModel model, int comment_id, Action on_success, Action<string> on_error = null);
 

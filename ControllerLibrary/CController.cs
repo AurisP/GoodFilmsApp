@@ -162,6 +162,27 @@ namespace ControllerLibrary
             });
         }
 
+        // Requests the rating associated with a film.
+        void IController.requestAgeRating(FilmModel model, Action<CAgeRatingModel> on_success, Action<string> on_error = null)
+        {
+            runAsync(() =>
+            {
+                try
+                {
+                    // Retrieve the comment associated with the film using data access layer.
+                    var rating = access.requestAgeRating(model.age_rating_id);
+
+                    // Invoke success callback with the retrieved comment.
+                    on_success?.Invoke(rating);
+                }
+                catch (Exception ex)
+                {
+                    // Invoke error callback if an exception occurs.
+                    on_error?.Invoke("Error while requesting rating: " + ex.ToString());
+                }
+            });
+        }
+
         // Asynchronously removes a comment associated with a film.
         // Arguments:
         //   - model: The film model from which the comment will be removed.

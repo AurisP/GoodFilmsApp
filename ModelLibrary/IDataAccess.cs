@@ -40,6 +40,9 @@ namespace ModelLibrary
         // Retrieves the comment associated with a specific film.
         CommentModel requestComment(int filmId);
 
+        // Retrieves the comment associated with a specific film.
+        CAgeRatingModel requestAgeRating(int ratingId);
+
         // Removes a comment from the database.
         void removeComment(int commentId);
     }
